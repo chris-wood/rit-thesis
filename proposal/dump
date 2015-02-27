@@ -1,0 +1,35 @@
+
+The security of symmetric-key cryptographic algorithms is based upon Shannon's principles
+of confusion and diffusion \cite{Shannon}. Confusion can be defined as the complexity of
+the relationship between the secret-key and ciphertext, and diffusion is commonly referred
+to as the degree to which the influence of a single plaintext bit is spread throughout
+the resulting ciphertext. Traditionally, diffusion and consufion are achieved through linear
+and nonlinear mathematical operations within the cipher, respectively. 
+
+S(ubstitution)-boxes are the most common nonlinear building block of symmetric-key
+block ciphers based on the substitution permutation network (SPN) design. 
+We formally define a SPN design for symmetric-key block ciphers below. 
+
+\begin{define}
+Let $l$, $m$, and $N_r$ be positive integers, let $\pi_S : \{0, 1\}^l \to \{0,1\}^l$ be a permutation, and let $\pi_P : \{1,...,lm\} \to \{1,...,lm\}$ be a permutation. Let $\Pset = \Cset = \{0,1\}^{lm}$, and let $\Kset \subseteq (\{0,1\}^{lm})^{N_r + 1})$ consist of all possible key schedules that could be derived from an initial key $K$ using hte key scheduling algorithm. For a key schedule $(K^1, ..., K^{N_r + 1})$, we encrypt the plaintext $x$ using the following algorithm.
+
+\begin{algorithm*}[t] %[htb]
+\caption{SPN($x, \pi_S, \pi_P, (K^1, ..., K^{N_r + 1})$)} \label{spnAlg}
+\begin{algorithmic}[1]
+	\State $w^0 \gets x$
+	\For {$r = 1 \to N_r - 1$}
+		\State $u^r \gets w^{r - 1} \oplus K^r$
+		\For	{$i = 1 \to m$}
+			\State $v^r_{<i>} \gets \pi_S(u^r_{<i>})$
+		\EndFor
+		\State $w^r \gets (v^r_{\pi_{P(1)}}, ..., v^r_{\pi_{P(lm)}}$
+	\EndFor
+	\State $u^{N_r} \gets w^{N_r - 1} \oplus K^{N_r}$
+	\For {$i = 1 \to m$}
+		\State $v^{N_r}_{<i>} \gets \pi_S(u^{N_r}_{<i>})$
+	\EndFor
+	\State $y \gets v_{N_r} \oplus K^{N_r + 1}$
+	\State \Return $y$
+\end{algorithmic}
+\end{algorithm*}
+\end{define} 

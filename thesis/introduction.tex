@@ -1,0 +1,74 @@
+\section{Motivation}
+The cryptographic strength of symmetric key cryptosystems is traditionally based on 
+Claude Shannon's properties of confusion and diffusion \cite{shannon1949-secrecy}. 
+Confusion can be defined as the complexity of the relationship between the secret key and 
+ciphertext, and diffusion can be defined as the degree to which the influence of 
+a single input plaintext bit is spread throughout the resulting ciphertext.
+Substitution-permutation networks (SPNs) are natural constructions for symmetric-key
+cryptosystems that realize confusion and diffusion through substitution and
+permutation operations, respectively \cite{stinson-crypto}. 
+In SPN designs for symmetric-key cryptosystems, the substitution step is a
+nonlinear operation that improves the overall confusion, while the permutation step
+is a linear operation that increases the measure of diffusion. Formally, an SPN design is defined as follows.
+
+\begin{definition}
+Let $l$, $m$, and $N_r$ be non-negative integers and $S_S : \{0, 1\}^l \to \{0,1\}^l$ and $S_P : \{1,...,lm\} \to \{1,...,lm\}$ be permutations. Let $\mathcal{P} = \mathcal{C} = \{0,1\}^{lm}$, and let $\mathcal{K} \subseteq (\{0,1\}^{lm})^{N_r + 1})$ consist of all possible key schedules that could be derived from an initial key $K$ using the key scheduling algorithm. For a key schedule $(K^1, ..., K^{N_r + 1})$, we encrypt the plaintext $x$ using algorithm \ref{spnAlg}.
+
+\begin{algorithm}
+\caption{SPN($x, S_S, S_P, (K^1, \dots, K^{N_r + 1})$)} \label{spnAlg}
+\begin{algorithmic}
+	\State $w^0 \gets x$
+	\For {$r = 1 \to N_r - 1$}
+		\State $u^r \gets w^{r - 1} \oplus K^r$
+		\For {$i = 1 \to m$}
+			\State $v^r_{<i>} \gets S_S(u^r_{<i>})$
+		\EndFor
+		\State $w^r \gets (v^r_{S_{P(1)}}, \dots, v^r_{S_{P(lm)}})$
+	\EndFor
+	\State $u^{N_r} \gets w^{N_r - 1} \oplus K^{N_r}$
+	\For {$i = 1 \to m$}
+		\State $v^{N_r}_{<i>} \gets S_S(u^{N_r}_{<i>})$
+	\EndFor
+	\State $y \gets v_{N_r} \oplus K^{N_r + 1}$
+	\State \Return $y$
+\end{algorithmic}
+\end{algorithm}
+\end{definition}
+
+Typically, the substitution step (layer), often referred to as the S-box, is the \emph{only} nonlinear operation in a symmetric-key crpytosystem. As such, it is critically important in the construction of cryptographically strong block ciphers that are resilient to common cryptanalysis attacks, including linear, differential, and algebraic attacks, among others. Furthermore, as these cryptanalysis efforts have evolved over the past few decades, and with the selection of the Advanced Encryption Standard (AES) as the standard for symmetric-key block ciphers \cite{daemen01-AES}, the construction of cryptgraphically ``strong'' S-boxes with efficient hardware and software implementations has become a topic of critical research. 
+
+\section{Contribution of the Thesis}
+To the best of our knowledge, the largest S-boxes in the literature and in existing standards are defined for elements of $8$ bits, as in the AES standard \cite{Daemen02-1}. In this work, we study alternative AES S-box constructions and hypothetical 16-bit S-boxes. 
+
+Combinational implementations of the AES S-box have been well-studied for over a decade \cite{Rudra01-1, Satoh01-1, Mentens05-1, Canright05-1, Boyar12-1}. To date, the best known AES S-box from an area perspective requires only $32$ AND and $83$ XOR/XNOR gates. Following in the spirit of reducing this area requirement even further, we found an AES S-box candidate that uses the same construction as the one of Canright in \cite{Canright05-1} but uses a different pair of basis change matrices. If Boyar and Peralta's logic minimization techniques are applied to this particular representation we may be able to bring the gate count below the current record. In addition to studying AES S-box alternatives, we also programmatically explored area-optimized S-boxes over $GF(2^8)$ defined by all other $29$ possible irreducible polynomials. We found another suitable S-box that has even less gates than Canright's construction prior to logic gate optimizations, which may be of use in other cryptographic algorithms that need an $8$-bit S-box. The security properties of this S-box are fully explored using the metrics we identify in Chapter $2$.
+
+Our work on programmatically finding area-optimized S-boxes was then scaled up to $GF(2^{16})$. For the $21$ smallest degree 16 irreducible polynomials over $GF(2)$, we found several S-box constructions from the set of all candidate constructions that have minimized area footprints without combinational logic optimizations. We were not able to analyze the security properties of these S-boxes due to the complexity of computing each metric, though we expect that its similarity to the AES S-box leads to very similar, and appropriately stronger security properties due to the increased bit size.
+
+It is uncertain whether or not the 16-bit S-boxes will ever be used or needed. Nevertheless, the security and implementation aspects of such S-boxes may reveal new avenues of research that can be further explored in the context of smaller S-boxes. For example, combinational logic minimization techniques such as factoring are much more computationally intensive for $16 \times 16$ matrices over $GF(2)$ than $8 \times 8$ matrices. As a result, we explored parallel implementations of minimization algorithms and heuristic techniques. It is our hope that this work inspires similarly new perspectives for cryptographic research.
+
+A more tangible contribution of this work is the development of software tools for the following tasks:
+\begin{enumerate}
+	\item Composite Galois field arithmetic (Python)
+	\vspace{1em}
+
+	This software is capable of performing arithmetic in $GF(p)$, $GF(p^n)$, and $GF((p^n)^m)$. It is useful for learning the fundamentals of Galois fields and simple composite fields. 
+
+	\item Optimized linear and nonlinear circuit minimization (Java)
+	\vspace{1em}
+
+	This suite of programs are capable of optimizing linear and nonlinear circuits using the combinational minimization techniques discussed in Chapter \ref{chp:optimizeLogic}. We use these programs to reduce the overall area requirements for our candidate S-box constructions and analyze the area footprint of inversion circuits for the fields $GF(2^4)$ and $GF((2^2)^2)$. The linear circuit optimizations come with sequential and parallel implementations that enable larger circuits to be processed in less time.
+
+	\item Cryptographic mapping security analysis (Python)
+	\vspace{1em}
+
+	This compact program implements all of the metric computations discussed in Chapter \ref{chp:motivation}. It does not rely on any external libraries outside of the core Python libraries for all of its implementations. It supports a complete workflow for analyzing any arbitrary mapping $F : GF(2^n) \to GF(2^n)$. 
+
+	\item S-box construction and combinational area counting (Magma)
+	\vspace{1em}
+
+	This suite of programs was leveraged to programatically derive area-optimized combinational circuits for all candidate 8 and 16-bit S-boxes. One may use these programs to determine minimized gate counts for many Galois field arithmetic operators, including addition, multiplication, squaring, scaling (multiplication by a constant), and inversion. In addition, one may use these programs to search for suitable affine transformations used to construct S-boxes. 
+
+\end{enumerate}
+We describe each of these software deliverables in their respective chapters of this work. As we note in the conclusion, future work will entail continued development of these tools for cryptographic research. In particular, we plan on including normal basis arithmetic in the Galois field library, developing advanced circuit minimization techniques (e.g. SAT solver reductions \cite{Fuhs10-1}), and integrating our security analysis code into the SAGE software package \cite{SAGE}.
+
+The rest of this thesis is outlined as follows. In the remainder of this chapter we first discuss the mathematical fundamentals necessary to understand this work, and then continue with the cryptographic properties of S-boxes, including common cryptanalysis attacks that exploit poor S-box constructions, as well as algorithms to efficiently measure the ``strength'' of a particular S-box in the context of Boolean functions and Galois field power mappings. Chapter 3 then presents the S-box constructions we considered in this work, focusing mainly on S-boxes based on Galois field power mappings, and techniques for finding appropriate affine transformations for such S-boxes. Chapter 4 then discusses related work and our results for optimizing combinational logic, which is critically important in producing area-efficient (in terms of gate counts) implementations of S-boxes for ASICs. With this preliminary work, we then discuss the methodology in which we count the number of required gates to implement a particular S-box construction based on the Galois field multiplicative inverse in Chapter 5. Our results consist of an extension of Canright's \cite{Canright05-1} optimizations using mixed basis representations of Galois field elements. We then conclude in Chapters 6 and 7 with a presentation of our proposed 8-bit AES alternative S-boxes and 16-bit S-box constructions, as well as a discussion of future work. 

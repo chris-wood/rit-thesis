@@ -1,0 +1,9 @@
+\BOOKMARK [2][]{Outline0.1}{Rijndael Review}{}% 1
+\BOOKMARK [2][]{Outline0.2}{Design Criteria and Implementation Considerations}{}% 2
+\BOOKMARK [2][]{Outline0.3}{Measuring S-box Security}{}% 3
+\BOOKMARK [3][]{Outline0.3.1.22}{Some Other Nonlinear Transformations}{Outline0.3}% 4
+\BOOKMARK [2][]{Outline0.4}{Implementation Strategies}{}% 5
+\BOOKMARK [3][]{Outline0.4.1.26}{Composite Fields}{Outline0.4}% 6
+\BOOKMARK [3][]{Outline0.4.2.27}{Composite Fields for Rijndael}{Outline0.4}% 7
+\BOOKMARK [3][]{Outline0.4.3.32}{Tower Field Isomorphic Functions}{Outline0.4}% 8
+\BOOKMARK [2][]{Outline0.5}{16-bit S-boxes}{}% 9

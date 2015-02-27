@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Introduction}{1}
+\contentsline {subsection}{\numberline {1.1}Related work}{1}
+\contentsline {section}{\numberline {2}Cryptanalysis Attack Review}{1}
+\contentsline {section}{\numberline {3}Mathematical Analysis of Existing Cryptographic Operations}{1}
+\contentsline {subsection}{\numberline {3.1}Confusion through Nonlinear Operations}{1}
+\contentsline {section}{\numberline {4}Diffusion and Confusion MINLP Problems}{1}
+\contentsline {section}{\numberline {5}Implementation Considerations of Cryptographic Operations}{1}
+\contentsline {subsection}{\numberline {5.1}Software Implementations}{1}
+\contentsline {subsection}{\numberline {5.2}Hardware Designs}{1}
+\contentsline {section}{\numberline {6}Research Methodology}{1}
+\contentsline {section}{\numberline {7}Potential Outcomes}{2}

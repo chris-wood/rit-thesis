@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{Problem Statement}{}% 1
+\BOOKMARK [1][-]{section.2}{Cryptographic Strength of S-Boxes}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Nonlinearity}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Resiliency}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Algebraic Immunity}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Differential Uniformity}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Construction Techniques}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Techniques for Efficient Implementations}{}% 8
+\BOOKMARK [2][-]{subsection.3.1}{Composite Field Representations for Inverses}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.2}{Normal Basis Transformations}{section.3}% 10
+\BOOKMARK [1][-]{section.4}{Proposed Work}{}% 11
+\BOOKMARK [1][-]{section.5}{Deliverables}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{Timeline}{section.5}% 13

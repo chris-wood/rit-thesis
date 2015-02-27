@@ -1,0 +1,333 @@
+% \begin{minted}[fontsize=\tiny,frame=single]{c}
+%   \input{../../src/GaloisLibrary/galois.c}
+% \end{minted}
+
+\section{Galois Field Composite Arithmetic Library}
+In this section we provide a brief tutorial on how to use the ``toy'' Galois field composite arithmetic library.
+As a whole, it only supports basic arithmetic for $GF(p)$ and $GF(q^n)$, $q = p^m$. Even with this limitation,
+it can be quite useful for those trying to understand the mathematical concepts of composite fields
+and the corresponding arithmetic, as seemingly simple as it may be. 
+
+Consider the field $GF(2^4)$ defined by the irreducible polynomial $p(x) = x^4 + x + 1$. Let $\alpha = x^3 + 1$ be an element in this field. We can
+create this Galois field element and perform arithmetic in the field $GF(2^4)$ as follows:
+
+\begin{minted}[fontsize=\tiny,frame=single]{python}
+>>> from galois import *
+>>> ip = GFElem([1,0,0,1,1]) 
+>>> F = GF(2, 4, ip)
+>>> print(F)
+GF(2^4), P(x) = (1x^4 + 1x^1 + 1x^0)
+>>> x = GFElem([1,0,0,1])
+>>> print(x)
+(1x^3 + 1x^0)
+>>> xa = F.g_add(x, x)
+>>> print(xa)
+0
+>>> xs = F.g_mult(x, x)
+>>> print(xs)
+(1x^3 + 1x^2 + 1x^0)
+>>> print(F.g_mult(F.inverse(x), x))
+(1x^0)
+\end{minted} 
+
+Creation of Galois field elements is as simple as providing a list of coefficients in the 
+ground field. Also, even though the example works with binary fields only, the library 
+can support any prime $p$ as the field characteristic. 
+
+Now assume we wish to create the a degree-2 extension of this field, i.e. $GF((2^4)^2)$, 
+using the irreducible polynomial $y^2 + y + (x^3 + x^2)$. Notice that the coefficients of
+each term are elements of the field $GF(2^4)$, as per our earlier definition. Let 
+$\beta = (x^2 + 1)y + (x^2 + x + 1)$ be an element in $GF((2^4)^2)$. We can create this field
+and element to perform basic arithmetic as in the base field as follow.
+
+\begin{minted}[fontsize=\tiny,frame=single]{python}
+>>> eIp = GFExtensionElem([GFElem([1]), GFElem([1]), GFElem([1,1,0,0])]) 
+>>> F2 = GFExtension(F, 2, eIp)
+>>> print(F2)
+2 degree extension of: GF(2^4)
+>>> b = GFExtensionElem([GFElem([1,0,1]),GFElem([1,1,1])])
+>>> print(b)
+[(1x^2 + 1x^0)y^1 + (1x^2 + 1x^1 + 1x^0)y^0]
+>>> ba = F2.g_add(b, b)
+>>> print(ba)
+0
+>>> bs = F2.g_mult(b, b)
+>>> print(bs)
+[(1x^1)y^1 + (1x^3 + 1x^2 + 1x^0)y^0]
+>>> bi = F2.power(b, 254) # Fermat's Little Theorem says this should be the inverse
+>>> print(bi) 
+[(1x^0)y^0]               # And so it is...
+\end{minted}
+
+The reader is welcome to browse the library source code and play with
+additional features (e.g. finding generators for a field) at their own leisure.
+
+\section{Circuit Minimization Programs}
+Here we provide relevant snippets from the parallel implementations of logic minimization programs. The full versions will be available with the distribution of this work.
+
+\subsection{Parallel Factorization Program (snippet)}
+\begin{minted}[fontsize=\tiny,frame=single]{python}
+public void compute() throws Exception
+{
+    ArrayList<Pair> pairs = new ArrayList<Pair>();
+    for (int i = 0; i <= lastcol - 1; i++)
+    {
+        for (int j = i + 1; j <= lastcol; j++)
+        {
+            if (!(i < oldi && j != oldi && j != oldj && j < lastcol)) 
+            {
+                int[] coli = currMatrix.getColumn(i);
+                int[] colj = currMatrix.getColumn(j);
+                int wt = weight(AND(coli, colj));
+                if (wt > 1) 
+                {
+                    pairs.add(new Pair(i, j));
+                }
+            }
+        } 
+        
+    }
+    if (pairs.size() > 0)
+    {
+        exhaustiveOptimize(pairs); // breadth first
+    }
+}
+
+public void exhaustiveOptimize(ArrayList<Pair> pairs) throws Exception
+{
+    int wt = 0;
+    int hmax = 0;
+    HashSet<ParallelMatrixOptimize> tasks = new HashSet<ParallelMatrixOptimize>();
+
+    for (Pair p : pairs)
+    {
+        int i = p.i;
+        int j = p.j;
+        int[] coli = currMatrix.getColumn(i);
+        int[] colj = currMatrix.getColumn(j);
+        int[] newcol = AND(coli, colj);
+        Matrix newMatrix = new Matrix(currMatrix);
+        newMatrix.appendColumn(newcol);
+        for (int k = 0; k < n; k++)
+        {
+            if (newcol[k] == 1)
+            {
+                newMatrix.setEntry(k, i, 0);
+                newMatrix.setEntry(k, j, 0);
+            }
+        }
+
+        ParallelSolution sol = new ParallelSolution(newMatrix.getGateCount(), 
+            newMatrix, i, j, n, lastcol + 1);
+        tasks.add(new ParallelMatrixOptimize(sol));
+    }
+
+    invokeAll(tasks); // fork & join
+    for (ParallelMatrixOptimize result : tasks)
+    {
+        if (result.solution.gOptimal < this.solution.gOptimal)
+        {
+            this.solution = result.solution;
+        }
+    }
+}
+\end{minted}
+
+\subsection{Parallel Boyar-Peralta Program (snippet)}
+\begin{minted}[fontsize=\tiny,frame=single]{python}
+public static SLP parallelPeraltaOptimize(final Matrix m, final int r, final int c, final int tieBreaker) 
+{
+    p_xorCount = 0;
+    solutionCircuit.reset();
+    p_dist = null;
+    p_slp = null;
+    p_base = null;
+    p_n = 0;
+    p_newDist = null;
+    p_optimalBases = null;
+    p_optimalDistances = null;
+    p_pairs = null;
+    p_slp = new ArrayList<String>();
+
+    // Create the initial base
+    int[][] b = new int[c][c];
+    for (int i = 0; i < c; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            if (i == j)
+            {
+                b[i][j] = 1;
+            }
+        }
+    }
+    p_base = new Matrix(b, c);
+    
+    // Initialize the distance array and then get the ball rolling
+    p_dist = computeDistance(p_base, m);
+    for (int f = 0; f < p_dist.length; f++)
+    {
+        if (p_dist[f] == 0)
+        {
+            int[] row = m.getRow(f);
+            for (int cc = 0; cc < row.length; cc++)
+            {
+                if (row[cc] == 1)
+                {
+                    p_slp.add("y_" + f + " = " + "x_" + cc);
+                }
+            }
+        }
+    }
+
+    p_newDist = new int[m.getDimension()];
+    p_i = m.getLength();
+    final int nVars = m.getLength();
+
+    p_n = p_base.getDimension(); 
+    p_d = sum(p_dist);
+    p_optimalBase = new int[p_base.getLength()]; 
+    p_optimalBases = new ArrayList<int[]>();
+    p_optimalDistances = new ArrayList<int[]>();
+    p_pairs = new ArrayList<Pair>();
+
+    // Create the parallel team so everything isn't anonymous
+    ParallelTeam team = new ParallelTeam();
+    while (isZero(p_dist) == false)
+    {
+        team.execute(new ParallelRegion() 
+        {
+            public void run() throws Exception 
+            {
+                execute (0, p_n - 1, new IntegerForLoop()
+                {
+                    int t_d = p_d;
+                    ArrayList<int[]> t_optimalBases = new ArrayList<int[]>();
+                    ArrayList<int[]> t_optimalDistances = new ArrayList<int[]>();
+                    ArrayList<Pair> t_pairs = new ArrayList<Pair>();
+
+                    public IntegerSchedule schedule()
+                    {
+                        return IntegerSchedule.guided();
+                    }
+
+                    public void run (int first, int last) throws Exception
+                    {
+                        for (int t_ii = first; t_ii <= last; t_ii++)
+                        {
+                            for (int t_jj = t_ii + 1; t_jj < p_n; t_jj++)
+                            {
+                                if (t_ii != t_jj)
+                                {
+                                    // t_newDist = new int[m.getDimension()];
+
+                                    int[] ssum = addMod(p_base.getRow(t_ii), p_base.getRow(t_jj), 2);
+                                    if (!(p_base.containsRow(ssum)) && !isZero(ssum))
+                                    {
+                                        int[] t_newDist = optimizedComputeDistance(p_base, m, ssum, p_dist);
+                                        int newDistSum = sum(t_newDist);
+                                        if (newDistSum < t_d)
+                                        {
+                                            t_d = newDistSum;
+                                            t_optimalBases = new ArrayList<int[]>();
+                                            t_optimalDistances = new ArrayList<int[]>();
+                                            t_pairs = new ArrayList<Pair>();
+                                            t_optimalBases.add(ssum);
+                                            t_optimalDistances.add(t_newDist);
+                                            t_pairs.add(new Pair(t_ii, t_jj));
+                                        }
+                                        else if (newDistSum == t_d)
+                                        {
+                                            t_optimalBases.add(ssum);
+                                            t_optimalDistances.add(t_newDist);
+                                            t_pairs.add(new Pair(t_ii, t_jj));
+                                        }
+                                        ssum = null;
+                                    }   
+                                }
+                            }
+                        }
+                    }
+
+                    public void finish() throws Exception
+                    {
+                        if (t_d < p_d)
+                        {
+                            solutionCircuit.record(t_d, t_optimalBases, 
+                              t_optimalDistances, t_pairs);
+                        }
+                    }
+                });
+            }
+        });
+
+        // Copy over the solution
+        p_d = solutionCircuit.d;    
+        p_optimalBases = solutionCircuit.optimalBases;
+        p_optimalDistances = solutionCircuit.optimalDistances;
+        p_pairs = solutionCircuit.pairs;
+
+        // Resolve using norms
+        int mi = 0;
+        int mj = 0;
+        double maxNorm = Double.MAX_VALUE;
+        switch (tieBreaker)
+        {
+            // Omitted for brevity
+        }
+
+        // Generate & save the new base
+        BasePair newBase = new BasePair(p_optimalBase, p_newDist, new Pair(mi, mj));
+        p_base.appendRow(newBase.base);
+
+        // Insert the new line into the program
+        String c1 = newBase.p.i < nVars ? "x" : "t";
+        String c2 = newBase.p.j < nVars ? "x" : "t";
+        p_slp.add("t_" + p_i + " = " + c1 + newBase.p.i + " XOR " + c2 + newBase.p.j);
+        p_xorCount++;
+        for (int f = 0; f < m.getDimension(); f++)
+        {
+            if (areEqual(newBase.base, m.getRow(f)))
+            {
+                p_slp.add("y_" + f + " = " + "t_" + p_i);
+            }
+        }
+        p_i++;
+
+        // Update shared variables for the next round
+        p_n = p_base.getDimension(); 
+        p_d = sum(p_dist);
+        p_optimalBase = null;
+        p_optimalBase = new int[p_base.getLength()]; // was dimension
+        p_optimalBases = null;
+        p_optimalBases = new ArrayList<int[]>();
+        p_optimalDistances = null;
+        p_optimalDistances = new ArrayList<int[]>();
+        p_pairs = null;
+        p_pairs = new ArrayList<Pair>();
+        for (int k = 0; k < p_newDist.length; k++)
+        {
+            p_dist[k] = p_newDist[k];
+        }
+    }
+
+    return new SLP(p_slp, p_xorCount, 0); 
+}
+\end{minted}
+
+\section{S-Box Gate Counting Program}
+\subsection{gateCount.m (snippet)}
+\inputminted[fontsize=\tiny,frame=single]{java}{../../src/CompositeFields/magma/gateCount_snippet.m}
+
+\section{Multiplicative Inverse Calculation using Composite Field Arithmetic}
+\subsection{galois.c}
+\inputminted[fontsize=\tiny,frame=single]{c}{../../src/GaloisLibrary/galois.c}
+\subsection{galois.h}
+\inputminted[fontsize=\tiny,frame=single]{c}{../../src/GaloisLibrary/galois.h}
+
+\section{Alternative AES S-Box Hardware Design}
+The following VHDL code gives a complete hierarchical design for the forward function of our alternate AES S-box using the field polynomial $s(v) = v^8 + v^6 + v^5 + v^4 + v^2 + v + 1$. With little effort one may implement both the inverse and merged designs by inserting the appropriate basis change matrices and constant additions before and after the inversion operator.
+\inputminted[fontsize=\tiny,frame=single]{vhdl}{../../src/Hardware/aes_alternative/forward_sbox/all.vhd}
+
+\section{16-Bit S-box in C}
+\inputminted[fontsize=\tiny,frame=single]{c}{../../src/GaloisLibrary/sbox16_unopt.c}

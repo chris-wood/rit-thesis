@@ -1,0 +1,6 @@
+\beamer@endinputifotherversion {3.20pt}
+\beamer@sectionintoc {1}{Revisiting last week's questions}{3}{0}{1}
+\beamer@sectionintoc {2}{Algebraic Complexity of AES-like S-boxes}{4}{0}{2}
+\beamer@sectionintoc {3}{Boolean Function Constructions}{14}{0}{3}
+\beamer@sectionintoc {4}{Software Optimizations for S-Box}{20}{0}{4}
+\beamer@sectionintoc {5}{16-Bit Circuit for Multiplicative Inverse Calculation}{22}{0}{5}

@@ -1,0 +1,53 @@
+\BOOKMARK [0][-]{chapter*.1}{Dedication}{}% 1
+\BOOKMARK [0][-]{chapter*.2}{Acknowledgments}{}% 2
+\BOOKMARK [0][-]{chapter*.3}{Abstract}{}% 3
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 4
+\BOOKMARK [1][-]{section.1.1}{Background and Motivation}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.2}{Contribution of the Thesis}{chapter.1}% 6
+\BOOKMARK [1][-]{section.1.3}{Mathematical Foundations}{chapter.1}% 7
+\BOOKMARK [2][-]{subsection.1.3.1}{Galois Fields}{section.1.3}% 8
+\BOOKMARK [2][-]{subsection.1.3.2}{Vector Spaces}{section.1.3}% 9
+\BOOKMARK [2][-]{subsection.1.3.3}{Bases of Finite Fields}{section.1.3}% 10
+\BOOKMARK [2][-]{subsection.1.3.4}{Composite Fields}{section.1.3}% 11
+\BOOKMARK [2][-]{subsection.1.3.5}{Boolean Functions}{section.1.3}% 12
+\BOOKMARK [0][-]{chapter.2}{Cryptographic Aspects of the Substitution Layer}{}% 13
+\BOOKMARK [1][-]{section.2.1}{Cryptanalysis Attacks}{chapter.2}% 14
+\BOOKMARK [2][-]{subsection.2.1.1}{Linear Cryptanalysis}{section.2.1}% 15
+\BOOKMARK [2][-]{subsection.2.1.2}{Differential Cryptanalysis}{section.2.1}% 16
+\BOOKMARK [2][-]{subsection.2.1.3}{XL and XLS Attacks}{section.2.1}% 17
+\BOOKMARK [2][-]{subsection.2.1.4}{Interpolation Attacks}{section.2.1}% 18
+\BOOKMARK [1][-]{section.2.2}{Effecient Computations of Cryptographic Properties of S-Boxes}{chapter.2}% 19
+\BOOKMARK [2][-]{subsection.2.2.1}{Nonlinearity}{section.2.2}% 20
+\BOOKMARK [2][-]{subsection.2.2.2}{Differential Uniformity}{section.2.2}% 21
+\BOOKMARK [2][-]{subsection.2.2.3}{Resiliency}{section.2.2}% 22
+\BOOKMARK [2][-]{subsection.2.2.4}{Algebraic Immunity}{section.2.2}% 23
+\BOOKMARK [2][-]{subsection.2.2.5}{Algebraic Complexity}{section.2.2}% 24
+\BOOKMARK [0][-]{chapter.3}{S-box Constructions}{}% 25
+\BOOKMARK [1][-]{section.3.1}{Galois Field Power Mapping Constructions}{chapter.3}% 26
+\BOOKMARK [2][-]{subsection.3.1.1}{Affine Transformations for Algebraic Complexity}{section.3.1}% 27
+\BOOKMARK [0][-]{chapter.4}{Combinational Logic Minimization Techniques}{}% 28
+\BOOKMARK [1][-]{section.4.1}{Optimizing Linear Transformations}{chapter.4}% 29
+\BOOKMARK [2][-]{subsection.4.1.1}{Heuristic-Based Optimizations}{section.4.1}% 30
+\BOOKMARK [1][-]{section.4.2}{Optimizing Nonlinear Circuits}{chapter.4}% 31
+\BOOKMARK [2][-]{subsection.4.2.1}{Ad-Hoc Heurstics}{section.4.2}% 32
+\BOOKMARK [0][-]{chapter.5}{Efficient Implementations of the Galois Field Multiplicative Inverse Mapping}{}% 33
+\BOOKMARK [1][-]{section.5.1}{Efficient Computations of the Multiplicative Inverse over Galois Fields}{chapter.5}% 34
+\BOOKMARK [2][-]{subsection.5.1.1}{Extended Euclidean Algorithm}{section.5.1}% 35
+\BOOKMARK [2][-]{subsection.5.1.2}{Fermat's Little Theorem}{section.5.1}% 36
+\BOOKMARK [2][-]{subsection.5.1.3}{Reduction to Subfield Inversion}{section.5.1}% 37
+\BOOKMARK [1][-]{section.5.2}{Combinational Complexity of Finite Field Arithmetic}{chapter.5}% 38
+\BOOKMARK [2][-]{subsection.5.2.1}{GF\(22\) Combinational Arithmetic}{section.5.2}% 39
+\BOOKMARK [2][-]{subsection.5.2.2}{GF\(\(22\)2\) Combinational Arithmetic}{section.5.2}% 40
+\BOOKMARK [2][-]{subsection.5.2.3}{GF\(\(\(22\)2\)2\) Combinational Arithmetic}{section.5.2}% 41
+\BOOKMARK [2][-]{subsection.5.2.4}{GF\(24\) Combinational Arithmetic}{section.5.2}% 42
+\BOOKMARK [2][-]{subsection.5.2.5}{GF\(\(24\)2\) Combinational Arithmetic}{section.5.2}% 43
+\BOOKMARK [1][-]{section.5.3}{Choosing Composite Field Representations}{chapter.5}% 44
+\BOOKMARK [1][-]{section.5.4}{Change of Basis Representations}{chapter.5}% 45
+\BOOKMARK [2][-]{subsection.5.4.1}{A Small Example - Basis Change Matrices for GF\(24\) and GF\(\(22\)2\)}{section.5.4}% 46
+\BOOKMARK [2][-]{subsection.5.4.2}{Generalized Optimizations}{section.5.4}% 47
+\BOOKMARK [2][-]{subsection.5.4.3}{Exhaustive Generation of Basis Change Matrices}{section.5.4}% 48
+\BOOKMARK [2][-]{subsection.5.4.4}{Hardware Complexity}{section.5.4}% 49
+\BOOKMARK [0][-]{chapter.6}{Results and Proposed S-Box Constructions}{}% 50
+\BOOKMARK [1][-]{section.6.1}{AES S-Box Alternatives}{chapter.6}% 51
+\BOOKMARK [1][-]{section.6.2}{16-Bit S-Box Constructions}{chapter.6}% 52
+\BOOKMARK [0][-]

@@ -1,0 +1,104 @@
+\section{Problem Statement}
+The cryptographic strength of symmetric-key cryptosystems is traditionally based on 
+Claude Shannon's properties of confusion and diffusion \cite{Shannon}. 
+Confusion can be defined as the complexity of the relationship between the secret key and 
+ciphertext, and diffusion can be defined as the degree to which the influence of 
+a single input plaintext bit is spread throughout the resulting ciphertext.
+Substitution-permutation networks (SPNs) are natural constructions for symmetric-key
+cryptosystems that realize confusion and diffusion through substitution and
+permutation operations, respectively \cite{Stinson}. 
+
+As the only nonlinear operation in SPNs, the substitution step, 
+more commonly referred to as an S(ubstitution)-box, is critically important
+in the construction of cryptographically strong block ciphers that are resilient to
+common attacks, including linear and differential cryptanalysis, as well as algebraic 
+attacks. Furthermore, as these cryptanalysis efforts have evolved over the past 
+few decades, and with the selection of the Advanced Encryption 
+Standard (AES) symmetric-key block cipher, the construction 
+of cryptographically strong S-boxes with efficient
+hardware and software implementations in these 
+cryptosystems has become a topic of critical research. 
+
+An S-box mapping can be defined as a function $F : GF(2^n) \to GF(2^m)$. To measure
+the cryptographic strength of these functions it is common to represent them as vectorial Boolean functions,
+where $F(x) = (f_1(x), \dots, f_m(x))$ and $f_i : GF(2^n) \to GF(2)$, for all $1 \leq i \leq m$. Such a representation
+enables one to measure its nonlinearity (i.e. measure of distance from affine functions), algebraic
+immunity (i.e. difficulty measure of annihilator-based algebraic attacks), resiliency (i.e. balancedness 
+and correlation immunity between input and output of the function), and differential uniformity (i.e.
+difficulty measure of differential cryptanalysis). 
+
+Practical S-boxes must also be efficiently computable. For this reason, they are typically defined as functions
+over finite fields $GF(2^k)$, where $2 | k$. For example, the Rijndael S-box 
+is defined as the function $F : GF(2^8) \to GF(2^8)$, $F(a) = Ba^{-1} \oplus c$, where $B$ and
+$c$ are a constant $8 \times 8$ matrix and $8$-dimensional vector over $GF(2)$ \cite{Daemen02-1}. If we represent an
+input element $a$ and output element $b$ as $a_7a_6a_5a_4a_3a_2a_1a_0$ and 
+$b_7b_6b_5b_4b_3b_2b_1b_0$, respectively, where $a_i,b_i \in GF(2)$ for for all 
+$0 \leq i \leq 7$, then the S-box $F$ can be defined as:
+\begin{align*}
+\begin{bmatrix} b_7 \\ b_6 \\ b_5 \\ b_4 \\ b_3 \\ b_2 \\ b_1 \\ b_0 \end{bmatrix} = 
+\begin{bmatrix} 
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \\ 
+1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} a_7 \\ a_6 \\ a_5 \\ a_4 \\ a_3 \\ a_2 \\ a_1 \\ a_0 \end{bmatrix}^{-1} \oplus
+\begin{bmatrix}
+c_7 \\ c_6 \\ c_5 \\ c_4 \\ c_3 \\ c_2 \\ c_1 \\ c_0
+\end{bmatrix}
+\end{align*}
+With only $2^8$ elements in $GF(2^8)$, it is possible to tabulate and store
+all values $b = F(a)$ for all $a \in GF(2^8)$. With such a lookup table (LUT) data structure, the SubByte
+step in the Rijndael algorithm can be computed with a single index into this table. 
+There are however some critical flaws with this approach in practical implementations
+of the Rijndael algorithm.
+
+First, this implementation strategy is susceptible to cache-timing 
+side-channel attacks on systems where the CPU cache size is too small to store the 
+entire Rijndael state and S-box LUT. On such systems, it is possible to conduct 
+a chosen-plaintext attack requiring anywhere from 
+$2^{13}$ to $2^{20}$ samples to perform a full key recovery \cite{Bonneau06-1}. The number of
+samples required for this attack is highly dependent on the system properties
+and the accuracy of the timing mechanisms available to the attacker. These attacks
+are based on timing anomalies that result from cache-collisions (cache hits) 
+that occur when performing table lookups at runtime. More specifically, it is possible
+to relate bits of the input (or output) to bits of the key that are satisfied
+when timing deviations occur. By exploiting this relationship it is possible
+to deduce parts of the key until the it can eventually be fully recovered 
+or the remaining key space is small enough to perform an exhaustive search. 
+
+Another problem with LUT-based implementations of the S-box is that they require
+$2$Kb of memory. In resource constrained systems, 
+such as VLSI circuits and embedded platforms, such memory resources
+are not readily available. 
+
+Clearly, constant-time S-box mappings with small memory footprints, which
+can be achieved at runtime with online calculations in software or combinational logic 
+in hardware, are ideal for secure and efficient implementations
+of the block ciphers with S-boxes similar to Rijndael. 
+Hardware optimization efforts are traditionally focused on
+the multiplicative inverse calculation in the S-box, since this is the 
+most computationally expensive procedure. 
+To date, the most effective technique for minimizing the circuitry required
+for the multiplicative inverse calculation is to use composite field
+arithmetic to replace the inverse calculation of $a \in GF(2^8)$ with
+a series of multiplication, squaring, addition, and an inverse operation
+on elements $b,c \in GF(2^4)$. Similar decomposition strategies
+can be implemented and optimized in software to yield efficient and 
+near constant-time S-box calculations in memory-constrained systems.
+
+The problem of optimizing hardware and software implementations of S-boxes has been 
+studied in the literature for more than a decade \cite{Satoh01-1, Mentens05-1, Canright05-1, Boyar12-1}.
+Furthermore, with the selection of the Advanced Encryption Standard,
+all of this research has been focused on 8-bit S-boxes (i.e. $F : GF(2^8) \to GF(2^8)$).
+To our knowledge, there has not been any work that studies the strength and
+implementation efficiency (in terms of software throughput and hardware area) of higher order
+S-boxes. Therefore, in this thesis, we break away from tradition and focus our 
+attention on $16$-bit S-boxes. The problem is to study these S-boxes
+in the context of Boolean functions to determine their strength, and for each ideal candidate
+S-box, attempt to find optimized hardware and software implementations through 
+composite field arithmetic with polynomial bases. Time permitting, we may also explore the 
+efficacy of normal and mixed basis decomposition strategies for optimizing the S-box calculations.
+

@@ -1,0 +1,53 @@
+\section{Symmetric-Key Cryptosystem Standards}
+The Data Encryption Standard (DES), which was officially standardized in the United States
+by the National Bearue of Standard (NBS) in 1977, was monumental in the advancement of
+the understanding modern cryptgraphy and cryptanalysis attacks dealing with block ciphers (TODO: CITE FIPS).
+The algorithm itself is built as a Feistel (named after Horst Feistel of IBM) SPN. 
+
+TODO: continue with discussion of DES (with emphasis on properties of the S-box), and then AES (with emphasis on
+the S-box)
+
+\subsection{Data Encryption Standard}
+- DES (SPN with description)
+
+\subsection{Advanced Encryption Standard}
+Rijndael, the winner of the Advanced Encryption Standard contest in 2001 \cite{daemen01-AES}, is today's 
+most widely used symmetric-key block cipher. Rijndael is a SPN product cipher that achieves confusion 
+and diffusion through four fundamental oprations: AddRoundKey, ShiftRows, SubBytes $(S)$, and MixColumns. 
+
+TODO: describe the algorithm here...
+
+A single round in Rijndael (with the exception of the last round) consists of the application
+of these four operations in the following manner:
+\begin{align*}
+\left( \begin{array}{c}
+s_{1,c} \\
+s_{2,c} \\
+s_{3,c} \\
+s_{4,c} \end{array} \right) = S
+\end{align*}
+
+It is known that the Rijndael S-box, also referred to as the SubBytes operation, is the only source of non-linear behavior in the algorithm. Formally, it is defined as a permutation of the bytes (or bundles) of the state, and is commonly denoted by $S_{RD}$. 
+
+When constructing this specific S-box, the authors chose to strive for the following characteristics:
+\begin{itemize}
+	\item \textbf{Non-linearity}
+	\begin{itemize}
+		\item \textbf{Correlation.} The maximum input-output correlation amplitude must be as small as possible.
+		\item \textbf{Difference propagation probability.} The maximum difference propagation probability must be as small as possible.
+	\end{itemize}
+	\item \textbf{Algebraic complexity.} The algebraic expression of $S_{RD}$ in $GF(2^8)$ must be complex.
+\end{itemize}
+
+Justification of the choice of S-box is based on published attacks at the time of the NIST competition and on the selection critera specified by Nyberg in \cite{Nyberg1994-DUM}. This paper will be the next point of reference in the following week. When finished, I will revisit the Rijndael book.
+
+Any 8×8-bit S-box can be considered as a composition of 8 Boolean functions
+sharing the same 8 input bits. J. Fuller and W. Millan observed that the S-box
+of Rijndael can be described using one Boolean function only [8]. The 8 Boolean
+functions can be described as
+\begin{align*}
+f_i(x_1,\dots,x_8) = f(g_i(x_1,\dots,x_8)) + c_i,
+\end{align*}
+where $g_i$ and $c_i$ are affine transformations and constants for the $i = 1,\dots,8$.
+
+``On linear redundancy in S-boxes''

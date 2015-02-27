@@ -1,0 +1,453 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% REPORT  DESCRIPTION:
+%   A concise description of the main concepts of the capstone.
+%
+% RESEARCH:
+%   A list of research activities which led to this capstone.
+%
+% EXPERIMENTS:
+%   A list of the experiments performed which supported the research.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt,american]{report}
+\usepackage{rit-cs-capstone}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   The following packages are all optional and depend on the specifics of what
+% is contained in the capstone.  There is no harm in leaving them in.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[refpages]{gloss}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{verbatim}
+\usepackage{enumerate}
+\usepackage{afterpage}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{listing}
+\usepackage{circuitikz}
+\usepackage{todonotes}
+\usepackage{url}
+\usepackage{rotating}
+\usepackage{subfigure}
+% \usepackage{hyperref}
+\usepackage{minted}
+\usepackage{longtable}
+\usepackage{mdframed}
+\usepackage[all,defaultlines=3]{nowidow}
+
+\usetikzlibrary{dsp,chains}
+
+\newtheorem{definition}{Definition}
+\newtheorem{thm}{Theorem}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+% \usepackage{subfigure}
+
+% \usepackage{babel}
+% \usepackage{times}
+% \usepackage{lscape}
+% \usepackage{enumerate}
+% \usepackage{afterpage}
+% \usepackage{algorithm}
+% \usepackage{algpseudocode}
+% \usepackage{algorithmicx}
+% % \usepackage[table]{xcolor}
+% % \usepackage[margin=1in]{geometry}
+% \usepackage{mysty}
+% \usepackage{multicol,multirow}
+% \usepackage{subfig}
+% \usepackage{dcolumn}
+% \usepackage{fullpage}
+% \usepackage{palatino}
+% \usepackage{bbm}
+% \usepackage{float}
+% \usepackage{fancybox, fancyvrb}
+% \usepackage{color}
+
+% \lstnewenvironment{code}[1][]%
+%   {\minipage{\linewidth} 
+%    \lstset{basicstyle=\ttfamily\footnotesize,frame=single,#1}}
+%   {\endminipage}
+
+% \lstset{basicstyle=\ttfamily\scriptsize,frame=none}
+
+
+%\usepackage{thumbpdf, amssymb, amsmath, amsthm, microtype,
+      % graphicx, verbatim, listings, color, fancybox}
+% \usepackage[toc,page]{appendix}
+
+% \usepackage[refpages]{gloss}
+
+\setcounter{MaxMatrixCols}{20}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   Mark the document as 'draft' with a date. Be sure to comment this out for
+% the final version.
+%\usepackage{watermark}
+%\watermark{\hspace{-0.3in} \textbf{DRAFT} \hspace{2.0in} \textbf{\today}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makegloss
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+% The \title{} can contain line breaks as appropriate...
+\title{\vspace{-0.20in}Large Substitution Boxes\\ with Efficient Combinational Implementations}
+% The \titleline{} must have no line breaks in it.
+\titleline{Large Substitution Boxes with Efficient Combinational Implementations}
+% This is not a project but a thesis
+\MSprojectfalse
+% This date is really not used (unless \grantdate{}{} is blank)
+\date{~}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Author information page
+% The \author{} should be exactly the same as your diploma
+\author{~}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The following information is for the signature page.
+% Note that the definition for principal adviser uses two fields.
+% This was needed so that the adviser's name could be placed on the
+% abstract page without his/her title.
+\committeechair{~}{~}
+\reader{~}
+\observer{~}
+\observerA{~}
+% \observer{Michael Kurdziel \\ Adjunct Professor}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is the expected date that the committee will sign your Capstone.
+\grantdate{~}{~}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% If you want to copyright your capstone remove the line below.
+\copyrightfalse% True by default
+% The year of the copyright; usually same as the date the committee will
+% sign the \item{} . This won't be printed if \copyrightfalse
+\copyrightyear{~}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This causes all front matter to be set.
+\beforepreface%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The dedication - if you choose to include one.
+% It should be vertically centered in the page. Since the style format doesn't 
+% do it for you automatically, you can use the following technique.
+\prefacesection{Dedication}
+\vfill
+% \begin{center}
+% \indent \emph{To my parents, Jill and Robert. Thank you for believing in me.} 
+% \end{center}
+\vfill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The acknowledgements page - if you choose to include one. 
+% As in the dedication, it should be centered vertically in the page.
+%
+\prefacesection{Acknowledgments}
+\vfill
+% \begin{center}
+% \indent This work would not have been possible without the unwavering guidance and support from Staszek and Marcin. Three years have passed since they first introduced me to the wonders of cryptographic and applied security research, and ever since we have shared many meetings, conversations, meals, and coffee breaks that I will always cherish. I am truly grateful to have been given the opportunity to work and study with such extraordinary professors. I am also extremely grateful for the assistance from Alan, whose diligence and extreme attention to detail in everything he does inspires me to improve as a student and researcher. Finally, I would give special thanks to Michael, who has always provided endless encouragement since we started working together. Perhaps one of these days I'll take his advice and slow down to enjoy other aspects of life. 
+
+% I would also like to thank David Canright for his very thorough discussions to help me understand his S-box constructions, Ren\`{e} Peralta for his kind explanations about his combinational logic minimization techniques, Christof Paar for helpful pointers and his timely advice, and Nele Mentens for her help and example Magma code. These profoundly influential people have shown me the true benefits of collaborative research. 
+
+% I would also like to thank my friends for their help and support during this work. Greg Knox and Khrystin Matero have spent many years showing me how to balance work and life, and I cannot thank them enough for their continued support and encouragement. I could not ask for better friends. Kaitlin Corbin has also been nothing but supportive, caring, and compassionate during this work. I truly appreciate everything she has done for me. Sam Skalicky has also been a wonderful friend over the past couple of years who helped me a great deal with this research. In addition to his very thorough paper edits and discussions of various hardware-related topics I encountered along the way, he also teared me away from the lab for several much-needed meals and coffee breaks to help keep me sane. I hope I can return the favor as he continues with his PhD. I would also like to thank Ganesh Khedkar for his extensive help with the Synopsys tool and many discussions about gate-level optimizations. I'm very fortunate to have spent the last couple weeks in Rochester working by his side and filling up on mango custard at the Indian food buffet. 
+
+% I would like to give special thanks to my family, especially my older brother, Robert. As the middle child, I'm fully aware that I can be somewhat bothersome, so I appreciate all the late-night telephone calls and emergency paper edit sessions that we had together. It will be a long time before I can adequately thank him for every sacrifice he made to help me, but it will happen soon enough. Also, I would like to thank my sister, Jessica, who has always been supportive throughout my studies at RIT.
+
+% Finally, I would like to thank my parents. I would not be where I am today without their endless love, support, and encouragement. The sacrifices they have made, and continue to make, to help me in my endeavors do not go unnoticed. Perhaps my biggest challenge in life will be to somehow adequately return the favor.
+% \end{center}
+\vfill
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Collection of useful abbreviations.
+\newcommand{\etc} {\emph{etc.\/}}
+\newcommand{\etal}{\emph{et~al.\/}}
+\newcommand{\eg}  {\emph{e.g.\/}}
+\newcommand{\ie}  {\emph{i.e.\/}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+\begin{abstractpage}
+At a fundamental level, the security of symmetric key cryptosystems ties back to Claude Shannon's properties of confusion and diffusion. Confusion can be defined as the complexity of the relationship between the secret key and ciphertext, and diffusion can be defined as the degree to which the influence of a single input plaintext bit is spread throughout the resulting ciphertext. In constructions of symmetric key cryptographic primitives, confusion and diffusion are commonly realized with the application of nonlinear and linear operations, respectively. The Substitution-Permutation Network design is one such popular construction adopted by the Advanced Encryption Standard, among other block ciphers, which employs substitution boxes, or S-boxes, for nonlinear behavior. As a result, much research has been devoted to improving the cryptographic strength and implementation efficiency of S-boxes so as to prohibit cryptanalysis attacks that exploit weak constructions and enable fast and area-efficient hardware implementations on a variety of platforms. To date, most published and standardized S-boxes are bijective functions on elements of $4$ or $8$ bits. In this work, we explore the cryptographic properties and implementations of $8$ and $16$ bit S-boxes. We study the strength of these S-boxes in the context of Boolean functions and investigate area-optimized combinational hardware implementations. We then present a variety of new $8$ and $16$ bit S-boxes that have ideal cryptographic properties and enable low-area combinational implementations. 
+\end{abstractpage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Uncomment the line below if you don't want a list of tables to be printed.
+% \tablespagefalse
+
+% Uncomment the line below if you don't want a list of figures to be printed.
+% \figurespagefalse
+
+% \afterpreface generates the table of contents, list of tables (optional),
+% and list of figures (optional).
+\afterpreface%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%We don't need a glossary so comment it out.
+%\printgloss{Glossary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This is where the main body of the capstone report starts
+\body 
+
+% \tableofcontents
+
+\chapter{Introduction}
+\input{introduction}
+\input{chapter_introduction/fundamentals}
+
+\chapter{Cryptographic Aspects of the Substitution Layer} \label{chp:motivation}
+%\input{chapter_introduction/standards}
+\input{chapter_introduction/sublayer}
+\input{chapter_introduction/strength}
+
+\chapter{S-box Constructions} \label{chp:sboxConstruction}
+\input{chapter_sboxConstruction/sboxConstruction}
+
+\chapter{Combinational Logic Minimization Techniques} \label{chp:optimizeLogic}
+\input{chapter_optimize/optimizeLinear}
+\newpage
+\input{chapter_optimize/optimizeNonlinear}
+
+\chapter{Area-Optimized Implementations of the Galois Field Multiplicative Inverse} \label{chp:inverseImpl}
+\input{chapter_inverseImpl/inverseImpl}
+
+\chapter{Results and Proposed S-Box Constructions} \label{chp:results}
+\input{chapter_results/results}
+
+\chapter{Conclusions and Future Work} \label{chp:future}
+\input{future}
+
+% \chapter{16-bit S-Box Constructions and Measurements}
+% \input{chapter_sboxConstruction/sboxConstruction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \bibliographystyle{plain}
+% Single space the bibliography to save space.
+% \begin{singlespace}
+\begin{thebibliography}{9}
+
+
+%% B
+\bibitem{Berk03-1} Berk Sunar, Erkay Savas, and \c{C}etin K. Ko\c{c}. Constructing Composite Field Representations for Efficient Conevrsion. \emph{IEEE Transactions on Computers} \textbf{52.11} (2003), 1391-1398.
+
+\bibitem{Beth93-1} Thomas Beth and Cunsheng Ding. On Almost Perfect Nonlinear Permutations. \emph{Advances in Cryptology - EUROCRYPT’93, Springer Berlin Heidelberg} (1994).
+
+\bibitem{Bernstein09-1} Daniel J. Bernstein. Optimizing Linear Maps Modulo 2. \emph{Workshop Record of SPEED-CC: Software Performance Enhancement for Encryption and Decryption and Cryptographic Compilers} (2009).
+
+\bibitem{Biham91-1} Eli Biham and Adi Shamir. Differential Cryptanalysis of DES-Like Cryptosystems. \emph{Journal of Cryptology} \textbf{4.1} (1991), 3-72.
+
+\bibitem{Bosma97-1} Wieb Bosma, John Cannon, and Allan Steel. Lattices of Compatibly Embedded Finite Fields. \emph{Journal of Symbolic Computation} \textbf{24.3} (1997), 351-369.
+
+\bibitem{Boyar00-1} Joan Boyar, Ren\`{e} Peralta, and Denis Pochuev. On the multiplicative complexity of Boolean functions over the basis $(\land, \oplus, 1)$. \emph{Theor. Comput. Sci.} \textbf{235} (2000), 43-57.
+
+\bibitem{Boyar08-1} Joan Boyar, Philip Matthews, and Ren\`{e} Peralta. On the Shortest Linear Straight-Line Program for Computing Linear Forms. \emph{Mathematical Foundations of Computer Science, Springer Berlin Heidelberg} (2008), 168-179.
+
+\bibitem{Boyar10-1} Joan Boyar and Ren\`{e} Peralta. A new combinational logic minimization technique with applications to cryptology. \emph{Experimental Algorithms. Springer Berlin Heidelberg} (2010), 178-189.
+
+\bibitem{Boyar11-1} Joan Boyar and Ren\`{e} Peralta. A Depth-16 Circuit for the AES S-Box. \emph{IACR Cryptology ePrint Archive} (2011), 332.
+
+\bibitem{Boyar12-1} Joan Boyar, Philip Matthews, and Ren\`{e} Peralta. Logic Minimization Techniques with Applications to Cryptology. \emph{Journal of Cryptology} (2012), 1-33.
+
+\bibitem{Peralta13-PC} Rene Peralta. \emph{Personal communication}.
+
+\bibitem{Brunner93-1} Hannes Brunner, Andreas Curiger, and Max Hofstetter. On Computing Multiplicative Inverses in $GF(2^m)$. \emph{IEEE Transactions on Computers} \textbf{42(8)} (1993), 1010-1015.
+
+%% C
+\bibitem{Canright05-1} David Canright. A Very Compact S-Box for AES. \emph{CHES 2005 - Cryptographic Hardware and Embedded Systems, Springer Berlin Heidelberg} (2005), 441-455.
+
+\bibitem{Canright13-PC} David Canright. \emph{Personal communication}. 
+
+\bibitem{Canteaut05-1} Anne Canteaut. Fast Correlation Attacks Against Stream Ciphers and Related Open Problems. \emph{Theory and Practice in Information-Theoretic Security} (2005).
+
+\bibitem{Carlet04-1} Claude Carlet and Emmanuel Prouff. On a New Notion of Nonlinearity Relevant to Multi-output Pseudo-random Generators. \emph{Selected Areas in Cryptography, Springer Berlin Heidelberg} (2004).
+
+\bibitem{Carlet10-1} Claude Carlet. Vectorial Boolean Functions for Cryptography. \emph{Boolean Models and Methods in Mathematics, Computer Science, and Engineering} \textbf{134} (2010), 398-469.
+
+\bibitem{Chung00-1} Jae W. Chung, Sang. G. Sim, and Pil J. Lee. Fast Implementation of Elliptic Curve Defined over $GF(p^m)$ on CalmRISC with MAC2424 Coprocessor. \emph{Workshop on Cryptographic Hardware and Embedded Systems - CHES 2000, Berlin} (2000), 57-70.
+
+\bibitem{Cid06-1} Carlos Cid, Se\`{a}n Murphy, Matthew Robshaw, Matt J. B. Robshaw. Algebraic Aspects of the Advanced Encryption Standard. \emph{Springer Science+Business Media} (2006).
+
+\bibitem{CMT} Circuit Minimization Team. Homepage is located at \url{http://www.cs.yale.edu/homes/peralta/CircuitStuff/CMT.html}. Last accessed: 7/10/13. 
+
+\bibitem{Courtois00-1} Nicolas Courtois, Alexander Klimov, Jacques Patarin, and Adi Shamir. Efficient algorithms for solving overdefined systems of multivariate polynomial equations. \emph{Advances in Cryptology - EUROCRYPT, Springer Berlin Heidelberg}, (2000).
+
+\bibitem{Courtois02-1} Nicolas T. Courtois and Josef Pieprzyk. Cryptanalysis of block ciphers with overdefined systems of equations. \emph{Advances in Cryptology - ASIACRYPT 2002, Springer Berlin Heidelberg}, (2002), 267-287.
+
+\bibitem{Courtois05-1} Nicolas T. Courtois, Blandine Debraize, and Eric Garrido. On Exact Algebraic [Non-]Immunity of S-Boxes Based on Power Functions. \emph{Information Security and Privacy, Springer Berlin Heidelberg} (2006).
+
+\bibitem{Courtois07-1} Gregory V. Bard, Nicolas T. Courtois, and Chris Jefferson. Efficient Methods for Conversion and Solution of Sparse Systems of Low-Degree Multivariate Polynomials over $GF(2)$ via SAT-Solvers. \emph{Presented at ECRYPT workshop Tools for Cryptanalysis} (2007).
+
+\bibitem{Courtois11-1} Nicolas Courtois, Daniel Hulme, and Theodosis Mourouzis. Solving Circuit Optimisation Problems in Cryptography and Cryptanalysis. Appears in electronic proceedings of \emph{2nd IMA Conference Mathematics in Defence, UK, Swindon} (2011).
+
+\bibitem{Cui07-1} Lingguo Cui and Yuanda Cao. A New S-Box Structure Named Affine-Power-Affine. \emph{International Journal of Innovative Computing, Information and Control} \textbf{3.3} (2007), 751-759.
+
+\bibitem{cusik09-BooleanFunctions} Thomas W. Cusick and Pantelimon St\u{a}nic\u{a}. Cryptographic Boolean Functions and Applications. 
+\emph{Academic Press} (2009).
+
+%% D
+\bibitem{daemen01-AES} Joan Daemen and Vincent Rijmen. Advanced Encryption Standard (AES) (FIPS 197). \emph{Technical report, 
+Katholijke Universiteit Leuven/ESAT} (2001).
+
+\bibitem{Daemen02-1} Joan Daemen and Vincent Rijmen. The Design of Rijndael: AES-the Advanced Encryption Standard. \emph{Springer} (2002).
+
+\bibitem{DES-FIPS} FIPS 46.3: Data Encryption Standard (DES). \emph{National Institute of Standards and Technology} \textbf{25.10} (1999).
+
+\bibitem{Dobbertin99-1} Hans Dobbertin. Almost Perfect Nonlinear Power Functions on $GF(2^n)$: The Welch Case. \emph{IEEE Transactions on Information Theory} \textbf{45(4)} (1999), 1271-1275.
+
+%% E
+\bibitem{Elsheh08-1} Esam Elsheh, A. Ben Hamza, and Amr Youssef. On the nonlinearity profile of cryptographic Boolean functions. \emph{IEEE Conference on Electrical and Computer Engineering CCECE} (2008).
+
+%% F
+\bibitem{Fraenkel79-1} Aviezri S. Fraenkel and Yaacov Yesha. Complexity of problems in games, graphs and algebraic equations. \emph{Discrete Applied Mathematics} \textbf{1.1} (1979), 15-30.
+
+\bibitem{Fuhs10-1} Carsten Fuhs and Peter Schneider-Kamp. Synthesizing Shortest Linear Straight-Line Programs over $GF(2)$ using SAT. \emph{Theory and Applications of Satisfiability Testing - SAT 2010, Springer Berlin Heidelberg} (2010), 71-84.
+
+%% G
+\bibitem{Gao11-1} Sheng Gao, Wenping Ma, Yongbin Zhao, and Zepeng Zhuo. Walsh Spectrum of Cryptographically Concatenating Functions and its Application in Constructing Resilient Boolean Functions. \emph{Journal of Computational Information Systems} \textbf{7} (2011), 1074-1081.
+
+\bibitem{Golomb05-1} Solomon. W. Golomb and Guang Gong. Signal Design for Good Correlation: For Wireless Communication, Cryptography, and Radar. \emph{Cambridge University Press} ISBN 0521821045 (2005).
+
+\bibitem{Jorge02-1} Jorge Guajardo and Christof Paar. Itoh-Tsujii Inversion in Standard Basis and its Application in Cryptography and Codes. \emph{Designs, Codes and Cryptography} \textbf{25.2} (2002), 207-216.
+
+\bibitem{Guajardo06-1} Jorge Guajardo, Sandeep S. Kumar, Christof Paar, and Jan Pelzi. Efficient Software-Implementation of Finite Fields with Applications to Cryptography. \emph{Acta Applicandae Mathematica} \textbf{93.1-3} (2006), 3-32.
+
+%% H
+\bibitem{Hsiao06-1} Shen-Fu Hsiao, Ming-Chih Chen, and Chia-Shin Tu. Memory-Free Low-Cost Designs of Advanced Encryption Standard Using Common Subexpression Elimination for Subfunctions in Transformations. \emph{IEEE Transactions on Circuits and Systems I: Regular Papers} \textbf{53.3} (2006), 615-626.
+
+%% I
+\bibitem{Itoh88-1} Toshiya Itoh and Shigeo Tsujii. A Fast Algorithm for Computing Multiplicative Inverses in $GF(2^m)$ Using Normal Bases. \emph{Information and Computation} \textbf{78.3} (1988), 171-177.
+
+%%% J
+\bibitem{Johansson03-1} Thomas Johansson and Enes Pasalic. A Construction of Resilient Functions with High Nonlinearity. \emph{IEEE Transactions on Information Theory} \textbf{49.2} (2003), 494-501.
+
+\bibitem{Jakobsen97-1} Thomas Jakobsen and Lars R. Knudsen. The Interpolation Attack on Block Ciphers. \emph{4th International Workshop on Fast Software Encryption LNCS, Springer} \textbf{1267} (1997), pp. 28-40.
+
+%% K
+\bibitem{Kaminsky10-1} Alan Kaminsky. Building Parallel Programs: SMPs, Clusters, and Java. Cengage Course Technology (2010). ISBN 1-4239-0198-3.
+
+\bibitem{Kaminsky10-2} Alan Kaminsky, Michael Kurdziel, Stanis{\l}aw Radziszowski. An Overview of Cryptanalysis Research of the Advanced Encryption Standard. \emph{Proceedings of MILCOM'2010, San Jose, CA} (2010).
+
+\bibitem{Karp72-1} Richard M. Karp. Reducibility Among Combinatorial Problems. \emph{Springer US} (1972).
+
+\bibitem{Kipnis99-1} Aviad Kipnis and Adi Shamir. Cryptanalysis of the HFE public key cryptosystem by relinearization. \emph{Advances in cryptology-CRYPTO’99, Springer Berlin Heidelberg}, (1999).
+
+\bibitem{Kleiman05-1} Elizabeth Kleiman. The XL and XSL attacks on Baby Rijndael (MS Dissertation). \emph{Iowa State University} (2005).
+
+%% L
+\bibitem{Lidl94-1} Rudolf Lidl and Harald Niederreiter. Introduction to Finite Fields and their Applications. \emph{Cambridge University Press} (1994).
+
+\bibitem{Lupanov58-1} O. B. Lupanov. A method of circuit synthesis. \emph{Izv. Vys$\breve{s}$. U$\breve{c}$ebn. Zaved., Radiofiz.} \textbf{1} (1958), 172-186.
+
+%% M
+\bibitem{MacWilliams86-1} Florence Jessie MacWilliams and Neil James Alexander Sloane. The Theory of Error Correcting Codes. \emph{North Holland Publishing Co.} (1986).
+
+\bibitem{Matsui91-1} Mitsuru Matsui. Linear cryptanalysis method for DES cipher. \emph{Advances in Cryptology - EUROCRYPT’93, Springer Berlin Heidelberg}, (1994).
+
+\bibitem{HAC} Alfred J. Menezes, Paul C. Van Oorschot, and Scott A. Vanstone. Handbook of Applied Cryptography. \emph{CRC Press} (2010).
+
+\bibitem{Mentens05-1} Nele Mentens, Lejla Batina, Bart Preneel, and Ingrid Verbauwhede. A Systematic Evaluation of Compact Hardware Implementations for the Rijndael S-Box. \emph{Topics in Cryptology-CT-RSA, Springer Berlin Heidelberg} (2005), 323-333.
+
+%% N
+\bibitem{Nawaz09-1} Nawaz Yassir, Kishan Chand Gupta, and Guang Gong. Algebraic Immunity of S-Boxes Based on Power Mappings: Analysis and Construction. \emph{IEEE Transactions on Information Theory} \textbf{55.9} (2009), 4263-4273.
+
+\bibitem{Nikova08-1} Svetla Nikova, Vincent Rijmen, and Martin Schl\"{a}ffer. Using Normal Bases for Compact Hardware Implementations of the AES S-box. \emph{Security and Cryptography for Networks. Springer Berlin Heidelberg} (2008), 236-245.
+
+\bibitem{Nogami11-1} Yasuyuki Nogami, Kenta Nekado, Tetsumi Toyota, Naoto Hongo, and Yoshitaka Morikawa. Mixed Bases for Efficient Inversion in $\mathbb{F}_{((2^2)^2)^2}$ and Conversion Matrices of SubBytes of AES. \emph{IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences} \textbf{E94-A:6} (2011), 1318-1327.
+
+\bibitem{Nyberg91-1} Kaisa Nyberg. Perfect nonlinear S-boxes. \emph{Advances in Cryptology - EUROCRYPT’91}. Springer Berlin Heidelberg (1991).
+
+\bibitem{Nyberg94-1} Kaisa Nyberg. Differentially Uniform Mappings for Cryptography. \emph{Advances in Cryptology - Eurocrypt’93}. Springer Berlin Heidelberg (1994).
+
+%% O
+
+
+%% P
+\bibitem{Paar94-1} Christof Paar. Efficient VLSI Architectures for Bit-Parallel Computation in Galois Fields. \emph{Ph.D.Dissertation, Institute for Experimental Mathematics, Universit\H{a}t Essen, Germany} (1994).
+
+\bibitem{Paar95-1} Christof Paar. Some Remarks on Efficient Inversion in Finite Fields. \emph{1995 IEEE International Symposium on Information Theory} (1995).
+
+\bibitem{Paar97-1} Christof Paar. Optimized Arithmetic for Reed-Solomon Encoders. \emph{Proceedings of the 1997 IEEE International Symposium on Information Theory} (1997).
+
+%% Q
+
+
+%% R
+\bibitem{Rijmen00-1} Vincent Rijmen. Efficient Implementation of the Rijndael S-box. \emph{Katholieke Universiteit Leuven, Dept. ESAT, Belgium} (2000).
+
+\bibitem{Rooji95-1} Peter de Rooij, Efficient exponentiation using precomputation and vector addition chains. \emph{Advances in cryptology: EUROCRYPT `94} (1995) 389-399. 
+
+\bibitem{Rothaus76-1} Rothaus OS. On Bent Functions. \emph{Journal of Combinatorial Theory A} \textbf{20} (1976), 300-5.
+
+\bibitem{Rudra01-1} Atri Rudra, Pradeep K. Dubey, Charanjit S. Jutla, Vijay Kumar, Josyula R. Rao, and Pankaj Rohatgi. Efficient Rijndael Encryption Implementation with Composite Field Arithmetic. \emph{Cryptographic Hardware and Embedded Systems - CHES, Springer Berlin Heidelberg} (2001).
+
+%% S
+\bibitem{Saarinen12-1} Markku-Juhani O. Saarinen. Cryptographic Analysis of All 4x4-Bit S-Boxes. \emph{Selected Areas in Cryptography. Springer Berlin Heidelberg} (2012).
+
+\bibitem{Satoh01-1} Akashi Satoh, Sumio Morioka, Kohji Takano, and Seiji Munetoh. A Compact Rijndael Hardware Architecture with S-Box Optimization. \emph{Advances in Cryptology - ASIACRYPT, Springer Berlin Heidelberg} (2001), 239-254.
+
+\bibitem{Shanks69-1} John L. Shanks. Computation of the Fast Walsh-Fourier Transform. \emph{IEEE Transactions on Computers} \textbf{100.5} (1969), 457-459.
+
+\bibitem{shannon1949-secrecy} Claude E. Shannon. Communication Theory of Secrecy Systems. \emph{Bell System Technical Journal} \textbf{28(4)} (1949), 656-715.
+
+\bibitem{Shannon49-1} Claude Shannon. The synthesis of two-terminal switching circuits. \emph{Bell Syst. Tech. J} \textbf{28} (1949), 59-98.
+
+\bibitem{SAGE} William Stein. SAGE: Open Source Mathematical Software. (2008). Available at \url{http://www.sagemath.org/}. Last accessed 7/10/13.
+
+\bibitem{stinson-crypto} Stinson, Douglas R. Cryptography: Theory and Practice. \emph{Chapman \& Hall/CRC}, 2005.
+
+
+%% T
+\bibitem{Tigin07-1} Ti\u{g}in Kaptanoglu. Performance Evaluation of eXtended Sparse Linearization in $GF(2)$ and $GF(2^8)$. \emph{M.S. Thesis, Department of Computer Science, Rochester Institute of Technology} (2007). Available online at {\url https://ritdml.rit.edu/handle/1850/5072}.
+
+
+%% U
+\bibitem{Ullrich11-1} Markus Ullrich, Christophe De Canni\`{e}re, Sebastian Indesteege, \"{O}zu\"{u}l K\"{u}c\"{u}k, Nicky Mouha, and Bart Preneel. Finding Optimal Bitsliced Implementations of 4x4-bit S-Boxes. \emph{SKEW 2011 Symmetric Key Encryption Workshop, Copenhagen, Denmark} (2011).
+
+
+%% W
+\bibitem{Wang85-1} Charles C. Wang, T. K. Truong, Howard M. Shao, Leslie J. Deutsch, Jim K. Omura, Irving S. Reed. VLSI Architectures for Computing Multiplications and Inverses in $GF(2^m)$. \emph{IEEE Transactions on Computers} \textbf{100.8} (1985), 709-717.
+
+\end{thebibliography}
+% \end{singlespace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendices
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\chapter{Irreducible Polynomials}
+\input{appendixA}
+\chapter{16-Bit S-Box Constructions and Gate Counts}
+\input{appendixB}
+% \chapter{Source Code} \label{app:sourceCode}
+% \input{appendixC}
+
+\end{document}

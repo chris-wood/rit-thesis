@@ -1,0 +1,5 @@
+\beamer@endinputifotherversion {3.20pt}
+\beamer@sectionintoc {1}{Updates}{3}{0}{1}
+\beamer@sectionintoc {2}{Inverse in Polynomial and Normal Basis}{4}{0}{2}
+\beamer@sectionintoc {3}{Linear Transformation Optimizations}{11}{0}{3}
+\beamer@sectionintoc {4}{Other Maximally Nonlinear Power Mappings}{18}{0}{4}

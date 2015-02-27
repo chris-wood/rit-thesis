@@ -1,0 +1,41 @@
+\usepackage{amsthm}
+\newtheoremstyle{mytheoremstyle} % name
+    {\topsep}                    % Space above
+    {\topsep}                    % Space below
+    {}                   % Body font
+    {}                           % Indent amount
+    {\scshape\bf}                   % Theorem head font
+    {.}                          % Punctuation after theorem head
+    {.5em}                       % Space after theorem head
+    {}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{mytheoremstyle}
+\newtheorem{thm}{Theorem}
+
+%\newtheorem{thm}{Theorem}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{con}[thm]{Conjecture}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{problem}[thm]{Problem}
+\newtheorem{dnt}[thm]{Definition}
+\newtheorem{alg}[thm]{Algorithm}
+
+%\numberwithin{table}{section}
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+% Useful commands for document reviews
+\usepackage{color}
+\usepackage{todonotes}
+\newcommand{\note}[1] {
+	{\todo[inline]{#1}}
+}
+\newcommand{\caw}[1] {
+	{\todo[inline]{CAW: #1}}
+}
+\newcommand{\OpenProblem}[1] {
+	{{\textbf{Open Problem:} #1}}
+}

@@ -1,0 +1,1923 @@
+\documentclass[12pt]{article}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{circuitikz}
+\usetikzlibrary{dsp,chains}
+
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\newcommand{\z}{\mathpzc{z}}
+
+\begin{document}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+[bend angle =60,inner sep=0pt, minimum size =10mm,very thick,
+from/.style={<-},
+towards/.style={->},
+field/.style={}]
+\node[field] (gf216) at (0,0) {$GF(2^{16})$};
+\node[field] (gf282) at (-6,-2) {$GF((2^8)^2)$};
+\node[field] (gf228) at (0,-2) {$GF((2^2)^8)$};
+\node[field] (gf244) at (6,-2) {$GF((2^4)^4)$};
+\node[field] (gf2422) at (-8,-4) {$GF(((2^4)^2)^2)$};
+\node[field] (gf2422) at (-4,-4) {$GF(((2^2)^4)^2)$};
+\node[field] (gf2224) at (4,-4) {$GF(((2^2)^2)^4)$};
+\node[field] (gf22222) at (-6,-6) {$GF((((2^2)^2)^2)^2)$};
+
+\draw [->] (-1,-.25) -- (-5.75,-1.55);
+\draw [->] (0,-.35) -- (0,-1.55);
+\draw [->] (1,-.25) -- (5.75,-1.55);
+\draw [->] (-6.75,-2.25) -- (-8,-3.75);
+\draw [->] (-5.25,-2.25) -- (-4,-3.75);
+\draw [->] (5.25,-2.25) -- (4,-3.75);
+\draw [->] (-8,-4.5) -- (-6,-5.75);
+
+% \draw[->] (e1) -- +(0pt,-25pt);
+% \draw[->] (e2) -- +(0pt,25pt);
+\end{tikzpicture}
+\end{figure}
+
+
+%% INVERSE IN GF(2^16) using composite fields - polynomial
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                   (m10) {$\zeta_1$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Lambda \otimes \zeta_1^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspmixer]                   (m15) {};          &
+		\node[dspsquare]                  (m16) {$\zeta_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[dspadder]                  (m21) {};          &
+		\node[dspnodefull]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\zeta^{-1}$};          &
+		\node[coordinate]                   (m25) {};          &
+		\node[coordinate]                  (m26) {};         \\
+
+		\node[dspsquare]                   (m30) {$\zeta_2$}; &
+		\node[coordinate]                  (m31) {};          &
+		\node[dspmixer]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {$\zeta^{-1}$};          &
+		\node[dspmixer]                    (m35) {};          &
+		\node[dspsquare]                   (m36) {$\zeta_4$};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m33) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m21) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m32) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m24);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m22);
+		\chainin (m32) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%% INVERSE IN GF(2^8) using composite fields
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                   (m10) {$\epsilon_1$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Pi \otimes \epsilon_1^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspmixer]                   (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[dspadder]                  (m21) {};          &
+		\node[dspnodefull]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\epsilon^{-1}$};          &
+		\node[coordinate]                   (m25) {};          &
+		\node[coordinate]                  (m26) {};         \\
+
+		\node[dspsquare]                   (m30) {$\epsilon_2$}; &
+		\node[coordinate]                  (m31) {};          &
+		\node[dspmixer]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {$\epsilon^{-1}$};          &
+		\node[dspmixer]                    (m35) {};          &
+		\node[dspsquare]                   (m36) {$\epsilon_4$};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m33) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m21) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m32) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m24);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m22);
+		\chainin (m32) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+
+%% INVERSE IN GF(2^4) using composite fields - polynomial
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                   (m10) {$\delta_1$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Sigma \otimes \delta_1^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspmixer]                   (m15) {};          &
+		\node[dspsquare]                  (m16) {$\delta_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[dspadder]                  (m21) {};          &
+		\node[dspnodefull]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\delta^{-1}$};          &
+		\node[coordinate]                   (m25) {};          &
+		\node[coordinate]                  (m26) {};         \\
+
+		\node[dspsquare]                   (m30) {$\delta_2$}; &
+		\node[coordinate]                  (m31) {};          &
+		\node[dspmixer]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {$\delta^{-1}$};          &
+		\node[dspmixer]                    (m35) {};          &
+		\node[dspsquare]                   (m36) {$\delta_4$};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m33) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m21) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m32) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m24);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m22);
+		\chainin (m32) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%% INVERSE IN GF(2^4)/GF(2^2) using composite fields - normal basis
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          &
+		\node[coordinate]                  (m07) {};          \\
+
+		\node[dspsquare]                   (m10) {$\delta_1$}; &
+		\node[dspadder]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Sigma \times \delta^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[coordinate]                   (m15) {};          &
+		\node[dspmixer]                  (m16) {};          &
+		\node[dspsquare]                  (m17) {$\delta_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\delta^{-1}$};          &
+		\node[dspnodefull]                   (m25) {};          &
+		\node[coordinate]                  (266) {};          &
+		\node[coordinate]                  (m27) {};         \\
+
+		\node[dspsquare]                   (m30) {$\delta_2$}; &
+		\node[dspmixer]                  (m31) {};          &
+		\node[coordinate]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[coordinate]                    (m35) {};          &
+		\node[dspmixer]                  (m36) {};          &
+		\node[dspsquare]                   (m37) {$\delta_4$};         \\
+
+		\node[coordinate]                   (m40) {}; &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                    (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                    (m45) {};          &
+		\node[coordinate]                  (m46) {};          &
+		\node[coordinate]                   (m47) {};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m25) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+		\chainin (m17) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m25);
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m05) [join=by dspline];
+		\chainin (m36) [join=by dspconn];
+		\chainin (m37) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m32) [join=by dspline];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m41) [join=by dspline];
+		\chainin (m45) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%% INVERSE IN GF(2^8)/GF(2^4) using composite fields - normal basis
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          &
+		\node[coordinate]                  (m07) {};          \\
+
+		\node[dspsquare]                   (m10) {$\epsilon_1$}; &
+		\node[dspadder]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Pi \times \epsilon^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[coordinate]                   (m15) {};          &
+		\node[dspmixer]                  (m16) {};          &
+		\node[dspsquare]                  (m17) {$\epsilon_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\epsilon^{-1}$};          &
+		\node[dspnodefull]                   (m25) {};          &
+		\node[coordinate]                  (266) {};          &
+		\node[coordinate]                  (m27) {};         \\
+
+		\node[dspsquare]                   (m30) {$\epsilon_2$}; &
+		\node[dspmixer]                  (m31) {};          &
+		\node[coordinate]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[coordinate]                    (m35) {};          &
+		\node[dspmixer]                  (m36) {};          &
+		\node[dspsquare]                   (m37) {$\epsilon_4$};         \\
+
+		\node[coordinate]                   (m40) {}; &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                    (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                    (m45) {};          &
+		\node[coordinate]                  (m46) {};          &
+		\node[coordinate]                   (m47) {};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m25) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+		\chainin (m17) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m25);
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m05) [join=by dspline];
+		\chainin (m36) [join=by dspconn];
+		\chainin (m37) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m32) [join=by dspline];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m41) [join=by dspline];
+		\chainin (m45) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%% INVERSE IN GF(2^16)/GF(2^8) using composite fields - normal basis
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          &
+		\node[coordinate]                  (m07) {};          \\
+
+		\node[dspsquare]                   (m10) {$\zeta_1$}; &
+		\node[dspadder]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Lambda \times \zeta^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[coordinate]                   (m15) {};          &
+		\node[dspmixer]                  (m16) {};          &
+		\node[dspsquare]                  (m17) {$\zeta_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\zeta^{-1}$};          &
+		\node[dspnodefull]                   (m25) {};          &
+		\node[coordinate]                  (266) {};          &
+		\node[coordinate]                  (m27) {};         \\
+
+		\node[dspsquare]                   (m30) {$\zeta_2$}; &
+		\node[dspmixer]                  (m31) {};          &
+		\node[coordinate]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[coordinate]                    (m35) {};          &
+		\node[dspmixer]                  (m36) {};          &
+		\node[dspsquare]                   (m37) {$\zeta_4$};         \\
+
+		\node[coordinate]                   (m40) {}; &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                    (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                    (m45) {};          &
+		\node[coordinate]                  (m46) {};          &
+		\node[coordinate]                   (m47) {};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m25) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+		\chainin (m17) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m25);
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m05) [join=by dspline];
+		\chainin (m36) [join=by dspconn];
+		\chainin (m37) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m32) [join=by dspline];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m41) [join=by dspline];
+		\chainin (m45) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+
+%% INVERSE IN GF(2^2) using composite fields
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\gamma_1$};          &
+		\node[dspnodefull]                (m01) {};          &
+		\node[dspsquare]                  (m02) {$\gamma_3$};          \\
+		\node[dspsquare]                  (m10) {$\gamma_2$};          &
+		\node[dspadder]                   (m11) {};          &
+		\node[dspsquare]                  (m12) {$\gamma_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m12) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m01);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+% Squarer in GF(2^8)
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[dspsquare]                  (m01) {$\epsilon_1^2$};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\epsilon_3$};          \\
+
+		\node[coordinate]                   (m10) {}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                    (m12) {$\times \Pi$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          \\
+
+		\node[dspsquare]                   (m20) {$\epsilon_2$}; &
+		\node[dspsquare]                  (m21) {$\epsilon_2^2$};          &
+		\node[coordinate]                    (m22) {};          &
+		\node[dspadder]                    (m23) {};          &
+		\node[dspsquare]                  (m24) {$\epsilon_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m01);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m20);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+% Squarer in GF(2^4)
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\delta_1$};          &
+		\node[dspsquare]                  (m01) {$\delta_1^2$};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\delta_3$};          \\
+
+		\node[coordinate]                   (m10) {}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                    (m12) {$\times \Sigma$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          \\
+
+		\node[dspsquare]                   (m20) {$\delta_2$}; &
+		\node[dspsquare]                  (m21) {$\delta_2^2$};          &
+		\node[coordinate]                    (m22) {};          &
+		\node[dspadder]                    (m23) {};          &
+		\node[dspsquare]                  (m24) {$\delta_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m01);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m20);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^8) scaler
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[dspadder]                  (m01) {};          &
+		\node[dspsquare]                  (m02) {$\times \Pi^{-1}$};          &
+		\node[dspsquare]                  (m03) {$\epsilon_3$};          \\
+
+		\node[dspsquare]                   (m10) {$\epsilon_2$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[coordinate]                    (m12) {};          &
+		\node[dspsquare]                  (m13) {$\epsilon_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspconn];
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspline];
+		\chainin (m13) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^2) scaler #1
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\gamma_1$};          &
+		\node[dspnodefull]                  (m01) {};          &
+		\node[dspadder]                  (m02) {};          &
+		\node[dspsquare]                  (m03) {$\gamma_5$};          \\
+
+		\node[dspsquare]                   (m10) {$\gamma_2$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[coordinate]                    (m12) {};          &
+		\node[dspsquare]                  (m13) {$\gamma_6$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspconn];
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspline];
+		\chainin (m12) [join=by dspline];
+		\chainin (m13) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspline];
+		\chainin (m02) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+ 
+%%% GF(2^2) scaler # 2
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\gamma_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspsquare]                  (m03) {$\gamma_5$};          \\
+
+		\node[dspsquare]                   (m10) {$\gamma_2$}; &
+		\node[dspnodefull]                  (m11) {};          &
+		\node[dspadder]                    (m12) {};          &
+		\node[dspsquare]                  (m13) {$\gamma_6$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspline];
+		\chainin (m12) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspline];
+		\chainin (m12) [join=by dspconn];
+		\chainin (m13) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^4) square/scale combined
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[dspsquare]                   (m01) {$\epsilon_1^2$};          &
+		\node[dspsquare]                  (m02) {$\times \Sigma$};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\epsilon_3$};          \\
+
+		\node[coordinate]                  (m10) {};          &
+		\node[coordinate]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[dspadder]                    (m13) {};          &
+		\node[coordinate]                  (m14) {};          \\
+
+		\node[dspsquare]                  (m20) {$\epsilon_2$};          &
+		\node[dspsquare]                   (m21) {$\epsilon_2^2$};          &
+		\node[dspsquare]                  (m22) {$\times \Sigma^2$};          &
+		\node[coordinate]                  (m23) {};          &
+		\node[dspsquare]                  (m24) {$\epsilon_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspconn];
+		\chainin (m13) [join=by dspconn];
+		\chainin (m04) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m20);
+		\chainin (m21) [join=by dspline];
+		\chainin (m22) [join=by dspconn];
+		\chainin (m13) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspline];
+		\chainin (m12) [join=by dspline];
+		\chainin (m23) [join=by dspline];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%% Square/scale in GF(2^2) #1
+\begin{figure}
+\centering
+\begin{tikzpicture}
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\gamma_1$};          &
+		\node[coordinate]                (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspsquare]                    (m03) {$\gamma_3$};\\
+		\node[dspsquare]                  (m10) {$\gamma_2$};          &
+		\node[coordinate]                   (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[dspsquare]                   (m13) {$\gamma_4$}; \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspline];
+		\chainin (m12) [join=by dspline];
+		\chainin (m13) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%% Square/scale in GF(2^2) #2
+\begin{figure}
+\centering
+\begin{tikzpicture}
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\gamma_1$};          &
+		\node[dspadder]                (m01) {};          &
+		\node[dspsquare]                  (m02) {$\gamma_3$};          \\
+		\node[dspsquare]                  (m10) {$\gamma_2$};          &
+		\node[dspnodefull]                   (m11) {};          &
+		\node[dspsquare]                  (m12) {$\gamma_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspline];
+		\chainin (m01) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m11);
+		\chainin (m12) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^2) multiplier - polynomial
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\delta_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspmixer]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\delta_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\delta_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspmixer]                  (m23) {};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\delta_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\delta_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\delta_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                  (m42) {};          &
+		\node[dspmixer]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m03) [join=by dspconn];
+		\chainin (m04) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m43) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m43) [join=by dspconn];
+		\chainin (m44) [join=by dspline];
+		\chainin (m35) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m44);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^2) multiplier - normal
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\gamma_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[dspmixer]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\gamma_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\gamma_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[dspmixer]                  (m22) {};          &
+		\node[dspnodefull]                  (m23) {};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\gamma_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\gamma_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\gamma_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[dspmixer]                  (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m02) [join=by dspconn];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+		\chainin (m23) [join=by dspline];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m23);
+		\chainin (m34) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m32) [join=by dspline];
+		\chainin (m42) [join=by dspconn];
+		\chainin (m43) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m12) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m42) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^4) multiplier - normal
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\delta_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[dspmixer]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\delta_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\delta_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[dspmixer]                  (m22) {};          &
+		\node[dspsquare]                  (m23) {$\times \Sigma$};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\delta_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\delta_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\delta_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[dspmixer]                  (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m02) [join=by dspconn];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m23);
+		\chainin (m34) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m32) [join=by dspline];
+		\chainin (m42) [join=by dspconn];
+		\chainin (m43) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m12) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m42) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^8) multiplier - normal
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[dspmixer]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\epsilon_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[dspmixer]                  (m22) {};          &
+		\node[dspsquare]                  (m23) {$\times \Pi$};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\epsilon_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\epsilon_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\epsilon_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[dspmixer]                  (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m02) [join=by dspconn];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m23);
+		\chainin (m34) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m32) [join=by dspline];
+		\chainin (m42) [join=by dspconn];
+		\chainin (m43) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m12) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m42) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^8) multiplier - normal (SHARED GATES)
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[dspmixer]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\epsilon_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[dspmixer]                  (m22) {};          &
+		\node[dspsquare]                  (m23) {$\times \Pi$};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\epsilon_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\epsilon_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\epsilon_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[dspmixer]                  (m42) {};          &
+		\node[coordinate]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m02) [join=by dspconn];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m23);
+		\chainin (m34) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m32) [join=by dspline];
+		\chainin (m42) [join=by dspconn];
+		\chainin (m43) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m12) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m22) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m42) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^4) multiplier
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\delta_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspmixer]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\times \Sigma$};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\delta_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\delta_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspmixer]                  (m23) {};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\delta_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\delta_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\delta_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                  (m42) {};          &
+		\node[dspmixer]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m03) [join=by dspconn];
+		\chainin (m04) [join=by dspconn];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m43) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m43) [join=by dspconn];
+		\chainin (m44) [join=by dspline];
+		\chainin (m35) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m44);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^8) multiplier
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspmixer]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\times \Pi$};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\epsilon_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspmixer]                  (m23) {};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\epsilon_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\epsilon_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\epsilon_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                  (m42) {};          &
+		\node[dspmixer]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m03) [join=by dspconn];
+		\chainin (m04) [join=by dspconn];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m43) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m43) [join=by dspconn];
+		\chainin (m44) [join=by dspline];
+		\chainin (m35) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m44);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%%% GF(2^8) multiplier
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspmixer]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\epsilon_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspmixer]                  (m23) {};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\epsilon_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\epsilon_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\epsilon_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                  (m42) {};          &
+		\node[dspmixer]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m03) [join=by dspconn];
+		\chainin (m04) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m43) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m43) [join=by dspconn];
+		\chainin (m44) [join=by dspline];
+		\chainin (m35) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m44);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+%% SAMPLE CIRCUIT
+\begin{circuitikz} \draw
+(0,2) node[and port] (myand1) {}
+(0,0) node[and port] (myand2) {}
+(2,1) node[xnor port] (myxnor) {}
+(myand1.out) -- (myxnor.in 1)
+(myand2.out) -- (myxnor.in 2);
+\end{circuitikz}
+
+\end{document}

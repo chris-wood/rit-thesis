@@ -1,0 +1,19 @@
+\frametitle{Extending the algorithms to composite fields}
+\begin{algorithm}[H]
+\caption{Testing for polynomial irreducibility}
+\begin{algorithmic}[1]
+\Require{}
+\Require{Positive integers $n$ and $m$, an irreducible polynomial $p(x)$ in $GF(2^n)$, and candidate polynomial $q(y)$ in $GF((2^n)^m)$.}
+\Ensure{YES if $f(x)$ is irreducible, NO otherwise.}
+\For{$u(y) = y \to y^{m-1} + (x^{n-1} + \dotsb + x + 1)y^{m-2} + \dotsb + (x^{n-1} + \dotsb + x + 1)y + (x^{n-1} + \dotsb + x + 1)$}
+\If{$u(y)$ is a generator of $GF((2^n)^m)$ defined by $p(x)$ and $q(y)$}
+\Return YES
+\EndIf
+\EndFor
+\Return NO
+\end{algorithmic}
+\end{algorithm}
+
+\begin{center}
+A similar test for primitivity holds here (check to see if $y$ is a generator of $GF((2^n)^m)$)
+\end{center}

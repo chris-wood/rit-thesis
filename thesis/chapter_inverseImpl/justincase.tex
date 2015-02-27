@@ -1,0 +1,110 @@
+\begin{itemize}
+	\item Polynomial multiplication (basis $[x, 1]$)
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1 x + \epsilon_2)(\epsilon_3 x + \epsilon_4) \\
+	= & (\epsilon_2\epsilon_4 + (\epsilon_1 + \epsilon_2)(\epsilon_3 + \epsilon_4)) w + (\epsilon_1\epsilon_2\Pi + \epsilon_2\epsilon_4)
+	\end{align*}
+	Cost: four additions and four multiplicatons.
+	\item Polynomial squaring (basis $[x, 1]$): 
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1 x + \epsilon_2)(\epsilon_1 x + \epsilon_2) \\
+	= & \zeta_1^2 w + (\epsilon_1^2\Pi + \epsilon_2^2)
+	\end{align*}
+	Cost: one square, one multiplication, and one addition.
+	\item Polynomial scaling (basis $[x, 1]$): 
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1 x + \epsilon_2)(\epsilon_3 x + \epsilon_4)\\
+	= & (\epsilon_1\epsilon_3 + \epsilon_1\epsilon_4 + \epsilon_2\epsilon_3) x + (\epsilon_1\epsilon_3\Pi + \epsilon_2\epsilon_4)
+	\end{align*}
+	Cost: 3 additions and 5 multiplications
+	\emph{Optimization:} $\epsilon_4 = 0$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = (\epsilon_1\epsilon_3 + \epsilon_2\epsilon_3)x + \epsilon_1\epsilon_3\Pi
+	\end{align*}
+	Cost: one addition and three multiplications
+	\emph{Optimization:} $\epsilon_3 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1\epsilon_3 + \epsilon_1\epsilon_4 + \epsilon_2\epsilon_3) x + (\epsilon_1 + \epsilon_2\epsilon_4) \\
+	(\epsilon_1(\epsilon_3 + \epsilon_4) + \epsilon_2\epsilon_3) x + (\epsilon_1 + \epsilon_2\epsilon_4)
+	\end{align*}
+	Cost: three additions and three multiplications
+	\emph{Optimization:} $\epsilon_4 = 0$ and $\epsilon_3 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = (\Pi^{-1}(\epsilon_1 + \epsilon_2))x + \epsilon_1
+	\end{align*}
+	Cost: one addition, one multiplication, and one inversion
+	\item Polynomial squaring/scaling (basis $[x, 1]$): 
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1 x + \epsilon_2)(\epsilon_3 x + \epsilon_4)\\
+	= & (\epsilon_1^2\epsilon_3 +\epsilon_1^2\epsilon_3\Pi + \epsilon_2^2\epsilon_3 + \epsilon_1^2\epsilon_4) x + (\epsilon_1^2\epsilon_3\Pi + \epsilon_1^2\epsilon_4\Pi + \epsilon_2^2\epsilon_4) 
+	\end{align*}
+	Cost: 2 square, 6 multiplication, and 5 addition operations
+	\emph{Optimization:} $\epsilon_4 = 0$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = (\epsilon_1^2(\epsilon_3 + \epsilon_3\Pi) + \epsilon_2^2\epsilon_3)x + \epsilon_1^2\epsilon_3\Pi
+	\end{align*}
+	Cost: 2 square, 4 multiplication, and two addition
+	\emph{Optimization:} $\epsilon_3 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1^2\epsilon_3 +\epsilon_1^2 + \epsilon_2^2\epsilon_3 + \epsilon_1^2\epsilon_4) x + (\epsilon_1^2 + \epsilon_1^2\epsilon_4\Pi + \epsilon_2^2\epsilon_4) \\
+	= & (\epsilon_1^2(\epsilon_3 + 1 + \epsilon_4) + \epsilon_2^2\epsilon_3) x + (\epsilon_1^2(1 + \epsilon_4\Pi) + \epsilon_2^2\epsilon_4)
+	\end{align*}
+	Cost: 5 addition, 2 square, 4 multiplicaton
+	\emph{Optimization:} $\epsilon_4 = 0$ and $\epsilon_3 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = (\epsilon_1^2(\epsilon_3 + 1) + \epsilon_2^2\epsilon_3)x + \epsilon_1^2
+	\end{align*}
+	Cost: 2 addition, 2 square, 2 multiplication
+	\item Normal multiplication (basis $[X^{16}, X]$):
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1 X^{16} + \epsilon_2 X)(\epsilon_3 X^{16} + \epsilon_4 X) \\
+	= & (\epsilon_1\epsilon_3 + (\epsilon_1 + \epsilon_2)(\epsilon_3 + \epsilon_4)\Pi) X^{16} + (\epsilon_2\epsilon_4 + (\epsilon_1 + \epsilon_2)(\epsilon_3 + \epsilon_4)\Pi) X \\
+	\end{align*}
+	Cost: four addition and four multiplication
+	\item Normal squaring (basis $[X^{16}, X]$):
+	\begin{align*}
+	\zeta_1^2 = & (\epsilon_1 X^{16} + \epsilon_2 X)(\epsilon_1 X^{16} + \epsilon_2 X) \\
+	= & (\epsilon_1^2 + (\epsilon_1^2 + \epsilon_2^2)\Pi) X^{16} + (\epsilon_2^2 + (\epsilon_1^2 + \epsilon_2^2)\Pi) X
+	\end{align*}
+	Cost: three addition, two squaring, and one multiplication
+	\item Normal scaling (basis $[X^{16}, X]$):
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1 X^{16} + \epsilon_2 X)(\epsilon_3 X^{16} + \epsilon_4 X) \\
+	= & (\epsilon_1\epsilon_3 + (\epsilon_1 + \epsilon_2)(\epsilon_3 + \epsilon_4)\Pi) X^{16} + (\epsilon_2\epsilon_4 + (\epsilon_1 + \epsilon_2)(\epsilon_3 + \epsilon_4)\Pi) X 
+	\end{align*}
+	Cost: four addition and four multiplication
+	\emph{Optimization:} $\epsilon_4 = 0$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & \epsilon_1 \times \epsilon_2 = & (\epsilon_1\epsilon_3 + (\epsilon_1 + \epsilon_2)\epsilon_3\Pi) X^{16} + (\epsilon_1 + \epsilon_2)\epsilon_3\Pi W 
+	\end{align*}
+	Cost: two addition and three multiplication
+	\emph{Optimization:} $\epsilon_3 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1 \times \zeta_2 = & (\epsilon_1\epsilon_3 + \epsilon_1 + \epsilon_2 + \epsilon_1\epsilon_4\Pi + \epsilon_2\epsilon_4\Pi) X^{16} + (\epsilon_2\epsilon_4 + \epsilon_1 + \epsilon_2 + \epsilon_1\epsilon_4\Pi + \epsilon_2\epsilon_4\Pi) X \\
+	= & (\epsilon_1(\epsilon_3 + 1 + \epsilon_4\Pi) + \epsilon_2(1 + \epsilon_4\Pi)) X^{16} + (\epsilon_2(\epsilon_4 + 1 + \epsilon_4\Pi) + \epsilon_1(1 + \epsilon_4\Pi)) X
+	\end{align*} 
+	Cost: 5 addition, 5 multiplication % see back of key paper
+	\item Normal squaring/scaling (basis $[X^{16}, X]$): 
+	\begin{align*}
+	\zeta_1^2 \times \zeta_2 = & (\epsilon_1 X^{16} + \epsilon_2 X)(\epsilon_3 X^{16} + \epsilon_4 X) \\
+	= & (\epsilon_1^2(\epsilon_3 + \Pi\epsilon_4) + \Pi\epsilon_2^2\epsilon_4) x^{16} + (\epsilon_2^2(\epsilon_4 + \Pi\epsilon_3) + \Pi\epsilon_1^2\epsilon_3) x
+	\end{align*}
+	Cost: four addition, two squaring, and six multiplications
+	\emph{Optimization:} $\epsilon_3 = \Pi\epsilon_4$
+	\begin{align*}
+	\zeta_1^2 \times \zeta_2 = & (\Pi\epsilon_2^2\epsilon_4) X^{16} + (\epsilon_2^2(\epsilon_4(1 + \Pi^2)) + \Pi^2\epsilon_1^2\epsilon_4) X \\
+	= & (\Pi\epsilon_2^2\epsilon_4) X^{16} + (\epsilon_4\Pi^2(\epsilon_2^2 + \epsilon_1^2) + \epsilon_2^2\epsilon_4) X 
+	\end{align*}
+	Cost: three square, two addition, and four multiplications
+	\emph{Optimization:} $\epsilon_4 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1^2 \times \zeta_2 = & (\epsilon_1^2(\epsilon_3 + 1) + \epsilon_2^2) X^{16} + (\epsilon_2^2(\epsilon_4 + \Pi\epsilon_3) + \Pi\epsilon_1^2\epsilon_3) X
+	\end{align*}
+	Cost: two square, four addition, and four multiplications  %\pi\epsilon_3 is redundant
+	\emph{Optimization:} $\epsilon_3 = \Pi\epsilon_4$ and $\epsilon_4 = \Pi^{-1}$
+	\begin{align*}
+	\zeta_1^2 \times \zeta_2 = & \delta_2^2 w^4 + (\delta_2^2 + \Sigma\delta_1^2) w \\
+	\end{align*}
+	Cost: two squares, one multiplication, and one additition
+\end{itemize}
+

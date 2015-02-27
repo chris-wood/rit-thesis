@@ -1,0 +1,303 @@
+\section{Cryptanalysis Attacks}
+The substitution layer plays a critical role in the security of block ciphers designed with a substitution layer for 
+nonlinearity. Over the past three decades, many cryptanalysis attacks have been devised and carried out
+on full-size and ``toy'' versions of block ciphers. In this section, we describe some of the most popular
+attacks that exploit specific properties of the substitution layer during the attack. We then use this as 
+motivation for measuring the strength of S-boxes, which can be perceived as their relative resistance
+to these attacks.
+
+\subsection{Linear Cryptanalysis}
+Since S-boxes $S_S : \{0,1\}^m \to \{0,1\}^n$ are usually the only source of non-linearity within an SPN algorithm, 
+it is critically important to understand how they can be approximated as linear equations. For the purposes of this 
+section, we consider only bijective S-boxes $S_S : \{0,1\}^n \to \{0,1\}^n$. That is, let 
+$S_S : \{0,1\}^n \to \{0,1\}^n$ be the S-box in question. Each element of the input vector 
+$x_i$ corresponds to some random variable $\mathbf{X_i}$, and each of these variables are independent. 
+In addition, each element of the output vector $y_i$ corresponds to some random variable $\mathbf{Y_i}$. 
+However, these variables are not specifically independent from each other or from the $\mathbf{X_i}$ variables 
+(since the probability of the output depends on the input).
+
+The underlying goal of linear cryptanalysis is to find and exploit some linear combination 
+$\mathbf{X_{i,1}} \oplus \mathbf{X_{i,1}} \oplus \dotsb \oplus \mathbf{X_{i,s}} = \mathbf{Y_{j,1}} \oplus \mathbf{Y_{j,2}} \oplus \dotsb \oplus \mathbf{Y_{j,t}}$
+that is satisfied with a high (or low) probability. For an ideal SPN, such relationships will be satisfied
+exactly half of the time for any selection of random variables $\mathbf{X_{i,1}},\dots,\mathbf{X_{i,s}},\mathbf{Y_{j,1}},\dots,\mathbf{Y_{j,t}}$.
+Should there exist some selection of random variables for a linear combination such that the probability of
+satisfying the relationship is not $1/2$, then this deviation, or \emph{bias}, from the relationship
+can be exploited in a linear cryptanalysis attack.
+
+We first begin our definition of linear cryptanalysis with some more formal definitions.
+\begin{definition}
+Let $p_i$ be the probability that $\mathbf{Pr}[\mathbf{X_i} = 0]$. We define the \emph{bias} of $p_i$, denoted $\epsilon_i$, for some linear relationship of random variables as the quantity:
+\begin{align*}
+\epsilon_i = p_i - \frac{1}{2},
+\end{align*}
+where $p_i$ is the probability that said linear relationship is satisfied.
+\end{definition}
+Now, we consider all possible $2^n$ random variable combinations for $n$ variables. For an S-box with domain and range of dimension $4$, we have a total of $8$ random variables to examine, which, together, correspond to the $4$ input and $4$ output bits. Therefore, there are $2^8$ possible combinations that can be used to calculate biases. Let the $n$-dimensional vectors $\mathbf{a} = \langle a_1,a_2,\dots,a_n \rangle$ and $\mathbf{b} = \langle b_1,b_2,\dots,b_n \rangle$, where $a_i, b_i \in \{0,1\}$ for all $1 \leq i \leq n$ correspond to these input and output elements for the S-box. We can represent all $2^8$ linear combinations as follows
+\begin{align*}
+\left(\bigoplus_{i=i}^{n}a_i\mathbf{X_i}\right) \oplus \left(\bigoplus_{i=i}^{n}b_i\mathbf{Y_i}\right) = 0,
+\end{align*}
+or, equivalently,
+\begin{align*}
+\left(\bigoplus_{i=i}^{n}a_i\mathbf{X_i}\right) = \left(\bigoplus_{i=i}^{n}b_i\mathbf{Y_i}\right).
+\end{align*}
+Using the Piling-Up Lemma presented by Matsui \cite{Matsui91-1}, we have 
+\begin{align*}
+Pr[\mathbf{X_i} \oplus \dotsb \oplus \mathbf{X_n} = 0] = \frac{1}{2} + 2^{n-1} \prod_{i=1}^{n}\epsilon_i,
+\end{align*}
+which means that 
+\begin{align*}
+\epsilon_{1,2,\dots,n} = 2^{n-1}\prod_{i=1}^{n}\epsilon_i,
+\end{align*}
+where $\epsilon_{1,2,\dots,n}$ is the bias of $\mathbf{X_i} \oplus \dotsb \oplus \mathbf{X_n}$.
+This leads to the fundamentally simple counting-based attack that is linear cryptanalysis.
+That is, if we use a counting-based method for determining the bias for all possible linear
+combinations of input and output variables $\mathbf{X_i}$ and $\mathbf{Y_j}$, we can 
+identify input and output variables that are suitable candidates for conducting a linear
+cryptanalysis attack.
+In particular, treating the $\mathbf{a}$ and $\mathbf{b}$ vectors as binary numbers $a$ and $b$,
+we may compute tabulate $N_L(a,b)$, the number of tuples
+$(x_1,x_2,...,x_n,y_1,y_2,...,y_n)$ such that $(y_1,y_2,...,y_n) = S_S(x_1,x_2,...,x_n)$ and 
+\begin{align*}
+\left(\bigoplus_{i=i}^{n}a_ix_i\right) \oplus \left(\bigoplus_{i=i}^{n}b_iy_i\right) = 0.
+\end{align*}
+With the $N_L(a,b)$ matrix, we then compute the bias $\epsilon_{1,2,\dots,n}$ by $N_L(a,b) / 2^n$, 
+and from this, the probability $p_i$ that the linear combination for $\epsilon_{1,2,\dots,n}$
+was satisfied as $p_i = 1/2 - \epsilon_{1,2,\dots,n}$.
+
+The general procedure for carrying out a linear cryptanalysis attack is shown in \ref{alg:linearAttack} \cite{stinson-crypto}.
+Clearly, the goal of linear cryptanalysis is to find a set of linear approximations of active S-boxes that help
+approximate an entire SPN algorithm throughout all of the rounds (with the exception of the last).
+Matsui \cite{Matsui91-1} showed that the complexity of this known-plaintext attack (i.e. the number
+of plaintexts required for a successful attack) is proportional to $\epsilon^{-2}$, where $\epsilon$ is
+the bias from $1/2$ that a linear expression for the entire SPN algorithm holds.
+It is generally known that larger S-box biases correspond to larger biases for the entire
+SPN algorithm, which is expected since they are typically the only nonlinear components 
+of the algorithm. Therefore, studying the resiliency of S-boxes to this type of attack
+is critically important in the design of cryptographically strong S-boxes. 
+In Section \ref{sec:strength} we will discuss the properties of S-boxes in SPN designs
+that improve the algorithm's resiliency to this type of attack.
+
+\begin{algorithm}[t!] %[htb]
+% Bx and By are the bits in x and y that are in the linear relationship, resp.
+\caption{LinearAttack($\mathcal{P}, p, \mathcal{B}_x, \mathcal{B}_y, r, \mathcal{S}^{-1}$)} \label{alg:linearAttack}
+\begin{algorithmic}[1]
+\For {$K \gets 0$ \textbf{ to } $2^p$}
+	\State $Count[K] \gets 0$
+\EndFor
+\For{\textbf{each} $(x, y) \in \mathcal{P}$}
+	\For {$K \gets 0$ \textbf{ to } $2^p$}
+		\State $vs \gets []$
+		\For {$i = 1 \text{ to } |\mathcal{B}_y|$}
+			\State $v \gets \mathcal{S}^{-1}(K \oplus y_{\mathcal{B}_{y}[i]})$
+			\State $vs = vs \cup v$
+		\EndFor
+		\State $z \gets \bigoplus_{i = 1}^{|\mathcal{B}_x|} x_{\mathcal{B}_{x}[i]} \bigoplus_{i=1}^{|\mathcal{B}_y|} vs_{\mathcal{B}_{y}[i]}$ 
+		\If{$z = 0$}
+			\State $Count[K] \gets Count[K] + 1$
+		\EndIf
+	\EndFor
+\EndFor
+\State $max \gets -1$
+\For {$K \gets 0$ \textbf{ to } $2^p$}
+	\State $Count[K] \gets |Count[K] - (p/2)|$
+	\If{$Count[K] > max$}
+		\State $max \gets Count[K]$
+		\State $maxKey \gets (K)$
+	\EndIf
+\EndFor
+\Return $maxKey$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Differential Cryptanalysis}
+Differential cryptanalysis is a chosen plaintext attack that attempts to find 
+and exploit certain occurrences of input and output differences in the last round
+of a cipher that occur with a high probability \cite{stinson-crypto}. 
+Put another way, for an ideally randomizing block cipher with a sufficiently
+strong S-box, the probability that a certain output difference $\Delta Y = Y_i \oplus  Y_j$ 
+given an input difference $\Delta X = X_i \oplus X_j$ is exactly $1/2^n$ (where $n$
+denotes the number of bits in the input $X$). Thus, by finding output differences
+that occur with high probability for each round of a target
+cipher, one can establish a relationship between the plaintext and input
+to the last round of the cipher. Such a relationship is loosely referred to as
+a \emph{differential trail} \cite{Daemen02-1}. Then, by sampling a large number of
+plaintext and ciphertexts, the attacker can guess the key by counting the number 
+of times a given differential trail holds for a candidate key.
+In ciphers where the round key schedule is invertible, this enables the attacker
+to uncover the secret key. Clearly, the nonlinearity of the S-box plays a pivotal role
+in the establishment of the differential characteristic for the entire cipher. Also note
+that in SPN ciphers, the key does not influence the coordinates of a differential.
+For example, given the differential $\Delta Y$ and $\Delta X$, we have the following:
+\begin{align*}
+\Delta Y & = Y_i \oplus Y_j \\
+& =  (X_i \oplus K) \oplus (X_j \oplus K) \\
+& =  X_i \oplus X_j \oplus K \oplus K \\
+& =  X_i \oplus X_j \\
+& = \Delta X
+\end{align*} 
+To conduct this attack, the attacker must collect a large sample of plaintext 
+and corresponding ciphertext pairs $(X,Y)$. Given that the S-box is the key
+to preventing this attack, the attacker then computes a difference distribution table $N_D$, where
+\begin{align*}
+N_D(\Delta X, \Delta Y) = |\{(X_i, X_j) \in \Delta X : S(X_i) \oplus S(X_j) = \Delta Y\}.
+\end{align*}
+One may observe that in an ideal S-box, $N_D(\Delta X, \Delta Y) = 1$ for all $\Delta X$ and $\Delta Y$.
+However, this is not possible with bijective S-boxes because $N_D(\Delta X, \Delta Y = \Delta X) = 2^n$.
+We denote the \emph{propagation ratio} $R_D(\Delta X, \Delta Y) = N_D(\Delta X, \Delta Y) / 2^n$,
+which may be interpreted as the probability that an output difference $\Delta Y$ occurs given 
+a certain input difference $\Delta X$.
+
+Now assume that for a certain round $r$ of a SPN cipher we find a differential $(\Delta X, \Delta Y)$ with a high 
+propagation ratio, and further assume that $\Delta Y$ is equal to $\Delta X'$ in a differential $(\Delta X', \Delta Y')$
+with a high propagation ratio in round $r + 1$. We may then combine these differentials together, forming
+a subset of the previously mentioned differential trail, and compute the resulting propagation ratio
+as $R_D(\Delta X, \Delta Y) \cdot R_D(\Delta X', \Delta Y')$. Continuing this process, we may obtain the 
+propagation ratio for a differential trail of the all $N_r - 1$ rounds of the block cipher (up to the last round).
+With this differential trail, the attacker will then determine which candidate keys satisfy the input and output
+difference with the highest probability. A generic description of this process is given in Algorithm \ref{alg:dcattack}.
+
+\begin{algorithm}[t!] %[htb]
+\caption{DifferentialAttack($\mathcal{P}, p, \mathcal{B}_x, \mathcal{B}_y, r, \Delta Y^*, \mathcal{S}^{-1}$)} \label{alg:dcattack}
+\begin{algorithmic}[1]
+\For {$K \gets 0$ \textbf{ to } $2^p$}
+	\State $Count[K] \gets 0$
+\EndFor
+\For{\textbf{each} $(x, y, x', y') \in \mathcal{P}$}
+	\For {$K \gets 0$ \textbf{ to } $2^p$}
+		\State $diffs \gets []$
+		\For {$i = 1 \text{ to } |\mathcal{B}_y|$}
+			\State $v \gets \mathcal{S}^{-1}(K \oplus y_{\mathcal{B}_{y}[i]})$
+			\State $v' \gets \mathcal{S}^{-1}(K \oplus y'_{\mathcal{B}_{y}[i]})$
+			\State $diffs.append(v \oplus v')$
+		\EndFor
+		\State $match \gets 1$
+		\For{$i = 1 \text { to } |\mathcal{B}_y|$}
+			\State $match \gets match \land diffs[i] = \Delta Y^*$ 
+		\EndFor
+		\If{$match = 1$}
+			\State $Count[K] \gets Count[K] + 1$
+		\EndIf
+	\EndFor
+\EndFor
+\State $max \gets -1$
+\For {$K \gets 0$ \textbf{ to } $2^p$}
+	\State $Count[K] \gets |Count[K] - (p/2)|$
+	\If{$Count[K] > max$}
+		\State $max \gets Count[K]$
+		\State $maxKey \gets (K)$
+	\EndIf
+\EndFor
+\Return $maxKey$
+\end{algorithmic}
+\end{algorithm}
+
+%\section{Differential-Linear Cryptanalysis}
+%TODO
+
+\subsection{XL and XLS Attacks}
+It is possible to represent block ciphers as overdefined systems of multivariate quadratic equations $A$, where
+each equation $l_k \in A$ is of the form
+\begin{align*}
+l_k & = \sum_{i,j}a_{i,j,k}x_ix_k + \sum_{i}b_{i,k}x_i + c_k = 0,
+\end{align*}
+where $a_{i,j,k},b_{i,k},c_k \in GF(2)$. Solving such a system is known to be NP-hard \cite{Fraenkel79-1}.
+However, solving a system of linear equations can be done in polynomial time using techniques 
+such as Gaussian elimination. In 2000, Shamir, Curtois, Klimov, and Patarin \cite{Curtois00-1} introduced
+a technique known as eXtended Linearization (XL), which transforms a MQ problem of $m$ equations and $n$ variables
+into a (much) larger system of solvable linear equations. This technique is an extension of the popular
+``linearization'' technique first introduced in \cite{Kipnis99-1}.
+
+The procedure works by first generating a set of $D - 2$
+($D \geq n/\sqrt{m}$) new variables with all powers less than or equal to $D - 2$. Using the example
+given in \cite{Kleiman05-1}, if we have a set of variables $\{x, y, z\}$ with $D = 4$, then the resulting set
+of variables is $\{x,y,z,x^2,y^2,z^2,xy,xz,yz\}$. 
+Each variable in this set is then multiplied by the original $m$ equations. Then, for each resulting equation,
+the individual monomial terms are all replaced by a distinct new variables. For example, for an equation
+$l_i = x^3yz + xy = 0$, we would generate a corresponding equation $l_i = a + b = 0$, where $a = x^3yz$ and
+$b = xy$, respectively. From here, we have a set of linear equations that can be solved in polynomial time.
+Of course, the complexity of this process depends greatly on the selection of $D$ and the original $n$ and
+$m$ parameters in the MQ system. Since the algebraic expression of SPN ciphers has a direct impact
+on the form of the MQ system, it is clear that improving the complexity of this expression helps thwart
+the success of this attack. A formal description of the XL algorithm is shown in Algorithm \ref{alg:xl}.
+
+\begin{algorithm}[t!] %[htb]
+\caption{ExtendedLinearization($m, n, A = \{l_1,\dots,l_r\}$)} \label{alg:xl}
+\begin{algorithmic}[1]
+\State Generate all polynomial equations $l_i' = \left(\prod_{i,j}^k x_{i,j}\right) l_i$, where $k \leq D - 2$. 
+\State $varMap = \{\}$
+\For{$l_i' = l_1' \to l_k'$}
+	\For{$j = 0 \to |l_i'|$}
+		\If {$p_j \not\in varMap$}
+			\State $v = |varMap| + 1$ \Comment{Generate a new variable not in the map}
+			\State $varMap[l_i'[j]] = v$
+		\EndIf
+		\State $l_i'[j] = varMap[l_i'[j]]$
+	\EndFor
+\EndFor
+\State Perform Gaussian elimination for the system of equations $\{l_1',\dots,l_r\}$.
+\While{There exists at least one univariate equation $l_i'$ in the powers of $x_i$}
+	\State Solve $l_i'$ over the field $mathbf{K}$
+	\State Simplify the set of equations $\{l_1',\dots,l_r\}$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+While the XL attack fails to break popular ciphers such as Rijndael and Serpent, its sparse structure was
+later exploited by Curtois and Pieprzyk in 2002 \cite{Curtois02-1} with the
+eXtended Sparce Linearization (XSL) attack. In particular, the process by which new variables
+are defined and then subsequently multiplied by the $m$ equations in the MQ system is modified to only
+work with a select set of monomials. This reduces the overall size of the resulting equations, and thus
+simplifies the solving process. Curtois and Pieprzyk noticed that this select set of monomials in the 
+multiplication step corresponds to those that already appear in other equations (i.e. they carefully
+select monomials that do not introduce new variables into the resulting $l_i'$ equations). The biggest 
+implication of this attack is that it \emph{does not} grow with the number of rounds in the cipher,
+as is the case with the traditional linear and differential cryptanalysis attacks. Rather,
+the complexity is based solely on the structure of the cipher, and more specifically, 
+on the complexity and degree of the S-box algebraic expression.
+
+%\cite{Cryptanalysis of Block Ciphers with Overdeﬁned Systems of Equations}
+
+\subsection{Interpolation Attacks} \label{sec:sublayer_interpolation}
+At a high level, interpolation attacks consider the problem of representing the 
+target cipher as a high-order polynomial with key-dependent coefficients \cite{Jakobsen97-1}. The logic is that
+then solving for these coefficients it is possible to deduce the secret key. Given a field $GF(2^k)$,
+such a polynomial $p(x)$ is obtained using Lagrangian interpolation. In particular, with
+$n = 2^k$ distinct input elements $x_1,\dots,x_k$ and $n$ output elements $y_1,\dots,y_k$,
+we may determine a polynomail $p(x)$ by
+\begin{align*}
+p(x) = \sum_{i=1}^{n} y_i \prod_{1 \leq j \leq n, j \not= i} \frac{x - x_j}{x_i - x_j}.
+\end{align*}
+Jakobsen et al. prove that for a given block cipher of block size $l$, one may 
+express the ciphertext as a polynomial of the plaintext, where $m$ is the number
+of coefficients in the polynomial. If $l < 2^m$, then it is possible to conduct an interpolation attack
+to find an \emph{algorithm} (i.e. a polynomial to solve) for computing the output ciphertext of the cipher
+using input with a fixed number of bits. Furthermore, this process can be carried out 
+in $\mathcal{O}(l)$ time using $l$ plaintexts encrypted with the same secret key $K$. 
+The authors then extended this technique to solve for the actual secret key. This attack
+is generalize in the following theorem.
+\begin{thm}
+\cite{Jakobsen97-1} Given an iterated block cipher of block size $l$, it is possible to express
+the ouput from round $N_r - 1$ as a polynomial of the plaintext with $m$ coefficients. 
+With $b$ key bits in the last round, there exists an interpolation attack of time complexity
+$\mathcal{O}(2^{b - 1}(l + 1))$ that requires $l + 1$ known plaintexts which can successfully
+deduce the secret key. 
+\end{thm}
+In the case of Rijndael, the intermediate polynomial used to represent the S-box (which is a linear
+affice mapping over $GF(2)$) is given by the following higher-order polynomial:
+\begin{align*}
+p(x) = 05x^{254} + 09x^{253} + F9x^{251} + 25x^{247} + F4x^{239} + 01x^{223} + B5x^{191} + 8Fx^{127} + 63,
+\end{align*}
+where all coefficients are hexadecimal numbers (and thus elements of the field $GF(2^8)$). This algebraic expression
+was obtained using Lagrangian interpolation \cite{Daemen02-1} (this technique is discussed in more detail in 
+Section REF). Clearly, the degree of $p(x)$ is $9$, and so this class of interpolation attack is not feasible. 
+However, the algebraic simplicity of Rijndael's S-box, which is directly correlated to the complexity of
+the polynomial representation for the entire cipher, leaves many cryptographers skeptical about its security.
+
+\subsection{Correlation Attacks}
+Correlation attacks were first introduced in the context of stream ciphers that are based on nonlinear combination 
+generators, which are composed of $m$ independent single-bit output LFSRs whose output forms $m$ bits
+of the keystream in a stream cipher \cite{Siegenthaler85-1}. The attack worked by exploiting existence of 
+a statistical dependence between the output of the generator (combining function) 
+and the output of one of the component LFSRs \cite{Canteaut05-1}. Variations of the correlation attack have been carried
+out on the RC5/RC6 \cite{} and Rijndael \cite{} block ciphers, which are not built on LFSRs. The former of which 
+

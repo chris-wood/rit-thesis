@@ -1,0 +1,8 @@
+\beamer@endinputifotherversion {3.20pt}
+\beamer@sectionintoc {1}{Introduction, Motivation, Review}{3}{0}{1}
+\beamer@sectionintoc {2}{Security Properties of the S-Box}{14}{0}{2}
+\beamer@sectionintoc {3}{S-Box Constructions}{22}{0}{3}
+\beamer@sectionintoc {4}{Computing the Multiplicative Inverse in a Galois Field}{29}{0}{4}
+\beamer@sectionintoc {5}{Combinational Logic Minimization}{50}{0}{5}
+\beamer@sectionintoc {6}{Main Results}{58}{0}{6}
+\beamer@sectionintoc {7}{Future Work}{66}{0}{7}

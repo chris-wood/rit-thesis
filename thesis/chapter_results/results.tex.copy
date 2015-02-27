@@ -1,0 +1,145 @@
+In this chapter we provide a detailed account of our experiments in optimizing
+combinational implementations of $16$-bit S-boxes, as well as our smaller experiments
+conducted for suitable AES-like S-Boxes. 
+
+\section{AES S-Box Alternatives}
+To date, Boyar and Peralta's AES S-box construction \cite{Boyar12-1} is the more area-efficient 
+circuit known. Using the combinational minimization techniques discussed in Chapter \ref{chp:optimizeLogic},
+they replaced Canright's $GF((2^2)^2)$ inversion circuit with one that used requires 5 AND and 11 XOR gates,
+as opposed to 9 AND and 14 XOR (8 NAND, 2 NOR, 9 XOR/XNOR after optimizations) that were used in 
+Canright's circuit. Then, Boyar and Peralta divided the resulting S-box circuit into three components:
+a top linear transformation $U$, middle nonlinear transformation, and bottom linear transformation $B$.
+Referring to personal communication with Peralta \cite{Peralta13-PC}, the process of partitioning the circuit
+into these three circuits was done such that $U$ contained every linear component with no nonlinear decendents,
+and, quite similarly, $B$ contained no nonlinear decendents. Part of our future work is to integrate this
+partitioning process into our circuit analysis code to apply this technique to all AES S-box alternatives. 
+For now, we simply use Canright's $GF(((2^2)^2)^2)$ optimal inversion circuit when defining AES S-box alternatives. 
+
+To do so, we consider all inverters which have a normal basis for $GF(2^8)/GF(2^4)$ because the shared multiplication
+factor saves 5 XOR gates over inverters with a polynomial basis for $GF(2^8)/GF(2^4)$. After Canright's optimizations,
+these S-boxes have anywhere from 66 to 68 XOR gates and 36 AND gates for the inverter. Since the $GF(2^8)$ irreducible
+polynomial determines the number of XOR gates required for the basis change matrices $\mathbf{T}$ and $\mathbf{T}^{-1}$, 
+we then considered all $30$ degree 8 irreducible polynomials for $GF(2^8)$ (including the AES field polynomial) to derive
+such basis change matrices. For each candidate inversion circuit and pair of basis change matrices, we then applied the 
+combinational logic optimization techniques described in Chapter \ref{chp:optimizeLogic} to reduce the number of XOR gates 
+needed for the linear components in the circuits. For each irreducible polynomial $p(v)$ for $GF(2^8)$, we recorded the basis 
+representation that yielded the smallest number of XOR and AND gates required (note that, given our construction techniques, 
+each inversion circuit will have exactly 36 AND gates). Our results from this experiment are summarized in Table \ref{tab:aesAlternatives}.
+
+Based on this data, we were able to improve on Canright's S-box design using the AES polynomial $p(v) = v^8 + v^4 + v^3 + v + 1$ by a single XOR gate.
+This single gate is saved in the merged basis change matrices, in which the use of Boyar and Peralta's optimization technique
+yielded a total of $37$ XOR gates for $\mathbf{T}^{-1} / (\mathbf{MT})^{-1}$ and $\mathbf{MT} / \mathbf{T}$. The basis change matrices are shown below,
+along with the two SLPs that compute both $\mathbf{T}^{-1} / (\mathbf{MT})^{-1}$ and $\mathbf{MT} / \mathbf{T}$.
+\begin{align*}
+\mathbf{T} = 
+\begin{pmatrix}
+1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\
+0 & 1 & 1 & 1 & 1 & 0 & 1 & 1 \\
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+1 & 1 & 1 & 0 & 0 & 1 & 1 & 1 \\ 
+1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+\end{pmatrix}
+\mathbf{T}^{-1} = 
+\begin{pmatrix}
+1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 \\
+0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1 & 0 & 0 & 0 & 1 \\
+1 & 1 & 1 & 0 & 0 & 1 & 1 & 1 \\
+0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 \\
+0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\
+\end{pmatrix}
+\end{align*}
+
+% TODO: ABSOLUTELY FUCKING NEED TO CHECK THAT THIS IS CORRECT, BUT WHAT IS THE EASIEST WAY? BY HAND?...
+% pick random element, compute its inverse in the field
+
+% AES S-box better alternative: V^8 + V^5 + V^4 + V^3 + 1
+
+\begin{sidewaystable}\label{tab:aesAlternatives}
+\tiny
+	\caption{AES S-box alternatives with optimized basis change matrices and an unmerged circuit design. For space, we denote each irreducible polynomial $s(v)$, constant $c$, and binary matrix ($\mathbf{A}$, $\mathbf{T}$, and $\mathbf{T}^{-1}$ in row order) as a hexadecimal string. Also note that $\Sigma$, $\Pi$, and $\Lambda$ are given in their standard polynomial basis representation. With the basis elements given for all subfields, one may easily convert to the proper basis representation using the software that produced these results.}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+    % \multicolumn{2}{|c|}{Representation} & \multicolumn{6}{|c|}{XOR Gate Counts} \\ \hline
+    $s(v)$ & $\Sigma$ & $\Pi$ & $\Lambda$ & $GF(2^2), GF((2^2)^2), GF(((2^2)^2)^2)$ Bases & $\mathbf{T}$ & $\mathbf{T}^{-1}$ & $\mathbf{A}$ & $c$ & Inv. & S-Box & S-Box$^{-1}$ & Total \\ \hline
+	19F & 1 & v & v*w + v & $[1, v + 1], [w, w + 1], [x, x + 1]$ & CBE30894F26C80E2 & 02DFE009201B3C41 & B93BC66281604C23 & 6B & 66 & ~ & ~ & 190 \\
+	18B & 1 & v + 1 & v*w + v & $[1, v], [w, w + 1], [x + 1, x]$ & A54902914E1980CF & 025DEA191663200B & C9114A5A02E33740 & 70 & 66 & ~ & ~ & 184 \\
+	177 & 1 & v & (v + 1)*w + 1 & $[1, v], [1, w + 1], [x, x + 1]$ & 822AE035C0249FBE & 525A283FBA2CD22B & F3EE9028D8EA705A & 2C & 67 & ~ & ~ & 184 \\
+	1A3 & 1 & v & (v + 1)*w + 1 & $[1, v], [1, w], [x, x + 1]$ & B7A239FB2077049E & FC7808A1EA02B463 & 061FE1BC61F1FCEF & F4 & 67 & ~ & ~ & 189 \\
+	15F & 1 & v + 1 & v*w + v & $[1, v + 1], [1, w + 1], [x + 1, x]$ & C81988FD39EA9BD8 & 8EA04881AE36CC6F & B36F25B80AC3F05A & 8F & 67 & ~ & ~ & 189 \\
+	12D & 1 & v + 1 & v*w & $[1, v + 1], [w, w + 1], [x + 1, x]$ & 9E9C0DD53B169429 & C67D2CC9420DC06F & 8E2C5128FA276F90 & A5 & 66 & ~ & ~ & 184 \\
+	18D & 1 & v + 1 & (v + 1)*w + 1 & $[1, v], [w, w + 1], [x + 1, x]$ & BBECB17D6B08E38E & 0E95701304AFA44D & 5A492E39A4BCACA1 & F & 66 & ~ & ~ & 185 \\
+	165 & 1 & v + 1 & (v + 1)*w + v + 1 & $[1, v], [1, w + 1], [x, x + 1]$ & 4AEAAEF386118452 & BCDE7CD554BE0AD1 & 6BF474FBAAC77C0A & D6 & 67 & ~ & ~ & 188 \\
+	169 & 1 & v + 1 & v*w & $[v, v + 1]$, $[w, w + 1], [x + 1, x]$ & CC95C0A36A1260EC & A383817B75D57F4D & 6E74C823D8350456 & AD & 66 & ~ & ~ & 189 \\
+	11D & 1 & v & (v + 1)*w + v & $[1, v + 1], [1, w], [x, x + 1]$ & 1FB188C2C0D72021 & ACA402ED8CFA1803 & AF3CA4B7236A194D & 53 & 67 & ~ & ~ & 184 \\
+	\textbf{11B} & 1 & v & (v + 1)*w + v & $[1, v], [w, w + 1], [x, x + 1]$ & 80412A7A0725CC23 & 804DEA7D2CE3E60D & F87C3E1F8FC7E3F1 & 63 & 66 & ~ & ~ & 188 \\
+	12B & 1 & v & v*w & $[1, v + 1], [1, w + 1], [x, x + 1]$ & 2CE0F5A6B18C24E1 & 6AC4EECD82EC7841 & 07EE553E159D0589 & 9D & 67 & ~ & ~ & 190 \\
+	1CF & 1 & v & (v + 1)*w & $[1, v], [w, w + 1], [x + 1, x]$ & 8D1E4CE39B19DD04 & EEE9526BC801E2A7 & EF67C831B07FA3D8 & 42 & 66 & ~ & ~ & 183 \\
+	1B1 & 1 & v + 1 & v*w + v & $[1, v + 1], [1, w], [x + 1, x]$ & 3568370CA031B7DE & 22FE2A6D9484A043 & 8FC4A9A0DA39F9A6 & 39 & 67 & ~ & ~ & 184 \\
+	1D7 & 1 & v + 1 & (v + 1)*w + 1 & $[1, v], [w, w + 1], [x + 1, x]$ & B114B6BC826E782C & 4E43685F761F46F9 & 6F5DC31146F73056 & 1A & 66 & ~ & ~ & 186 \\
+	171 & 1 & v & v*w & $[v, v + 1], [w, w + 1], [x, x + 1]$ & 95470AD1B24BE823 & 0719D133CD89ED3D & EB1708F0963406D6 & 9B & 66 & ~ & ~ & 189 \\
+	1F3 & 1 & v + 1 & v*w + 1 & $[1, v], [w, w + 1], [x, x + 1]$ & 27D0C40778CCC935 & FC2B909724F716F1 & 4DC2D31817F8A939 & 12 & 66 & ~ & ~ & 183 \\
+	139 & 1 & v & (v + 1)*w + v & $[v, v + 1], [w, w + 1], [x, x + 1]$ & 60841E4205B2BE94 & D577F7419395679D & 527736532E33D1D3 & 11 & 66 & ~ & ~ & 183 \\
+	1E7 & 1 & v + 1 & v*w + v + 1 & $[1, v], [1, w], [x, x + 1]$ & 6019E284083DA296 & F622A24708E6560F & 674740648B0CDDE6 & 32 & 67 & ~ & ~ & 184 \\
+	13F & 1 & v & (v + 1)*w + v + 1 & $[1, v], [1, w + 1], [x + 1,x]$ & 20CC047D4075E681 & 7C0880D11420D67D & A85F8678F3769C94 & BB & 67 & ~ & ~ & 191 \\
+	1F9 & 1 & v & v*w & $[1, v], [1, w], [x, x + 1]$ & 609B04E2804C5967 & 08D2521FF6209839 & F27A7919F8328F5D & A3 & 67 & ~ & ~ & 186 \\
+	1BD & 1 & v + 1 & (v + 1)*w & $[1, v + 1], [w, w + 1], [x, x + 1]$ & 5F87B99C9919701D & 0CD528FFE605541D & 456C2D13CD5811C8 & 60 & 66 & ~ & ~ & 184 \\
+	187 & 1 & v + 1 & v*w + v & $[v, v + 1], [w, w + 1], [x + 1, x]$ & 42EB21A06F41F910 & F7C3E70117BF43C7 & 954A2FD2557D139A & 4A & 66 & ~ & ~ & 185 \\
+	1F5 & 1 & v + 1 & v*w & $[1, v + 1], [w, w + 1], [x + 1, x]$ & 999B39DF346BB140 & 1C01BCE53E51C047 & 47E3F6CA40E5EDC0 & B4 & 66 & ~ & ~ & 186 \\
+	14D & 1 & v + 1 & v*w + v & $[1, v + 1], [1, w + 1], [x + 1, x]$ & 51E2D96071391D7C & 3498880B948E6413 & A85F8678F3769C94 & 76 & 67 & ~ & ~ & 190 \\
+	17B & 1 & v & (v + 1)*w + v + 1 & $[1, v + 1], [1, w], [x + 1, x]$ & 228A64B7029337C1 & 123488395A9C0827 & 34D2FAC17C826312 & 6E & 67 & ~ & ~ & 187 \\
+	1C3 & 1 & v & v*w & $[v, v + 1], [w, w + 1], [x, x + 1]$ & 59445CA5657472E9 & C5DD7531519D9B3D & DD2499CFFA9BCB2A & 67 & 66 & ~ & ~ & 191 \\
+	1DD & 1 & v & v*w & $[1, v], [1, w], [x, x + 1]$ & 4E1924AAEA440C98 & A8183CB71E1C9AE9 & 6B2EBB875B986806 & 20 & 67 & ~ & ~ & 181 \\
+	1A9 & 1 & v & v*w + 1 & $[1, v + 1], [w, w + 1], [x + 1, x]$ & 195DFA1E7D4C02F3 & B8B748A1C47702E5 & 4616E57A9918CE31 & 7E & 66 & ~ & ~ & 191 \\ \hline
+    \end{tabular}
+\end{sidewaystable}
+
+\begin{sidewaystable}\label{tab:aesAlternatives}
+\tiny
+	\caption{AES S-box alternatives with optimized basis change matrices and a merged circuit design. For space, we denote each irreducible polynomial $s(v)$, constant $c$, and binary matrix ($\mathbf{A}$, $\mathbf{T}$, and $\mathbf{T}^{-1}$ in row order) as a hexadecimal string. Also note that $\Sigma$, $\Pi$, and $\Lambda$ are given in their standard polynomial basis representation. With the basis elements given for all subfields, one may easily convert to the proper basis representation using the software that produced these results.}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+    % \multicolumn{2}{|c|}{Representation} & \multicolumn{6}{|c|}{XOR Gate Counts} \\ \hline
+    $s(v)$ & $\Sigma$ & $\Pi$ & $\mathbb{F}!v$ & $\mathbb{F}!w$ & $\mathbb{F}!x$ & $GF(2^2), GF((2^2)^2), GF(((2^2)^2)^2)$ Bases & $\mathbf{T}$ & $\mathbf{T}^{-1}$ & $\mathbf{A}$ & $c$ & Inv. & Merged \\ \hline
+	19F & v + 1 & (v + 1)*w & FB & D9 & D5 & v + 1 & (v + 1)*w & 1 v w + 1 w x + 1 x & CBE30894F26C80E2 & 02DFE009201B3C41 & 40B88369D533B31B & 9E & 66 & 113 \\
+	18B & v & (v + 1)*w + v & 76 & C1 & 2A & v + 1 & w + v + 1 & v + 1 v w + 1 w x + 1 x & 50C548A9789A219D & D3E14961C139774B & 47FC6B814B968B15 & 2D & 66 & 112 \\
+	177 & v + 1 & v*w + v + 1 & B7 & 3F & 13 & v & w + v & v + 1 v w + 1 w x + 1 x & F33C6018503AD4E6 & 651F3F17076F2BF9 & E9CD2385AD465051 & AA & 66 & 111 \\
+	1A3 & v + 1 & (v + 1)*w + v + 1 & 28 & 93 & C6 & v + 1 & (v + 1)*w + v + 1 & 1 v + 1 1 w + 1 x + 1 x & 593B640428BB3729 & 446A5AB15210F009 & FCF44386175E215A & B9 & 67 & 113 \\
+	15F & v & v*w + v + 1 & 1B & 9F & C5 & v + 1 & w + v & v + 1 v w + 1 w x x + 1 & D71EFF0690B1CA9E & 412DB949196777B5 & 36BC603EB62D8929 & BE & 66 & 116 \\
+	12D & v & (v + 1)*w + 1 & BE & E6 & 29 & v & (v + 1)*w + 1 & 1 v 1 w x + 1 x & 42AED328F5E86890 & 06127E076EC492A1 & 20117EBB6AC4F3B1 & FD & 67 & 116 \\
+	18D & v + 1 & v*w & 4E & 45 & EB & v + 1 & (v + 1)*w & 1 v + 1 w + 1 w x x + 1 & 44164E28C40D19D1 & 886DF6EBE6ED460F & 67B00F6381DAC9D4 & 1A & 66 & 110 \\
+	165 & v + 1 & (v + 1)*w + v & 88 & 72 & FD & v & w + v + 1 & v + 1 v w + 1 w x x + 1 & 4782288D12DD9C01 & 5B07F713D79D1B01 & 837181A61B50FDB3 & 84 & 66 & 107 \\
+	169 & v & (v + 1)*w + v + 1 & 7F & 12 & 5 & v & v + 1 & 1 v w + 1 w x x + 1 & 885D082FF731078B & A0D5324D2083FA7B & 7910A0FBB19CE752 & 62 & 66 & 109 \\
+	11D & v + 1 & v*w + v + 1 & D6 & 4F & 57 & v + 1 & w + v & 1 v + 1 w + 1 w x + 1 x & 0243AA46D2CB4935 & 86BBE4B5C22B807B & 468B48D9169E3A3D & 8E & 66 & 113 \\
+	11B & v & (v + 1)*w + v + 1 & BC & 5D & FE & v + 1 & v & v + 1 v w + 1 w x x + 1 & 21BEDE24E72B2240 & 9B01614FE77163E1 & F87C3E1F8FC7E3F1 & 63 & 66 & 111 \\
+	12B & v & v*w + 1 & EA & D6 & C2 & v & v*w + 1 & 1 v + 1 1 w x x + 1 & 17DB026A4604D374 & AA2C5E77420420D3 & 46E4765FE38D24B2 & F8 & 67 & 115 \\
+	1CF & v & (v + 1)*w + v & 3C & D1 & 41 & v & (v + 1)*w + v & 1 v 1 w + 1 x + 1 x & EAD1024228466632 & 983006270E1420CF & BAE66EEC48C5AD8C & 9D & 67 & 114 \\
+	1B1 & v + 1 & v*w + v & CC & F2 & A6 & v + 1 & v & 1 v w + 1 w x x + 1 & 1CDA1E058013BE67 & 089B2A4734F3A0E3 & ADA27C68C86B795E & BE & 66 & 117 \\
+	1D7 & v & (v + 1)*w + v & 35 & 72 & 6E & v & (v + 1)*w + v & 1 v + 1 1 w x + 1 x & A2BF9FE05D137B81 & B8C860E5AE3258B9 & DDBAE516E6D7C7B8 & 83 & 67 & 109 \\
+	171 & v & v*w + v + 1 & DB & 2B & AE & v & w + v & 1 v + 1 w + 1 w x x + 1 & 3180692043C6C1BF & 40F7102572F94AB5 & 4A2B837BE9BCDE45 & E4 & 66 & 113 \\
+	1F3 & v & (v + 1)*w + v + 1 & 70 & DB & 57 & v & v + 1 & 1 v w + 1 w x x + 1 & 879E08B62744E186 & F80B7061200FF681 & CB3E0B4B540AF888 & 4A & 66 & 107 \\
+	139 & v + 1 & v*w & D4 & 4A & C6 & v & (v + 1)*w + v + 1 & v + 1 v 1 w + 1 x x + 1 & 2DA1B7B4F7215D50 & 442883297AFEB787 & 7708EB442CFE047C & B1 & 67 & 109 \\
+	1E7 & v + 1 & (v + 1)*w + v & 84 & 31 & C1 & v + 1 & (v + 1)*w + v & 1 v 1 w + 1 x x + 1 & F5F7EA404CCEA24D & CC100E71322AC009 & 4D7AB0CF0E7B6F24 & 9 & 68 & 107 \\
+	13F & v + 1 & v*w + v & 95 & 29 & 15 & v + 1 & v*w + v & 1 v + 1 1 w + 1 x x + 1 & 20CC047D4075E681 & 7C0880D11420D67D & 5B5076B5069AD6AC & 84 & 67 & 106 \\
+	1F9 & v & (v + 1)*w + 1 & C0 & B3 & 2F & v & (v + 1)*w + 1 & 1 v 1 w + 1 x + 1 x & CA0237C0915D7B10 & 2E3E8A01D0CC4027 & 8C5D316A40CB2EDC & 4 & 67 & 104 \\
+	1BD & v & (v + 1)*w + v & 27 & 52 & AB & v + 1 & v*w + v + 1 & v + 1 v 1 w x + 1 x & 59085A40668B5EEC & E41097DD4022AD0D & F50A9CE1A4E6A160 & 5C & 67 & 111 \\
+	187 & v + 1 & v*w + v + 1 & AB & DF & 4E & v + 1 & w + v + 1 & 1 v w + 1 w x + 1 x & AD3C80FA1C693484 & 2085486B4221D48B & BFA6F36D6B7A6195 & C3 & 66 & 112 \\
+	1F5 & v & v*w + v & 5D & 51 & B2 & v & v & 1 v w + 1 w x + 1 x & 44DA1BBC2A20C6DB & 5677046DD8F7D441 & 1EF42E41F7AD1CFC & F0 & 66 & 112 \\
+	14D & v & v*w + v & 1D & FA & E & v & v*w + v & 1 v + 1 1 w + 1 x + 1 x & 6A40E242BDDF5185 & 2C401C998CF650DB & 5B5076B5069AD6AC & 27 & 67 & 113 \\
+	17B & v + 1 & (v + 1)*w + 1 & 6C & 13 & 6E & v & v*w + 1 & v + 1 v 1 w x x + 1 & 33219AF7ED1E15E7 & 38B44F11D81CD10F & 37EF38D3D1B6E3A4 & 59 & 67 & 112 \\
+	1C3 & v & v*w + v & AC & 22 & 65 & v & v + 1 & 1 v + 1 w + 1 w x + 1 x & 0211437D084CD8C5 & EA4754A7084B80E7 & F5DB5AE74FD44B35 & CF & 66 & 112 \\
+	1DD & v + 1 & (v + 1)*w + v + 1 & A1 & 2A & 6B & v + 1 & v + 1 & 1 v w + 1 w x + 1 x & 2AB1B688B4FF4130 & 36758E8F263F2877 & 757F73B3EE4B9EC8 & D3 & 66 & 115 \\
+	1A9 & v + 1 & (v + 1)*w + v & C7 & 31 & 94 & v + 1 & w + v & 1 v w + 1 w x x + 1 & 91D5AFE1D7C4203F & C47702E5B8B748A1 & 186502D52161C447 & E0 & 66 & 107 \\ \hline
+    \end{tabular}
+\end{sidewaystable}
+
+\section{$16$-Bit S-Box Constructions}
+Following the same methodology for finding suitable AES S-box alternatives, we considered
+all possible $16$-bit S-box circuits. However, as noted in the previous chapter, we did not 
+consider all of the low-level algebraic optimizations of Canright. We leave such optimizations 
+for future work. 
+
+\todo[inline]{insert table of results here}

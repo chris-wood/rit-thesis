@@ -1,0 +1,18 @@
+\frametitle{Optimal Pipeline Selection Strategy (for FPGAs)}
+\begin{algorithm}[H]
+\caption{Pipeline Optimization Strategy}
+\begin{algorithmic}[1]
+% \Require{Functionally correct pipeline version of the inverse circuit.}
+% \Ensure{An efficient pipeline implementation.}
+\State $E_c = Throughput(Mbits/s)/Area$
+\State $Opt \gets False$
+\While {$Opt = False$}
+\State Remove the pipeline state that contributes the lowest frequency reduction
+\State Reimplement and resynthesize the design
+\State $E_n = Throughput(Mbits/s)/Area$
+\If{$E_c > E_n$}
+\State $Opt = True$
+\EndIf
+\EndWhile
+\end{algorithmic}
+\end{algorithm}

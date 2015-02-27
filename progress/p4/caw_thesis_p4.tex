@@ -1,0 +1,194 @@
+\documentclass[handout]{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{pgfpages}
+\usepackage{verbatim}
+\usepackage{amsmath, amssymb, graphics, setspace}
+
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+
+\newcommand{\field}[1]{\mathbb{#1}} %requires amsfonts
+
+\usetheme{Antibes}
+\usecolortheme{beaver}
+\title[Composite Field Decomposition for Higher Order S-boxes]{Thesis Progress Report}
+
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage[T1]{fontenc}
+
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm]
+
+\institute[RIT]{}
+\date{\today}
+%\subtitle{}
+\author{Christopher A. Wood}
+%\institute[]{}
+\date{\today}
+
+\begin{document}
+
+%%%%%
+%%
+%% Resource link: http://www.math-linux.com/spip.php?article77
+%%
+%%%%
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Agenda}
+	\tableofcontents
+\end{frame}
+
+% (irr and primitive) poly generation algorithms
+% 16-bit software and hardware for inverse
+% sw implementation and performance measurements...
+% boolean function analysis code and example...
+% polynomial generation code...
+
+\section{Generating Polynomials}
+\begin{frame}[fragile]
+	\frametitle{Testing for Irreducibility}
+\begin{algorithm}[H]  %[htb]
+\caption{Testing for polynomial irreducibility} 
+\begin{algorithmic}[1]
+\Require{A prime $p$ and \emph{monic} polynomial $f(x)$.}
+\Ensure{YES if $f(x)$ is irreducible, NO otherwise.}
+\State $g(x) \gets x$ \Comment{The smallest possible factor}
+\For{$i = 1 \to \lfloor m/2 \rfloor$}
+	\State $g(x) \gets g(x)^p \mod f(x)$
+	\State $d(x) \gets \gcd\{f(x), g(x) - x\}$
+	\If{$d(x) \not= 1$}
+		\State NO
+	\EndIf 
+\EndFor
+\Return YES
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Order-Based Test for Irreducibility}
+\begin{algorithm}[H] 
+\caption{Testing for polynomial irreducibility} 
+\begin{algorithmic}[1]
+\Require{An integer $k$ and \emph{monic} polynomial $f(x)$.}
+\Ensure{YES if $f(x)$ is irreducible, NO otherwise.}
+\For{$u(x) = x \to x^{k-1} + x^{k-2} + \dotsb + x + 1$}
+	\If{$u(x)$ is a generator of $GF(2^k)$ defined by $f(x)$}
+		\Return YES
+	\EndIf
+\EndFor
+\Return NO
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Extending to Primitive Polynomials}
+	\begin{itemize}
+		\item A monic irreducible polynomial $f(x)$ is primitive in $GF(2^k)$ if its order is equal to $2^k - 1$.
+		\item Alternatively, a monic irreducible polynomial is primitive if $x$ is a generator of $GF(2^k)$ defined by $f(x)$.
+		\begin{itemize}
+			\item Check to see that $x$ is in the list of generators.
+		\end{itemize}
+		\item Verify the correctness by counting:
+		\begin{itemize}
+			\item Primitive polynomial count: $a_q(n) = \frac{\phi(q^n - 1)}{n}$ 
+			\item Irreducible polynomial count: $L_q(n) = \frac{1}{n}\sum_{d | n}\mu(n/d)q^d$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Extending the algorithms to composite fields}
+\begin{algorithm}[H] 
+\caption{Testing for polynomial irreducibility} 
+\begin{algorithmic}[1]
+\Require{}
+\Require{Positive integers $n$ and $m$, an irreducible polynomial $p(x)$ in $GF(2^n)$, and candidate polynomial $q(y)$ in $GF((2^n)^m)$.}
+\Ensure{YES if $f(x)$ is irreducible, NO otherwise.}
+\For{$u(y) = y \to y^{m-1} + (x^{n-1} + \dotsb + x + 1)y^{m-2} + \dotsb + (x^{n-1} + \dotsb + x + 1)y + (x^{n-1} + \dotsb + x + 1)$}
+	\If{$u(y)$ is a generator of $GF((2^n)^m)$ defined by $p(x)$ and $q(y)$}
+		\Return YES
+	\EndIf
+\EndFor
+\Return NO
+\end{algorithmic}
+\end{algorithm}
+
+\begin{center}
+A similar test for primitivity holds here (check to see if $y$ is a generator of $GF((2^n)^m)$)
+\end{center}
+\end{frame}
+
+\section{Finite Field Arithmetic in Software}
+\begin{frame}
+	\frametitle{Multiplicative Inverse Calculations}
+	\begin{itemize}
+		\item $GF(2^{16})$ is relatively small compared to other fields (e.g. ECC)
+		\item Yet, we should strive for two types of software implementations under two assumptions:
+		\begin{enumerate}
+			\item Constant time computations are required  
+			\item No memory constraints and no possibility for side-channel attacks
+		\end{enumerate}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Software Review}
+	\begin{itemize}
+		\item Composite field library
+		\item Polynomial generation
+		\item Isomorphic function generation 
+		\item 16-bit inverse calculation
+		\item Boolean function analysis
+	\end{itemize}
+\end{frame}
+
+\section{Measuring Boolean Functions}
+\begin{frame}
+	\frametitle{Cryptographically Significant S-box Metrics}
+	\begin{itemize}
+		\item Linear and differential approximations (tables will be large)
+		\item Boolean differential uniformity
+		\item Boolean function nonlinearity
+		\item Algebraic immunity
+		\item Correlation immunity
+		\item Resiliency
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Questions to Answer}
+	\begin{itemize}
+		\item How many irreducible and primitive polynomials exist for extension fields?
+		\item Can we optimize the isomorphic function generation algorithm?
+		\item Which cryptographic properties are most important? Should nonlinearity be more critical than correlation immunity?
+		\item How can Boolean functions be efficiently implemented in software? They generally have no algebraic constructions. Are large sequences of bitwise operations or LUTS the only ways?
+		\item Without using an affine transformation, how can we make the S-box expression \emph{algebraically complex}?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Action Items}
+	\begin{itemize}
+		\item Literature survey of software optimizations for Galois field arithmetic and AES-specific operations
+		\item Write the introduction chapter for thesis (S-box motivation, attacks, etc)
+		\item Exhaustive list of all polynomials $P(x)$, $Q(y)$, and $R(z)$ and the 
+		corresponding list of all transformation matrices (using OSG!)
+		\item Composite-field implementation of 16-bit inverse in software and hardware
+		\item Preliminary Boolean function construction code
+	\end{itemize}
+	\begin{center}
+		Next meeting: \textbf{4/29/13}
+	\end{center}
+\end{frame}
+
+\end{document}

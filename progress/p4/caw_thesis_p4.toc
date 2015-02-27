@@ -1,0 +1,4 @@
+\beamer@endinputifotherversion {3.20pt}
+\beamer@sectionintoc {1}{Generating Polynomials}{3}{0}{1}
+\beamer@sectionintoc {2}{Finite Field Arithmetic in Software}{7}{0}{2}
+\beamer@sectionintoc {3}{Measuring Boolean Functions}{9}{0}{3}

@@ -1,0 +1,43 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Strict Avalanche Criteria (SAC) visualization for the AES S-box.}}{32}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Table of highly nonlinear power mappings with good differential uniformity properties.}}{37}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Comparison of different optimization algorithms for the target $16 \times 16$ and $32 \times 16$ matrices in this work. The average XOR counts were gathered by populating the entries of matrices with nonzero entries with probability $p = 0.5$ over a series of $500$ trials.}}{54}
+\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison of the factorization time using the sequential and parallel factorization programs. }}{57}
+\contentsline {table}{\numberline {4.3}{\ignorespaces Hardware area requirements for a variety of inversion circuits for fields isomorphic to $GF(2^4)$. The Sum of Products (SOP) entries are unoptimized circuits derived directly from the corresponding truth table, and the optimized entries are those minimized using our modified version of the Boyar-Peralta technique.}}{66}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Required XOR gates for $GF(2^2)$ arithmetic operations using polynomial and normal bases. Note that each multiplication operation requires three AND gates.}}{80}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Optimized costs of polynomial scaling in $GF((2^2)^2)$.}}{82}
+\contentsline {table}{\numberline {5.3}{\ignorespaces Optimized costs of polynomial square-scaling in $GF((2^2)^2)$ \cite {Canright05-1}.}}{84}
+\contentsline {table}{\numberline {5.4}{\ignorespaces Optimized costs of normal scaling in $GF((2^2)^2)$.}}{86}
+\contentsline {table}{\numberline {5.5}{\ignorespaces Optimized costs of normal square-scaling in $GF((2^2)^2)$ \cite {Canright05-1}.}}{88}
+\contentsline {table}{\numberline {5.6}{\ignorespaces Subfield arithmetic costs ((A)dditions, (M)ultiplications, (Sq)uares, (I)nversions, (SS)quare-scales, (Sc)ales) for finite field arithmetic operations in $GF((2^2)^2)$ using polynomial and normal bases.}}{89}
+\contentsline {table}{\numberline {5.7}{\ignorespaces Total arithmetic operations using the Itoh-Tsujii inversion algorithm for varied parameters $n$ and $m$ that define the composite field $GF((2^n)^m)$ isomorphic to $GF(2^{16})$.}}{94}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces AES S-box alternatives with optimized basis change matrices and an un-merged circuit design. For space, we denote each irreducible polynomial $s(v)$, constant $c$, and binary matrix ($\mathbf {A}$, $\mathbf {T}$, and $\mathbf {T}^{-1}$ in row order) as a hexadecimal string. Also note that $\Sigma $, $\Pi $, and $\Lambda $ are given in their standard polynomial basis representation. With the basis elements given for all subfields, one may easily convert to the proper basis representation using the software that produced these results.}}{110}
+\contentsline {table}{\numberline {6.2}{\ignorespaces AES S-box alternatives with optimized basis change matrices and a merged circuit design. For space, we denote each irreducible polynomial $s(v)$, constant $c$, and binary matrix ($\mathbf {A}$, $\mathbf {T}$, and $\mathbf {T}^{-1}$ in row order) as a hexadecimal string. Also note that $\Sigma $, $\Pi $, and $\Lambda $ are given in their standard polynomial basis representation. With the basis elements given for all subfields, one may easily convert to the proper basis representation using the software that produced these results.}}{111}
+\contentsline {table}{\numberline {6.3}{\ignorespaces Precomputed values for the forward of the alternative AES S-box.}}{116}
+\contentsline {table}{\numberline {6.4}{\ignorespaces Precomputed values for the inverse of the alternative AES S-box.}}{117}
+\contentsline {table}{\numberline {6.5}{\ignorespaces Strict Avalanche Criteria (SAC) visualization for the alternative AES S-box.}}{117}
+\contentsline {table}{\numberline {6.6}{\ignorespaces Differential uniformity and nonlinearity of all bijective power mappings over $GF(2^8)$ defined by the AES irreducible polynomial $p(v) = v^8 + v^4 + v^3 + v + 1$.}}{121}
+\contentsline {table}{\numberline {6.7}{\ignorespaces Differential uniformity and nonlinearity of all bijective power mappings over $GF(2^8)$ defined by the AES irreducible polynomial $p(v) = v^8 + v^4 + v^3 + v + 1$. The branch numbers are largely influenced }}{127}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {A.1}{Irreducible Polynomials for $GF(2^2)$}}{140}
+\contentsline {table}{\numberline {A.2}{Irreducible Polynomials for $GF(2^4)/GF(2^2)$}}{140}
+\contentsline {table}{\numberline {A.3}{Irreducible Polynomials for $GF(2^8)/GF(2^4)/GF(2^2)$}}{140}
+\contentsline {table}{\numberline {A.4}{Irreducible Polynomials for $GF(2^{16})/GF(2^8)/GF(2^4)/GF(2^2)$}}{141}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {B.1}{\ignorespaces Table \#1 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{147}
+\contentsline {table}{\numberline {B.2}{\ignorespaces Table \#2 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{148}
+\contentsline {table}{\numberline {B.3}{\ignorespaces Table \#3 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{149}
+\contentsline {table}{\numberline {B.4}{\ignorespaces Table \#4 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{150}
+\contentsline {table}{\numberline {B.5}{\ignorespaces Table \#5 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{151}
+\contentsline {table}{\numberline {B.6}{\ignorespaces Table \#1 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{152}
+\contentsline {table}{\numberline {B.7}{\ignorespaces Table \#2 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{153}
+\contentsline {table}{\numberline {B.8}{\ignorespaces Table \#3 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{154}
+\contentsline {table}{\numberline {B.9}{\ignorespaces Table \#4 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{155}
+\contentsline {table}{\numberline {B.10}{\ignorespaces Table \#5 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{156}
+\addvspace {10\p@ }

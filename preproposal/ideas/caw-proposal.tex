@@ -1,0 +1,68 @@
+\documentclass[11pt]{article}
+
+\usepackage{thumbpdf, amssymb, amsmath, amsthm, microtype,
+	    graphicx, verbatim, listings, color, fancybox}
+\usepackage[pdftex]{hyperref}
+%\usepackage[margin=1in]{geometry}
+\usepackage{cawsty}
+\usepackage{fullpage}
+\usepackage{pseudocode}
+\usepackage{verbatim}
+
+\newcommand{\tlg}{\text{ lg}}
+\newcommand{\tln}{\text{ ln}}
+
+%\setlength{\parindent}{0pt}
+
+\linespread{1.2}
+
+\begin{document}
+\cawtitle{Optimizing Diffusion and Confusion}{in Cryptographic Primitives}{M.S. Thesis Proposal}
+
+%\begin{abstract}
+%TODO
+%\end{abstract}
+
+\section{Objectives}
+The following list enumerates some long-term goals from this research effort.
+
+% the objective list
+\begin{itemize}
+	\item (THEORY) Study the mathematical theory behind diffusion and confusion, stemming from Shannon's communication entropy and the use of nonlinear functions in cryptographic primitives.
+	\begin{itemize}
+		\item Question: Can discrete-time dynamical system equations be utilized effectively as diffusion layers? \cite{ChaosCrypto}
+		\item Question: To what extent does the study of chaos theory lend itself to constructing effective diffusion layers in cryptographic primitives? \cite{ChaosCrypto}
+		\item Question: Are there any other unpopular or unused discrete mathematical objects that can be used to build (fast and secure) diffusion layers with high nonlinearity properties? \cite{cryptoeprint:2010:579} \cite{cryptoeprint:2010:362} \cite{Nyberg:1991:PNS:1754868.1754910}
+	\end{itemize}
+	\item (THEORY) Analyze and evaluate existing cryptographic algorithm design mechanics that promote high diffusion and confusion through nonlinearity.
+	\begin{itemize}
+		\item Substitution-Permutation Network designs (SPN).
+		\begin{itemize}
+			\item Skein
+		\end{itemize}
+		\item Add-Rotate-XOR (ARX) designs.
+		\begin{itemize}
+			\item Rijndael
+		\end{itemize}
+		\item Question: Can existing sources of nonlinearity (S-boxes, ARX functions, etc) be manipulated to provide higher measures of diffusion without affecting their susceptibility to linear and differential cryptanalysis?
+		\item Question: What diffusion layer designs provide the best security and performance tradeoffs? Can this be mathematically proved or solved by reduction to an integer optimization problem?
+	\end{itemize}
+	\item (THEORY/SOFTWARE) Investigate the application of combinatorial and integer optimization techniques to block cipher designs and internal operations.
+	\begin{itemize}
+		\item Question: Can diffusion layers be represented as multivariate polynomial equations, and if so,  can we apply common optimization techniques to find the most effective constructions?
+		\item Question: How can such optimization techniques be extended to the cryptanalysis of block ciphers?
+	\end{itemize}
+	\item (THEORY/SOFTWARE) Perform a statistical and randomness analysis on existing diffusion layers in cryptographic primitives.
+	\begin{itemize}
+		\item Question: To what extent can the statistical properties of diffusion layers be extrapolated to full-round cryptographic primitives?
+	\end{itemize}
+	\item (SOFTWARE/HARDWARE) Investigate the implementation aspects of chosen diffusion layers
+	\begin{itemize}
+		\item Explore optimization techniques for different software and hardware implementation mediums (but limit to reconfigurable hardware - FPGAs) \cite{CryptoEngineering} \cite{henriquez2006cryptographic}
+	\end{itemize}
+\end{itemize}
+
+\bibliography{caw-proposal}{}
+\bibliographystyle{plain}
+
+\end{document}

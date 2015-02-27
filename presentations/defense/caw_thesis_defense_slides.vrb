@@ -1,0 +1,27 @@
+\frametitle{Counting Gates for $GF((((2^2)^2)^2)^2)$ Inversion}
+Assume a basis $[1, V]$, $[1, W]$, $[1, X]$, and $[1, Y]$ and coefficients $\Sigma = v$, $\Pi = (v + 1)w + v$, $\Lambda = vwx + (w + v)$
+\begin{itemize}
+\item Inversion: $78$ gates
+\item Multiplication: $81$ gates
+\item Square-scale: $81$ gates (none of our optimizations apply)
+\end{itemize}
+
+\begin{minted}[fontsize=\scriptsize,frame=single]{c}
+> F2 := GF(2);
+> Poly2<V> := PolynomialRing(F2);
+> P := V^2 + V + 1;
+> F4<v> := ext<F2 | P>;
+> Poly4<W> := PolynomialRing(F4);
+> Q := W^2 + W + v;
+> F16<w> := ext<F4 | Q>;
+> Poly16<X> := PolynomialRing(F16);
+> R := X^2 + X + ((v + 1)*w + v);
+> F256<x> := ext<F16 | R>;
+> Poly256<Y> := PolynomialRing(F256);
+> S := Y^2 + Y + (v*w*x + (w + v));
+> F6K<y> := ext<F256 | S>;
+> gatesInv16(P, Q, R, S, v, ((v + 1)*w + v), \
+(v*w*x + (w + v)), 1, v, 1, w, 1, x, 1, y);
+398
+\end{minted}
+

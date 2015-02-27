@@ -1,0 +1,89 @@
+
+\subsection{Extended Euclidean Algorithm}
+The Euclidean algorithm is perhaps one of the most widely known technique for computing
+the greatest common divisor of two integers. The basic algorithm is shown in Algorithm \ref{alg:euclidean},
+with a sample run for two arbitrary non-negative integers $a$ and $b$ shown below.
+
+\begin{algorithm}[ht!] %[htb]
+\caption{EuclideanAlgorithm($a, b$)} \label{alg:euclidean}
+\begin{algorithmic}[1]
+	\While {$b \not= 0$}
+		\State $r \gets a \mod b$
+		\State $a \gets b$
+		\State $b \gets r$
+	\EndWhile
+	\State \Return $a$
+\end{algorithmic}
+\end{algorithm}
+
+By definition, we know that $\gcd(a, b) = ax + by$ (B\`{e}zout's identiity) for some $x,y \in \mathbb{Z}$. 
+It is easy to see that computing the values of $x$ and $y$ are encapsulated in the iterations
+of the Euclidean algorithm, and so with a simple modification to this code we may compute integers $x$ and
+$y$ that satisfy B\`{e}zout's identiity. This variation is known as the Extended Euclidean algorithm.
+If we let $y = p(x)$, the irreducible polynomial for the field $GF(2^n)$, then 
+$ax + by \equiv ax$, and so $a$ must be the inverse of $x$,
+as desired. It is quite easy to see that this algorithm works for elements $\alpha \in GF(2^k)$ as well.
+The Binary Extended Euclidean Algorithm, shown in Algorithm \ref{alg:binaryEEA} \cite{Guajardo06-1}, 
+is a special variant of the EEA which uses more efficient divison operations in which the divisor 
+is always a power of two (i.e. division equates to bit shifting), which leads to efficient implementations 
+in software. However, since this requires sequential logic, we cannot use this technique
+for combinational implementations.
+
+\begin{algorithm}[ht!] %[htb]
+\caption{BinaryGaloisFieldEEA($\alpha$)} \label{alg:binaryEEA}
+\begin{algorithmic}[1]
+	\State $b \gets 1$, $c \gets 0$, $u \gets \alpha$, $v \gets p(x)$
+	\While{$x \mod u \equiv 0$}
+		\State $u \gets u/x$
+		\If{$x \mod b \equiv 0$}
+			\State $b \gets b/x$
+		\Else
+			\State $b \gets (b + p(x)) / x$
+		\EndIf
+	\EndWhile
+	\If {$u = 1$}
+		\State \Return $b$
+	\EndIf
+	\If{$deg(u) < deg(v)$}
+		\State $swap(u, v)$, $swap(b, c)$
+	\EndIf
+	\State $u \gets u + v$, $b \gets b + c$
+	\State \textbf{goto} Step 2
+\end{algorithmic}
+\end{algorithm}
+
+Unfortunately, the iterative nature of these algorithms means that they cannot be implemented
+in combinational logic. For the purpose of deriving direct combinational implementations of the 
+multiplicative inverse over $GF(2^n)$, we discard this as a viable option for hardware implementations
+with small area footprints. 
+
+\subsection{Fermat's Little Theorem}
+Fermat's Little Theorem states that for any prime number $p$ and integer $a$, $a^p - a$ is
+an integer multiple of $p$. In other words, $p | a^p -a$, or $a^p \equiv a \mod p$. Furthermore,
+if $\gcd\{a,p\}=1$, then $a^{p-1} \equiv 1 \mod p$. The same holds true for elements of finite fields.
+For every element $\alpha \in GF(2^k)$ defined by the irreducible polynomial $p(x)$, we 
+have $\alpha^{-1} \equiv \alpha^{2^k - 1}\alpha^{-1} \equiv \alpha^{2^k - 2} \mod p(x)$.
+Naively squaring and reducing the element $\alpha$ yields a time complexity of $\mathcal{O}(2^kM(n))$, 
+where $M(n)$ is the complexity of the multiplication algorithm used. However, 
+note that the element $\alpha^{2^k - 2}$ can be computed as follows:
+\begin{align*}
+\alpha^{2^{n} - 2} = \alpha^{2^{1}} \cdot \alpha^{2^{2}} \dotsb \alpha^{2^{n-1}}
+\end{align*}
+This requires only $n - 2$ multiplications and $n - 1$ squarings
+(as was done by Wang et al. \cite{Wang85-1} and shown in Algorithm \ref{alg:wangInverse}), and therefore
+has a time complexity of $\mathcal{O}(\log_2 k)$. Note that if $\alpha$ was 
+represented in a normal basis, all squaring operations would reduce to cyclic 
+shifts, which are free in hardware and very inexpensive in software.
+\begin{algorithm}[t] %[htb]
+\caption{Wang Inverse} \label{alg:wangInverse}
+\begin{algorithmic}[1]
+	\Require{$\alpha \in GF(2^k)$}
+	\State $y \gets \alpha$
+	\For{$k := 1 \to k - 2$}
+		\State $z \gets y^2$
+		\State $y \gets zx$ % \Comment{Multiplication in $GF(2^k)$}
+	\EndFor
+	\State $y \gets y^2$
+	\State \Return $y$
+\end{algorithmic}
+\end{algorithm}

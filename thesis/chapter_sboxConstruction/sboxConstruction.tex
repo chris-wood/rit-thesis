@@ -1,0 +1,432 @@
+With the release of the Data Encryption Standard in 1977 \cite{DES-FIPS} and the AES in 2001 \cite{daemen01-AES}, the design of S-boxes as the primary nonlinear operation in SPN-like ciphers has received a great deal of scrutiny from the research community. Cryptographically strong S-boxes must be resilient to the attacks discussed in Section \ref{sec:attacks} of Chapter \ref{chp:motivation}. Using the security metrics discussed in Section \ref{sec:strength} we can determine the extent to which such attacks would be successful. In general, we seek to build S-boxes that have high nonlinearity, low differential uniformity, high resiliency, high algebraic immunity, and high algebraic complexity. 
+
+S-boxes built from power mappings over Galois fields, i.e. $S(x) = x^d$ where $x \in GF(2^n)$ and $0 \leq d < 2^n$, are quite common designs. While other possibilities exist, such as those based on the cryptographic properties of Boolean functions, there are several limitations that make them difficult to use in practice. For instance, they do not have simple algebraic expressions, which means that hardware and software implementations must generally use lookup-table approaches for storing the mappings. This may be acceptable for $(n,n)$ S-boxes if $n \leq 8$, but for larger values of $n$ this requirement severely hinders their practicality. As such, in this section we focus primarily on power mapping constructions for $8$ and $16$-bit S-boxes and describe our rationale for the selection of the inverse power mapping, as well as our algorithmic approach to constructing larger AES-like S-boxes.
+
+\section{Galois Field Power Mapping Constructions}
+Nyberg's 1994 paper entitled, ``Differentially Uniform Mappings for Cryptography,'' \cite{Nyberg94-1} is a fundamental piece of literature for constructing ideal power mappings. In fact, Rijndael's selection of the inverse mapping (i.e. $f(x) = x^{-1} \equiv x^{2^{n} - 2}$) is credited to Nyberg's work \cite{Daemen02-1}. Power mappings over the field $GF(2^n)$, that is, functions of the form $f(x) = x^d$, are common functions used for S-boxes because they generally have very elegant algebraic representations and may be efficiently computed online. These functions are typically classified based on their exponents $d$. The known exponents of power mappings over $GF(2^n)$ ($n$ even) with substantially high nonlinearity and good differential uniformity properties are shown in Table \ref{tab:powerMaps}.
+
+\begin{table} \label{tab:powerMaps}
+\begin{center}
+\caption{Table of highly nonlinear power mappings with good differential uniformity properties.}
+    \begin{tabular}{c || c | c }
+    \hline
+    \emph{Name} & \emph{Exponent} (d) & \emph{Ref.} \\ \hline
+    Inverse & $-1 \equiv 2^n - 2$ & \cite{Nyberg94-1} \\ \hline
+    Gold & $2^{k} + 1$, $\gcd\{k,n\} = 1$ for some $1 \leq k \leq 2^{n} - 1$ & \cite{Courtois05-1} \\ \hline
+    Kasami & $2^{2k} - 2^k + 1$, $\gcd\{k,n\} = 1$ for some $1 \leq k \leq n/2$ & \cite{Courtois05-1} \\ \hline
+    Dobertin & $2^{4k + 3k + 2k + k} - 1$ over $GF(2^n)$ with $n = 5k$ & \cite{Courtois05-1} \\ \hline
+    Niho & $2^{m} + 2^{m/2} - 1$ over $GF(2^n)$ with $n = 2m + 1$ and $m$ even & \cite{Courtois05-1} \\ 
+    ~ & $2^{m} + 2^{(3m + 1)/2} - 1$ over $GF(2^n)$ with $n = 2m + 1$ and $m$ odd & ~ \\ \hline
+    Welch & $2^m + 3$ over $GF(2^n)$ with $n = 2m + 1$ & \cite{Courtois05-1} \\ \hline
+    \end{tabular}
+\end{center}
+\end{table}
+For S-boxes based on power mappings, it makes sense to impose the additional requirement that they are bijective. Due to Fermat's Little Theorem, it is easy to see that this only occurs when $\gcd\{d, 2^n - 1\} = 1$. Interestingly, with this restriction and the constraint $n = m = 16$, many of the possible values for $d$ are discarded. For example, under the constraint that $\gcd\{k,n\} = 1$ for Gold exponents $d = 2^k + 1$, it must be true that $d \in \{3,9,33,129,513,2049,8193,32769\}$. However, for each of these exponents, it can be checked that $\gcd\{d, 2^n - 1\}\not= 1$, and therefore we have no Gold functions to consider for $n = 16$. The same holds true for all Welch, Niho, Dobbertin, and Kasami exponents, as we prove in the following theorems.
+
+% gold
+\begin{thm}
+The set of Gold exponents $\{d : d = 2^k + 1, \gcd\{d, 2^n - 1\} = 1, \gcd\{k, n\} = 1\} = \emptyset$ if $n = 16$.
+\end{thm}
+\begin{proof}
+Observe that $\gcd\{3, 2^{16} - 1\} = 3$ and that the only eligible values for $k$ such that $\gcd\{k, 16\} = 1$ are $k \in \{1, 3, 5, 7, 9, 11, 13, 15\}$. We can generalize this to say that only odd values of $k$ will form Gold exponents. Thus, it suffices to show that $\gcd\{3, 2^{2m + 1} + 1\} = 3$ for $m \geq 0$. Equivalently, we may prove that $2^{2m + 1} + 1 = 3q$, which can be rewritten as $4^m = \frac{3q - 1}{2}$ for some integer $q > 0$. We do this by induction on $m$, starting with the case when $m = 0$ and $q = 1$, which yields
+\begin{align*}
+4^0 = \frac{3q - 1}{2} = \frac{2}{2} = 1.
+\end{align*}
+Now assume that $4^{m} = \frac{3q - 1}{2}$ for some integer $q > 1$. We must show that $4^{m + 1} = \frac{3q' - 1}{2}$ for some integer $q' > q$. We can solve for $q'$ as follows.
+\begin{align*}
+4^{m + 1} = \frac{3q' - 1}{2} \\
+4(4^m) = \frac{3q' - 1}{2} \\
+2(3q - 1) = \frac{3q' - 1}{2} \\
+4(3q - 1) = 3q' - 1 \\
+3q' = 12q - 3 \\
+q' = 4q - 1
+\end{align*}
+Therefore, $q'$ is an integer that satisfies $4^{m + 1} = \frac{3q' - 1}{2}$.
+\end{proof}
+
+% kasami
+\begin{thm}
+The set of Kasami exponents $\{d : d = 2^{2k} - 2^k + 1, \gcd\{d, 2^n - 1\} = 1, \gcd\{k, n\} = 1, 1 \leq k \leq n/2\} = \emptyset$ if $n = 16$.
+\end{thm}
+\begin{proof}
+Observe that $\gcd\{3, 2^{16}\} = 3$ and that the only eligible values for $k$ such that $\gcd\{k, 16\} = 1$ are odd positive integers. Thus, it suffices to show that $\gcd\{3, 2^{2(2m + 1)} - 2^{2m + 1} + 1\} = 3$. Equivalently, we may show that $2^{2(2m + 1)} - 2^{2m + 1} + 1 = 3q$ for some nonnegative integer $q > 0$. We do this by induction on $m$. First, if $m = 0$, then we have
+\begin{align*}
+2^{2} - 2 + 1 = 3,
+\end{align*}
+where $q = 1$. If we assume that $2^{2(2m + 1)} - 2^{2m + 1} + 1 = 3q$, $q > 1$, then we must now show that $2^{2(m+1) + 1} - 2^{2(m+1) + 1} + 1 = 3q'$ for some nonnegative integer $q' > q$. We can solve for $q'$ as follows:
+\begin{align*}
+2^{2(2(m + 1) + 1)} - 2^{2(m + 1) + 1} = 3q' - 1 \\
+2^{2(2m + 1) + 4} - 2^{2m + 1 + 2} = 3q' - 1 \\
+16(2^{2(2m + 1)}) - 4(2^{2m + 1}) = 3q' - 1 \\
+16(2^{2m + 1} + 3q - 1) - 4(2^{2m + 1}) = 3q' - 1 \\
+16(3q) + 12(2^{2m + 1}) - 15 = 3q' \\
+3(16q + 4(2^{2m + 1}) - 5) = q'
+\end{align*}
+Therefore, $q'$ is an integer that satisfies $2^{2(m+1) + 1} - 2^{2(m+1) + 1} + 1 = 3q'$.
+\end{proof}
+
+It is trivial to see that the sets of Niho, Dobbertin, and Welch exponents is also empty when $n = 16$. The Dobbertin exponent set is empty because there does not exist a $k \in \mathbb{Z}$ such that $16 = 5k$. Similarly, the sets of Niho and Welch exponents are also empty because $n$ is even. As a result, the only remaining power mapping choice from this list is the inverse exponent. However, for the sake of exploring S-box alternatives for the AES, we exhaustively explored the nonlinearity and differential uniformity of all bijective power mappings over $GF(2^8)$. The results of this experiment are discussed in Chapter \ref{chp:results}.
+
+% However, we felt it would be useful to examine all bijective power mappings over $GF(2^{16})$ and measure their cryptographic properties (i.e. nonlinearity, differential uniformity, etc). There are 32768 exponents $d$ such that $x^d$ is a bijective power mapping over $GF(2^{16})$. Unfortunately, given the
+% complexity of computing many of the metrics described in the previous chapter, it was not feasible to 
+% analyze all 32768 mappings for their security. For example, ignoring constants in the 
+% time complexity, the complexity of the differential uniformity computation is proportional to $2^{48}$ 
+% for a $16$-bit S-box, which is not feasible to compute on a normal computer in a
+% reasonable amount of time. Therefore, we relied on the Open Science Grid \cite{}
+% to perform the necessary computations for the inverse mapping $d = 65534$. Our results for
+% this particular power map are summarized below.
+% \begin{itemize}
+%   \item Differential Uniformity: 4
+%   \item Nonlinearity: ~
+% \end{itemize}
+
+\subsection{Affine Transformations for Algebraic Complexity}
+While the power mappings discussed in the previous section provide ideal nonlinearity and differential uniformity, the algebraic expression of S-boxes defined solely by these functions only consists of a single term. In order to avoid interpolation attacks, such expressions should have more terms (be more complex), and the most common technique for increasing the complexity is to ``surround'' the power mappings with an affine transformation. We already discussed the algebraic complexity of the AES in Section \ref{sec:strength_alg_complexity}. This metric was determined by finding the unique univariate linearized polynomial, which must exist as a result of the Lagrangian Interpolation Formula (stated below), for the S-box mapping over $GF(2^k)$, and then simply counting the number of terms in this polynomial. In order to assess the affine transformation composed of a power mapping over $GF(2^{16})$ we can reconstruct the linearized polynomial using Lagrangian interpolation. For completeness, we illustrate this technique with a small example and a snippet of Magma code that can be used and modified to determine the algebraic complexity of an arbitrary power mapping combined with any affine transformation.
+
+\begin{thm}
+(Lagrangian Interpolation Formula, from \cite{Lidl94-1}) For $n \geq 0$, let $a_0, \dots, a_n$ be $n + 1$ distinct elements of a field $\mathbb{F}$, and let $b_0, \dots, b_n$ be $n + 1$ arbitrary elements of $\mathbb{F}$. Then, there exists exactly one polynomial $f \in \mathbb{F}[x]$ of degree at most $n$ such that $f(a_i) = b_i$ for $0 \leq i \leq n$. This polynomial is given by 
+\begin{align*}
+f(x) = \sum_{i = 0}^{n}b_i\prod_{k = 0, k \not= i}^{n}\frac{x - a_k}{a_i - a_k}.
+\end{align*}
+\end{thm}
+
+We may construct the Lagrangian interpolation polynomial manually or programmatically. For illustration purposes, consider the following small example with the field $GF(2^2) = \{0, 1, \alpha, \alpha + 1\}$ defined by the irreducible polynomial $p(x) = x^2 + x + 1$. Given this field polynomial, we clearly have that $\alpha^2 \equiv \alpha + 1$. Now, let $z \in GF(2^2)$. In order to perform Lagrangian interpolation, we need polynomials $f_z(x)$ with the property $f_z(z) = 1$ and $f_z(y) = 0$ if $y \in GF(2^2)$ and $y \not= z$. We begin by constructing $f_0(x)$, as we can then find the remaining polynomials $f_1(x)$, $f_{\alpha}(x)$, and $f_{\alpha+1}(x)$ by means of linear substitution. 
+
+To find $f_0(x)$, we first construct the polynomial 
+\begin{align*}
+g(x) = (x-1)(x-\alpha)(x - (\alpha + 1)).
+\end{align*}
+Clearly, if $x \in GF(2^2) \setminus \{0\}$, then $f_0(x) = 0$. Therefore, by the previously stated requirement,
+we let $f_0(x) = g(x)/g(0) = g(x) / [(0 - 1)(0 - \alpha)(0 - (\alpha+1))] = g(x) / (\alpha^2 + \alpha) = g(x)$.
+Now, we expand the terms in $g(x)$ as follows:
+\begin{align*}
+g(x) = & (x-1)(x-\alpha)(x-(\alpha+1)) \\
+= &  (x^2 - x - x\alpha + \alpha)(x - (\alpha + 1))\\
+= & x^3 - x^2 -x^2\alpha + x\alpha - x^2\alpha - x\alpha - x\alpha^2 - \alpha^2 + x^2 - x - x\alpha + \alpha \\
+= & x^3 - x^2(\alpha^2 + \alpha + 1) + 1(\alpha^2 + \alpha) \\
+= & x^3 + 1
+\end{align*}
+
+Therefore, $f_0(x) = x^3 + 1$, and we can now construct $f_1(x)$, $f_{\alpha}(x)$, and $f_{\alpha+1}(x)$ as follows:
+\begin{align*}
+f_1(x) & =  1 + (x-1)^3\\
+f_{\alpha}(x) &= 1 + (x - \alpha)^3\\
+f_{\alpha+1}(x) &= 1 + (x - (\alpha + 1))^3
+\end{align*}
+Observe that, for all polynomials $f_1(x)$, $f_{\alpha}(x)$, and $f_{\alpha+1}(x)$, if $x = z$ then
+$f_z(z) = f_0(z - z) = 1$, and conversely, if $x = y \in GF(2^2)$ and $y \not= z$, then $f_z(y - z) = 0$
+because $f_0(z) = 0$ for all non-zero elements in $GF(2^2)$.
+
+Finally, we arrive at the computation of the interpolation polynomial $f(x)$. We may choose any function
+$F : GF(2^2) \to GF(2^2)$ and find the corresponding $f(x)$ as follows:
+\begin{align*}
+f(x) = F(0)f_0(x) + F(1)f_1(x) + F(\alpha)f_{\alpha}(x) + F(\alpha+1)f_{\alpha+1}(x).
+\end{align*}
+
+In this example, assume we seeking an interpolation polynomial for the function $F(x) = x + 1$, $x \in GF(2^2)$. 
+We then derive $f(x)$ as follows:
+\begin{align*}
+f(x) = & F(0)f_0(x) + F(1)f_1(x) + F(\alpha)f_{\alpha}(x) + F(\alpha+1)f_{\alpha+1}(x) \\
+= & 1(1+x^3) + \alpha(1 + (x - 1)^3) + (\alpha + 1)(1 + (x - \alpha)^3) + 0(1 + (x - (\alpha + 1))^3) \\
+= & 1 + x^3 + \alpha(1 + x^3 + x^2 + x + 1) + (\alpha + 1)(1 + (x - \alpha)^3) \\
+= & x^2\alpha^2 + x(\alpha^3 + \alpha^2 + \alpha) + \alpha^4 + \alpha^3 + \alpha \\
+= & x^2(\alpha + 1) + x(1 + \alpha + 1 + \alpha) + 1 \\
+= & x^2(\alpha + 1) + 1
+\end{align*}
+
+We can now easily verify that $f(x)$ is correct by plugging in each element $z \in GF(2^2)$ and comparing
+it to the expected output from $F$, as shown below:
+\begin{align*}
+f(0) = & 0^2(\alpha + 1) + 1 = 1 \\
+f(1) = & 1^2(\alpha + 1) + 1 = \alpha \\
+f(\alpha) = & \alpha^2(\alpha + 1) + 1 = (\alpha + 1)(\alpha + 1) + 1 = \alpha^2 + 1 + 1 = \alpha + 1 \\
+f(\alpha + 1) = & (\alpha + 1)^2(\alpha + 1) + 1 = (\alpha + 1)(\alpha + 1)(\alpha + 1) + 1 = \alpha^3 + \alpha^2 + \alpha = 0
+\end{align*}
+
+The Magma code used to compute the algebraic complexity of the AES S-box is shown below. This code can be modified to support any type of affine transformation and power mapping combination with little effort. The (modified) output of this program is also shown below. As one can see, it matches the derived linearized polynomial presented in \cite{Daemen02-1}.
+\begin{align*}
+f(x) = 05x^{254} + 09x^{253} + F9x^{251} + 15x^{247} + F4x^{239} + x^{223} + B5x^{191} + 8Fx^{127} + 63
+\end{align*}
+
+% \begin{lstlisting}[
+% language=C, 
+% basicstyle=\small\sffamily,
+% numbers=left,
+% frame=tb,
+% columns=fullflexible,
+% showstringspaces=false,
+% caption=Magma program for Lagrangian interpolation of S-boxes.]
+\begin{listing}[ht!]
+\caption{Magma code to perform Lagrangian interpolation for the AES S-box.}
+\begin{minted}[fontsize=\scriptsize]{c}
+// Build GF(2).
+F := GF(2);
+pol2<X> := PolynomialRing(F);
+
+// Build GF(2^8), an extension of GF(2)
+Q := X^8 + X^4 + X^3 + X + 1;
+F256<x> := ext<F | Q>;
+
+// Powers for the S-box function (affine function matrix and power map exponent).
+affine := Matrix(GF(2), 8, 8,
+  [
+    [1,1,1,1,1,0,0,0],
+    [0,1,1,1,1,1,0,0],
+    [0,0,1,1,1,1,1,0],
+    [0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1],
+    [1,1,1,1,0,0,0,1]
+  ]);
+constant := x^6 + x^5 + x + 1;
+power := -1;
+
+// Build up the input/output pairs for interpolation.
+Input := [];
+Output := [];
+for e in F256 do
+  Input := Append(Input, e);
+
+  // 0 has no inverse.
+  if e eq 0 then
+    s := ElementToSequence(e);
+  else
+    s := ElementToSequence(e^power);
+  end if;
+
+  // Perform the matrix product (linear mapping).
+  v := Transpose(Matrix([Reverse(s)]));
+  prod := affine * v;
+
+  // Transform back to the output without transposing
+  es := [
+          prod[1][1], prod[2][1], 
+          prod[3][1], prod[4][1], 
+          prod[5][1], prod[6][1], 
+          prod[7][1], prod[8][1]
+        ];
+  elem := SequenceToElement(Reverse(es), F256) + constant;
+  Output := Append(Output, elem);
+end for;
+
+// Perform Lagrangian interpolation and display the polynomial.
+Fx := Interpolation(Input, Output);
+Fx;
+#Terms(Fx);
+\end{minted}
+\label{lst:algComplexityMagmaCode}
+\end{listing}
+% \end{lstlisting}
+
+Cui and Cao \cite{Cui07-1} proved that the algebraic complexity for any AES-like S-box (i.e. a function $S(x) = A \circ P$) over $GF(2^n)$ is bounded by $n + 1$. For S-boxes over $GF(2^{16})$, an algebraic complexity of $17$ is well above the threshold for successful interpolation attacks, though its relatively small value might still be cause for concern. To remedy this discomfort, Cui and Cao proposed the affine-power-affine construction of the AES S-box, which is a function $S(x) = A \circ P \circ B$, where $A$ and $B$ are affine transformations and $P$ is the power mapping. This construction increases the algebraic complexity without changing other cryptographically significant properties \cite{Cui07-1}. It is well known that the nonlinear and differential properties of an S-box remain unchanged under affine transformations. For that reason, we searched for an appropriate affine transformation separately from the work of defining the underlying power mapping. 
+
+To find an such a transformation, we randomly created invertible matrices over $GF(2)$, and for each candidate matrix, performed the affine transformation with a random low-weight element in the field $GF(2^{16})$. An example of one AES-like S-box using an affine transformation and its inverse that did not yield any fixed points is shown below, where the irreducible polynomial for the field $GF(2^{16})$ is $p(x) = x^{16} + x^5 + x^3 + x^2 + 1$. 
+\begin{align*}
+S(x) : 
+\begin{pmatrix}
+y_{15} \\
+y_{14} \\
+y_{13} \\
+y_{12} \\
+y_{11} \\
+y_{10} \\
+y_{9} \\
+y_{8} \\
+y_{7} \\
+y_{6} \\
+y_{5} \\
+y_{4} \\
+y_{3} \\
+y_{2} \\
+y_{1} \\
+y_{0} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\ 
+1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 1 \\ 
+0 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 \\ 
+1 & 1 & 1 & 0 & 1 & 0 & 1 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\ 
+1 & 1 & 0 & 1 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 1 & 0 & 1 \\ 
+0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\ 
+1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 0 \\ 
+1 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 \\ 
+1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 & 1 & 1 \\ 
+0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 0 \\ 
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 1 \\ 
+0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\ 
+1 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\ 
+0 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 \\ 
+1 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 \\ 
+\end{pmatrix}
+\begin{pmatrix}
+x_{15} \\
+x_{14} \\
+x_{13} \\
+x_{12} \\
+x_{11} \\
+x_{10} \\
+x_{9} \\
+x_{8} \\
+x_{7} \\
+x_{6} \\
+x_{5} \\
+x_{4} \\
+x_{3} \\
+x_{2} \\
+x_{1} \\
+x_{0} \\
+\end{pmatrix}^{-1}
++
+\begin{pmatrix}
+1 \\
+0 \\
+1 \\
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+0 \\
+1 \\
+1 \\
+0 \\
+1 \\
+0 \\
+1 \\
+1 \\
+%old:[ 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0 ]
+%new:[ 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1 ]
+\end{pmatrix}
+\end{align*}
+
+\begin{align*}
+S^{-1}(x) : 
+\begin{pmatrix}
+x_{15} \\
+x_{14} \\
+x_{13} \\
+x_{12} \\
+x_{11} \\
+x_{10} \\
+x_{9} \\
+x_{8} \\
+x_{7} \\
+x_{6} \\
+x_{5} \\
+x_{4} \\
+x_{3} \\
+x_{2} \\
+x_{1} \\
+x_{0} \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 1 & 0 & 1 & 0 \\ 
+1 & 1 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 0 \\ 
+1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 \\ 
+0 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\ 
+0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\ 
+1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\ 
+1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 \\ 
+0 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 \\ 
+1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 1 \\ 
+1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 1 \\ 
+0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 0 \\ 
+0 & 1 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 1 & 1 & 0 & 0 \\ 
+1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\ 
+1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 1 \\ 
+0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\ 
+1 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 1 & 1 \\ 
+\end{pmatrix}
+\begin{pmatrix}
+y_{15} \\
+y_{14} \\
+y_{13} \\
+y_{12} \\
+y_{11} \\
+y_{10} \\
+y_{9} \\
+y_{8} \\
+y_{7} \\
+y_{6} \\
+y_{5} \\
+y_{4} \\
+y_{3} \\
+y_{2} \\
+y_{1} \\
+y_{0} \\
+\end{pmatrix}^{-1}
++
+\begin{pmatrix}
+1 \\
+0 \\
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+1 \\
+1 \\
+0 \\
+1 \\
+1 \\
+0 \\
+0 \\
+0 \\
+1 \\
+%old: [ 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1 ]
+%new: [ 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1 ]
+\end{pmatrix}
+\end{align*}
+
+The interpolation polynomial $p(y)$ for the forward S-box, which is shown below, has $17$ terms, thus achieving the upper bound proved by Cui and Cao, and the inverse S-box likely has even more. Unfortunately, due to memory constraints imposed by Magma, we were not able to finish the Lagrangian interpolation process for the inverse S-box. Note that we use $y$ as the indeterminate in $p(y)$ because we chose $x$ as the primitive element of $GF(2^{16})$ in Magma, and thus we use powers of $x$ to represent distinct elements in the field.
+\begin{align*} \label{eqn:interpPoly}
+p(y) & = x^{29186}y^{65534} + x^{65006}y^{65533} + x^{57441}y^{65531} + x^{62505}y^{65527} + \\
+    & x^{2287}y^{65519} + x^{26263}y^{65503} + x^{37821}y^{65471} + x^{36087}y^{65407} + \\
+    & x^{56248}y^{65279} + x^{62458}y^{65023} + x^{62964}y^{64511} + \\
+    & x^{37304}y^{63487} + x^{2571}y^{61439} + x^{24416}y^{57343} + x^{11823}y^{49151} + \\
+    & x^{777}y^{32767} + x^{1137}
+\end{align*}
+
+Algorithm \ref{alg:affineSearch} provides a non-deterministic procedure to search for an appropriate affine transformation for a field $\mathbb{F}$, which, in our case, is the field $GF(2^k)$ defined by the irreducible polynomial $p(x)$. Using the same rationale for the affine transformation selection presented by Dameon and Rijmen in \cite{Daemen02-1}, we search for affine transformations that have a ``complex algebraic expression if combined with the inverse mapping'' and, together with the inverse operation, have ``no fixed points and no opposite fixed points.'' In this context, a fixed point or opposite fixed point occurs when there exists an element $a \in GF(2^k)$ such that one of the following hold
+\begin{align*}
+S(a) \oplus a = \{0\}^k \\
+S(a) \oplus a = \{1\}^k
+\end{align*}
+Also, due to the randomized, non-deterministic nature of this procedure, we cannot place any bound on its running time. However, during the course of this work, we did not encounter a case where the algorithm failed to terminate in a reasonable amount of time. It is conceivable that for $k > 16$, this procedure would not terminate quickly.
+\begin{algorithm}[t] %[htb]
+\caption{AffineSearch($\mathbb{F}, n, d$)} \label{alg:affineSearch}
+\begin{algorithmic}[1]
+\State $done \gets False$
+\Repeat 
+  \State $\mathbf{A} \gets RandomMatrix(GF(2), n, n)$
+  \State $c \gets RandomElement(\mathbb{F})$
+  \If {$det(\mathbf{A}) \not= 0$} \Comment{Only consider invertible matrices}
+    \State $valid \gets True$
+    \For {\textbf{each} $e \in \mathbb{F}$}
+      \If {$e$ is not a fixed point}
+        \State Compute and store $S(e) = \mathbf{A}e^d + c$ and $S^{-1}(e) = (\mathbf{A}^{-1}(S(e) + c))^{d^{-1}}$
+      \Else
+        \State $valid \gets False$
+        \State Break
+      \EndIf
+    \EndFor
+    \If {$valid = True$}
+      \State $p(y) \gets Interpolate(S(x))$
+      \State $p^{-1}(y) \gets Interpolate(S^{-1}(x))$
+      \If {$\#p(y) > n$ and $\#p^{-1}(y) > n$}
+        \State \Return $\mathbf{A}, c$
+      \EndIf
+    \EndIf
+  \EndIf
+\Until {$done = False$}
+\end{algorithmic}
+\end{algorithm}
+
+% TODO: describe these two in text and get code for the other one 
+% \section{Resilient Maiorana-McFarland S-boxes}
+% TODO
+% describe their construction, our brief examination of existing techniques, and how to make them bijective... (NOT POSSIBLE?)

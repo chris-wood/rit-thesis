@@ -1,0 +1,34 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Visual depiction of the Fast Walsh Transform that is used to calculate the Walsh spectrum for the Boolean function $f = (10101100)$.}}{24}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with $16 \times 16$ matrices. In these graphs we use $N = 1$ to denote $7 \times 7$ matrices, $N = 2$ to denote $8 \times 8$ matrices, etc.}}{58}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Speedup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with merged $32 \times 16$ matrices. In these graphs we use $N = 11$ to denote $22 \times 11$ matrices, $N = 2$ to denote $24 \times 12$ matrices, etc.}}{58}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Sizeup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with merged $16 \times 16$ and unmerged matrices. This data was collected by running tests for matrices of size $7 \times 7$ to $16 \times 16$ matrices.}}{59}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Sizeup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with merged $32 \times 16$ and unmerged matrices. This data was collected by running tests for matrices of size $22 \times 11$ to $32 \times 16$ matrices.}}{59}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces RTL schematics for the smallest $GF((2^2)^2)$ and $GF(2^4)$ inversion circuits generated with the Synopsys tool.}}{67}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Inversion circuit corresponding to cases 8 and 16 in Table 4.3\hbox {}}}}{67}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Inversion circuit corresponding to case 20 in Table 4.3\hbox {}}}}{67}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces All possible tower field representations for $GF(2^{16})$. Our constructions use the isomorphic field $GF((((2^2)^2)^2)^2)$.}}{69}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Polynomial basis inverter in $GF((2^2)^2)$.}}{71}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Normal basis inverter for $GF((2^2)^2)$.}}{74}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Polynomial combinational circuit for computing the multiplicative inverse of an element $\delta = \gamma _1 v + \gamma _2$ in $GF(2^2)$ (i.e. $\delta ^{-1}$).}}{75}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Polynomial combinational circuit for computing the product of $\delta _1 = \gamma _1 v + \gamma _2$ and $\delta _2 = \gamma _3 v + \gamma _4$ in $GF(2^2)$.}}{76}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Polynomial combinational circuit for scaling an element $\delta _1 = \gamma _1 v + \gamma _2$ by a constant $\delta _2 = \gamma _3 v$ in $GF(2^2)$.}}{77}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Polynomial combinational circuit for scaling an element $\delta _1 = \gamma _1 v + \gamma _2$ by a constant $\delta _2 = \gamma _3 v + \gamma _4$ in $GF(2^2)$.}}{77}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Square-scale circuit in $GF(2^2)$ when $\Sigma = v$}}{78}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Square-scale circuit in $GF(2^2)$ when $\Sigma = v + 1$}}{78}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Normal combinational circuit for computing the product of two elements $\delta _1 = \gamma _1 v^2 + \gamma _2 v$ and $\delta _2 = \gamma _3 v^2 + \gamma _4 v$ in $GF(2^2)$.}}{79}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Polynomial basis multiplier for $GF((2^2)^2)$.}}{81}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Normal basis multiplier for $GF((2^2)^2)$.}}{85}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces High-level diagram for a merged S-box circuit.}}{102}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Schematic diagrams of the top-level schematic of the S-box and internal inversion circuit.}}{119}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Top-level circuit for the alternative AES S-box using the different field polynomial.}}}{119}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Top-level schematic for the inversion circuit within our overall S-box circuit.}}}{119}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

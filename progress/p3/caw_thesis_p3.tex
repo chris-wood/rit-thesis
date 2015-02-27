@@ -1,0 +1,330 @@
+\documentclass[handout]{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{pgfpages}
+\usepackage{verbatim}
+\usepackage{amsmath, amssymb, graphics, setspace}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,%
+                shapes,positioning}
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!50]
+\tikzstyle{ignored edge} = [draw,line width=5pt,-,black!20]
+
+\newcommand{\field}[1]{\mathbb{#1}} %requires amsfonts
+
+\usetheme{Antibes}
+\usecolortheme{beaver}
+\title[Composite Field Decomposition for Higher Order S-boxes]{Thesis Progress Report}
+
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage[T1]{fontenc}
+
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm]
+
+\institute[RIT]{}
+\date{\today}
+%\subtitle{}
+\author{Christopher A. Wood}
+%\institute[]{}
+\date{\today}
+
+\begin{document}
+
+%%%%%
+%%
+%% Resource link: http://www.math-linux.com/spip.php?article77
+%%
+%%%%
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Agenda}
+	\tableofcontents
+\end{frame}
+
+\section{Composite Field Mappings}
+\begin{frame}
+	\frametitle{Isomorphic Function Generation - Primitive Irreducible Polynomials}
+	The isomorphic mappings are constructed as follows (assume we're constructing a function for mapping $GF(2^{nm}) \to GF((2^n)^m)$):
+	\begin{itemize}
+		\item Find two generators $\alpha$ and $\beta$ ($\alpha \in GF(2^{nm})$ and $\beta \in GF((2^n)^m)$), where $\alpha$ and $\beta$ are roots of the same \emph{primitive} irreducible polynomial.
+		\item Map $\alpha^k$ to $\beta^k$ for $1 \leq k \leq 2^{nm}$.
+		\item Multiplication and addition homomorphism is guaranteed. 
+		\begin{itemize}
+			\item $\alpha^i \times \alpha^j = \alpha^{i + j} = \beta^{i + j} = \beta^i \times \beta^j$
+			\item $\alpha^t = \alpha^i + \alpha^j \to \beta^t = \beta^j + \beta^j$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Isomorphic Function Generation - Irreducible Polynomials}
+	\begin{itemize}
+		\item Find two generators $\alpha$ and $\beta$ ($\alpha \in GF(2^{nm})$ and $\beta \in GF((2^n)^m)$).
+		\item Map $\alpha^k$ to $\beta^k$ for $1 \leq k \leq 2^{nm}$ (multiplication homomorphism holds)
+		\item For all $0 \leq i \leq 2^{nm} - 1$ check to see if $\alpha^i + 1 \to \beta^i + 1$.
+		\item Multiplication and addition homomorphism is now guaranteed.
+		\begin{itemize}
+			\item $\alpha^i \times \alpha^j = \alpha^{i + j} = \beta^{i + j} = \beta^i \times \beta^j$
+			\item $\alpha^t = \alpha^i + \alpha^j = \alpha^i \times (1 + \alpha^{j - i}) \to \beta^t = \beta^i \times (1 + \beta^{j - i}) = \beta^i + \beta^j$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Matrix Transformation \textbf{T}}
+	The matrix \textbf{T} can be generated with the following algorithm.
+	\begin{itemize}
+		\item Let $\beta$ be a generator of $GF((2^n)^m)$ such that $\alpha^i \in GF(2^{nm})$ is mapped to $\beta^i$ for all $0 \leq i \leq 2^{nm} - 1$ ($\alpha$ forms a basis of $GF((2^n)^m)$).
+		\item Compute $\alpha^0, \alpha^1, \alpha^2,\dots,\alpha^{nm - 1}$.
+		\item Define the columns of \textbf{T} as the transpose of each $nm$-dimensional bit vector of these powers:
+\begin{align*}
+		\textbf{T} =  \left[ \begin{array}{cccc}
+(\alpha^{nm - 1})^T & \dots & (\alpha^{1})^T (\alpha^{0})^T \end{array} \right]
+\end{align*}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{An Example}
+\begin{itemize}
+	\item $\alpha = x$ and $\beta = xy$
+	\item $(x^7 + x^6 + x^5 + x^2 + x + 1) \to [(x^3 + x^2 + x + 1)y + (x^3 + x^2 + 1)]$
+	\item $\textbf{T} =  \left[ \begin{array}{cccc}
+(xy^{nm - 1})^T & \dots & (xy^{1})^T (xy^{0})^T \end{array} \right]$
+\end{itemize}
+
+\begin{align*}
+\left( \begin{array}{cccccccc}
+0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 1 & 1 & 0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ \end{array} \right) \left( \begin{array}{c}
+1 \\
+1 \\
+1 \\ 
+0 \\
+0 \\ 
+1 \\
+1 \\ 
+1 \end{array} \right) = \left( \begin{array}{c}
+1 \\
+1 \\
+1 \\ 
+1 \\
+1 \\ 
+1 \\
+0 \\ 
+1 \end{array} \right)
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\frametitle{Another Example}
+\begin{itemize}
+	\item $\alpha = x$ and $\beta = xy$ (same homomorphic mapping)
+	\item $(x^6) \to [(x^2)y + (x^3 + x^2 + 1)]$
+	\item $\textbf{T} =  \left[ \begin{array}{cccc}
+(xy^{nm - 1})^T & \dots & (xy^{1})^T (xy^{0})^T \end{array} \right]$
+\end{itemize}
+
+\begin{align*}
+\left( \begin{array}{cccccccc}
+0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 1 & 1 & 0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 \\
+1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ \end{array} \right) \left( \begin{array}{c}
+0 \\
+1 \\
+0 \\ 
+0 \\
+0 \\ 
+0 \\
+0 \\ 
+0 \end{array} \right) = \left( \begin{array}{c}
+0 \\
+1 \\
+0 \\ 
+0 \\
+1 \\ 
+1 \\
+0 \\ 
+1 \end{array} \right)
+\end{align*}
+\end{frame}
+
+\section{Tower Field Decompositions}
+\begin{frame}
+	\frametitle{Different Tower Field Decompositions}
+	\begin{align*}
+	(1) GF(2^{16}) & \to GF((2^8)^2) \\ 
+	(2) GF(2^{16}) & \to GF((2^4)^4) \\ 
+	(3) GF(2^{16}) & \to GF((2^2)^8) \\
+	\end{align*}
+	We need only study these decompositions - optimal tower-field decompositions for smaller fields are in the literature.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Multiplicative Inverse Calculations}
+	The derivation gets messy very quick...
+	\begin{align*}
+	(b*x^3+c*x^2+d*x+e)*(f*x^3+g*x^2+h*x+i)\text{=}\\
+	k*(x^4+A*x^3+B*x^2+C*x+D)+1
+	\end{align*}
+	
+	\begin{align*}
+	f \to \frac{1}{x^3 \left(e+d x+c x^2+b x^3\right)}\left(1-e i+D k-e h x-d i x+C k x\right) \\ \left(-e g x^2-d h x^2-c i x^2+B k x^2-d g x^3-c
+h x^3-b i x^3+A k x^3-c g x^4\right) \\ \left(-b h x^4+k x^4-b g x^5\right)
+	\end{align*}
+	\begin{center}
+		Are there easier ways to calculate the inverse?
+	\end{center}
+
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Finding Capable Polynomials}
+	\begin{itemize}
+		\item Primitive polynomials always work for the mapping
+		\begin{itemize}
+			\item Let $\alpha$ be a primitive root of the field $F_2[x]/P(x)$ and $P(\alpha) = 0$
+			\item $P(x)$ is therefore a \emph{primitive polynomial}
+			\item Powers $\alpha$ (which are linearly independent) can be used to form a standard basis
+		\end{itemize} 
+		\item This didn't seem to work with non-primitive polynomials (i.e. $(x^8 + x^4 + x^3 + x + 1)$).
+		\begin{itemize}
+			\item \textbf{Question}: Why not? Group homomorphism between the elements holds...
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Choosing the Right Irreducible Polynomials}
+	\begin{itemize}
+		\item Exhausively search for all (primitive) irreducible polynomials
+		\item For each polynomial $P(x)$, generate the transformation matrix and 
+		estimate the complexity of the multiplicative inverse calculation
+		\begin{itemize}
+			\item The polynomials $P(x)$, $P(y)$ and $Q(y)$ determine the complexity of this mathematication operation.
+			\item $\alpha^{-1} = (bx + c)^{-1} = b(b^2B + bcA + c^2)^{-1} + (c + bA)(b^2B + bcA + c^2)^{-1}$
+		\end{itemize}
+		\item Choose the polynomial $P(x)$ that yields the lowest ``cost'' 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Choosing the Right Transform}
+	\begin{itemize}
+		\item Let \textbf{T}$^*$ be the optimal transformation matrix in the set of transformations $\mathcal{T}$.
+		\item The ``cost'' of transforms is the number of 1s in the matrix \textbf{T}$^*$. 
+		\item The ``cost'' of the inverse is dependent on the polynomial selection.
+	\end{itemize}
+	\begin{align*}
+	T^* = \min_{T_i \in \mathcal{T}}\{C(transform) + C(inverse) + C(invTransform)\}
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Exhaustively Searching All S-boxes}
+	\begin{itemize}
+		\item Loop over invertible binary matrices and all constants for affine transformation
+		\item For each valid mapping, measure the cryptographic strength using the Boolean function
+		analysis software
+		\item Pick the one with the best properties
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{An Interesting Case}
+	\begin{itemize}
+		\item Nyberg's Power Mapping: $F(x) = x^{2^{k} + 1}$
+		\item These functions are $2$-differentially unfiform with a $\mathcal{N}_l$ equal to precisely $2^{n-1} - 2^{\frac{n-1}{2}}$.
+		\begin{itemize}
+			\item That's better than the inverse mapping $F(x) = x^{-1}$
+		\end{itemize}
+		\item In a normal basis, this reduces to squaring (which is free) and multiplications
+		\item For hardware, does this yield a more efficient \textbf{and} more secure mapping for $16$-bit S-boxes?
+	\end{itemize}
+\end{frame}
+
+% \begin{frame}
+% 	\frametitle{Step 2: Maiorana-McFarland Construction of Bent Functions}
+% 	\begin{itemize}
+% 		\item Bent functions have nonlinearity $2^{n-1} - 2^{\frac{n}{2} - 1}$.
+% 		\item 
+% 	\end{itemize}
+% \end{frame}
+
+% \begin{frame}
+% 	\frametitle{Maiorana-McFarland}
+% 	TODO: describe the technique here, describe an algorithm here...
+% \end{frame}
+
+\begin{frame}
+	\frametitle{Combinational Implementations - XOR}
+\begin{table}
+	\begin{tabular}{|l|l|l|}
+		\hline
+		$X_1$ & $X_2$ & $Y$ \\ \hline
+		0 & 0 & 0 \\ 
+		0 & 1 & 1 \\
+		1 & 0 & 1 \\ 
+		1 & 1 & 0 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{center}
+	{\tt Y <= (NOT(X1) AND (X2)) OR (X1 AND NOT(X2))}
+\end{center}
+
+\begin{itemize}
+	\item Walk the truth table output $Y$ and insert the appropriate literal assignments into the DNF formula
+	\item I have the code to accomplish this task... 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Research Goal}
+	What is the resource consumption and security tradeoff for Boolean function implementations of S-boxes
+	versus those based on mathematical operations?
+\end{frame}
+
+% TODO: fill out sometime later...
+\begin{frame}
+	\frametitle{What's next?}
+	\begin{center}
+		Action Items
+	\end{center}	
+	\begin{itemize}
+		\item Generate the list of all transformation matrices \textbf{T}
+		\item List of all (primitive) irreducible polynomials up to degree $16$
+		\item Exhaustively generate all S-boxes based on the inverse mapping $F(x) = x^{-1}$
+		\item Thesis chapter on composite field arithmetic decomposition and inverse derivations
+		using composite fields
+	\end{itemize}
+	\begin{center}
+		Next meeting: \textbf{4/15/13}
+	\end{center}
+\end{frame}
+
+\end{document}

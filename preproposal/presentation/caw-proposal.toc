@@ -1,0 +1,5 @@
+\beamer@endinputifotherversion {3.10pt}
+\beamer@sectionintoc {1}{Cryptographic algorithm security fundamentals}{3}{0}{1}
+\beamer@sectionintoc {2}{Design Criteria}{10}{0}{2}
+\beamer@sectionintoc {3}{Case study: Rijndael}{24}{0}{3}
+\beamer@sectionintoc {4}{Open problems and future work}{30}{0}{4}

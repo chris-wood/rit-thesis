@@ -1,0 +1,4 @@
+\beamer@endinputifotherversion {3.20pt}
+\beamer@sectionintoc {1}{Decompositions}{3}{0}{1}
+\beamer@sectionintoc {2}{Basis Change Optimizations}{7}{0}{2}
+\beamer@sectionintoc {3}{Hardware and Software}{8}{0}{3}

@@ -1,0 +1,393 @@
+\section{16-Bit S-Box Gate Counts (Without Logic Minimization)}
+In this section we present the 16-bit AES-like S-box candidates that we found for $21$ distinct irreducible polynomials over $GF(2)$. Each count refers to the number of XOR gates required. Each candidate also requires approximately $144$ AND gates, depending on what basis is used. We do not provide this information though, as XOR gates are more expensive to implement in CMOS technology, for which these S-boxes would be most suited. 
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#1 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}
+\label{tab:rt1}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 10039 &  10053 &  100F5 &  10047    \\ \hline
+\emph{$\Sigma$} & $v + 1$ &  $v$ &  $v$ &  $v$   \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $(v + 1)w + v + 1$ &  $(v + 1)w $&  $(v + 1)w + v + 1$   \\ \hline
+\emph{$\Lambda$} & $((v + 1)w + (v + 1))x$ &  $(vw + v)x$ &  $vwx$ &  $(vw + v)x$  \\ \hline
+\emph{$\mathbb{F}!v$} & C661 &  7B86 &  4076 &  7A82  \\ \hline
+\emph{$\mathbb{F}!w$} & 2821 &  4F73 &  41E0 &  27AA \\ \hline
+\emph{$\mathbb{F}!x$} & B96F &  58D &  8F1F &  C58  \\ \hline
+\emph{$\mathbb{F}!y$} & A90A &  6688 &  7088 &  4A1D  \\ \hline
+\emph{Basis} & $[1, V^2], [1, W^4], [1, X^{16}], [Y^{256}, Y]$ &  $[1, V^2], [1, W^4], [1, X], [Y^{256}, Y]$ &  $[1, V^2], [1, W^4], [1, X], [Y^{256}, Y]$ &  $[1, V^2], [1, W^4], [1, X], [Y^{256}, Y]$  \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} & 22AC253 &  E966E0B &  1EC46D1 &  7052071   \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} & 054C376 &  4CCC882 &  4F0A947 &  A6E6850  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} & B1A21C5 &  75F48CA &  E440C47 &  3ECE233   \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} & 1414959 &  D02CABB &  8120231 &  0DD2A05   \\ \hline
+\emph{$\mathbf{T}$[0:7]} & 2D3F305 &  8080D5B &  148C53B &  8080A98   \\ \hline
+\emph{$\mathbf{T}$[8:15]} & 97C362D &  0B29A62 &  51590B6 &  1C5A509   \\ \hline
+\emph{$\mathbf{T}$[16:23]} & 1743B01 &  DA9CCD5 &  BC44D46 &  B50F6C9   \\ \hline
+\emph{$\mathbf{T}$[24:31]} & 4E44815 &  C365B6C &  3CC43AE &  83E5FC1   \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 8CF28AE &  A3CFE0B &  B2E7ED6 &  DB136DE   \\ \hline
+\emph{$\mathbf{A}$[8:15]} & 49774D7 &  D8CACCE &  E89E01A &  D33CE9F   \\ \hline
+\emph{$\mathbf{A}$[16:23]} & 73562AB &  A896BED &  0CF416F &  EC735F6   \\ \hline
+\emph{$\mathbf{A}$[24:31]} & 3FA32D2 &  484C0D5 &  BD61BCC &  5077A85   \\ \hline
+\emph{$c$} & 57F &  AF82 &  410E &  4454   \\ \hline
+\emph{Inv.} & 364 &  363 &  363 &  363   \\ \hline
+\emph{S-Box} & 997 &  985 &  988 &  981   \\ \hline 
+\emph{S-Box$^{-1}$} & 989 &  982 &  982 &  977  \\ \hline
+\emph{Total} & 1986 &  1967 &  1970 &  1958   \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#2 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}
+\label{tab:rt2}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} &  1002D &  10129 &  100D7 &  1003F   \\ \hline
+\emph{$\Sigma$} &   $v + 1$ &  $v + 1$ &  $v$ & $ v$ \\ \hline
+\emph{$\Pi$} &  $ (v + 1)w + v + 1$ &  $(v + 1)w$ &  $(v + 1)w + v + 1$ &  $(v + 1)w$  \\ \hline
+\emph{$\Lambda$} &  $((v + 1)w + (v + 1))x$ &  $(v + 1)wx$ &  $vwx$ & $ (vw + v)x$  \\ \hline
+\emph{$\mathbb{F}!v$} &   ACCA &  74C &  AB68 &  727  \\ \hline
+\emph{$\mathbb{F}!w$} &   90C4 &  6F72 &  D63C &  F711  \\ \hline
+\emph{$\mathbb{F}!x$} &   7F77 &  6A4D &  608A &  DD6E  \\ \hline
+\emph{$\mathbb{F}!y$} &   6D6E &  F840 &  7122 &  E220  \\ \hline
+\emph{Basis} & $[V, V^2], [1, W^4], [1, X^{16}], [Y, Y^{256}]$ &  $[V, V^2], [1, W^4],[1, X^{16}], [Y^{256}, Y]$ &  $[1, V^2], [1, W], [1, X^{16}], [Y^{256}, Y]$ &  $[1, V^2], [1, W], [1, X], [Y^{256}, Y]$ \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} &   F346728 &  BA98EB8 &  848CBA9 &  A99250A  \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} &  FA6EFC0 &  ACDE275 &  928651F &  57D2EB9  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} &  FF781F3 &  A8564DB &  A0E0001 &  8128FB1  \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} &  8B9752F &  C8A16A2 &  B9A4744 &  688C46E  \\ \hline
+\emph{$\mathbf{T}$[0:7]} & 8FF8ADB &  3606E54 &  FA7443D &  77EB0D5  \\ \hline
+\emph{$\mathbf{T}$[8:15]} & 56898B2 &  9541AE2 &  B1CB650 &  B93D4C7  \\ \hline
+\emph{$\mathbf{T}$[16:23]} & 964979A &  5581830 &  DA984EE &  4E5652A  \\ \hline
+\emph{$\mathbf{T}$[24:31]} & 3498411 &  78E3A42 &  7AF48F2 &  3D1386F  \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 3381712 &  1E2951C &  3CB3B47 &  CEDC8E4  \\ \hline
+\emph{$\mathbf{A}$[8:15]} & B3EC337 &  E507F13 &  7588C61 &  9240E4B  \\ \hline
+\emph{$\mathbf{A}$[16:23]} & 463E857 &  0FEF2D7 &  2A3D303 &  5FD76FD \\ \hline
+\emph{$\mathbf{A}$[24:31]} & 10DF505 &  CD2F334 &  D12F14A &  D316AA1  \\ \hline
+\emph{$c$} &   BC2B &  9C69 &  F8F9 &  B0E0  \\ \hline
+\emph{Inv.} & 363 &  363 &  363 &  363  \\ \hline
+\emph{S-Box} & 1010 &  989 &  984 &  990 \\ \hline 
+\emph{S-Box$^{-1}$} & 982 &  969 &  1011 &  981  \\ \hline
+\emph{Total} & 1992 &  1958 &  1995 &  1971  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+%%%% BELOW
+
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#3 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}
+\label{tab:rt3}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 1018F &  1012F &  1015D &  10175  \\ \hline
+\emph{$\Sigma$} & $v$ &  $v + 1$ &  $v$ &  $v + 1$  \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $vw + 1$ &  $(v + 1)w + 1$ &  $vw $ \\ \hline
+\emph{$\Lambda$} & $vwx$ &  $(vw + 1)x$ &  $((v + 1)w + 1)x$ &  $((v + 1)w + (v + 1))x$  \\ \hline
+\emph{$\mathbb{F}!v$} & A477 &  8AA4 &  10C &  F723  \\ \hline
+\emph{$\mathbb{F}!w$} & C267 &  5628 &  1B79 &  621C  \\ \hline
+\emph{$\mathbb{F}!x$} & 23C1 &  E432 &  8E3D &  A32C  \\ \hline
+\emph{$\mathbb{F}!y$} & 5C8 &  7FC0 &  849F &  8796  \\ \hline
+\emph{Basis} & $[1, V], [1, W], [1, X^{16}], [Y, Y^{256}]$ &  $[V, V^2], [1, W^4], [1, X^{16}], [Y^{256}, Y]$ &  $[V, V^2], [1, W^4], [1, X^{16}], [Y, Y^{256}]$ &  $[1, V^2], [1, W], [1, X], [Y^{256}, Y]$ \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} & 8E86C8D &  5604FC5 &  1040FB4 &  754E6DF  \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} & BFBA91E &  A41E67B &  1564B58 &  AB4CBDD  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} & 72D4208 &  644A40A &  37AA5A8 &  794CE14  \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} & 842E882 &  8BEF62D &  B8CF735 &  E0802DD  \\ \hline
+\emph{$\mathbf{T}$[0:7]} & A46A8E8 &  A03F998 &  0ED2C47 &  BD8F8C4  \\ \hline
+\emph{$\mathbf{T}$[8:15]} & C258EAC &  C29ECEC &  C0C0704 &  2C7A701  \\ \hline
+\emph{$\mathbf{T}$[16:23]} & 224AF53 &  A261AA8 &  0CE435D &  80805D1  \\ \hline
+\emph{$\mathbf{T}$[24:31]} & E6B2972 &  C68D89B &  4064289 &  69DF639  \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 66FEAC4 &  9F5A116 &  1BB5CC9 &  A6EAF2D  \\ \hline
+\emph{$\mathbf{A}$[8:15]} & F696AC9 &  333100C &  E4C55E7 &  22BC542  \\ \hline
+\emph{$\mathbf{A}$[16:23]} & C4275E7 &  B33A460 &  F139D7E &  875BE44  \\ \hline
+\emph{$\mathbf{A}$[24:31]} & DDCBA77 &  4FD272A &  3584A5D &  4ECAF5A  \\ \hline
+\emph{$c$} & 8EA3 &  1A2E &  F9D8 &  39F8  \\ \hline
+\emph{Inv.} & 366 &  367 &  367 &  364  \\ \hline
+\emph{S-Box} & 997 &  976 &  1006 &  989  \\ \hline
+\emph{S-Box$^{-1}$} & 983 &  981 &  986 &  998  \\ \hline
+\emph{Total} & 1980 &  1957 &  1992 &  1987  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#4 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}
+\label{tab:rt4}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} &   1014F &  1013D &  10197 &  10173   \\ \hline
+\emph{$\Sigma$} &   $v + 1$ & $ v$ & $ v$ & $ v$  \\ \hline
+\emph{$\Pi$} &  $ vw + v$ & $(v + 1)w$ &  $(v + 1)w + v + 1$ &  $(v + 1)w + v + 1$   \\ \hline
+\emph{$\Lambda$} & $((v + 1)w + (v + 1))x$ &  $(vw + v)x$ &  $vwx$ &  $(vw + v)x$   \\ \hline
+\emph{$\mathbb{F}!v$} &   10A &  758 &  CF8B &  8FBF  \\ \hline
+\emph{$\mathbb{F}!w$} &   1C65 &  6942 &  5905 &  657F  \\ \hline
+\emph{$\mathbb{F}!x$} &   EABB &  6D6C &  19DD &  CEF6  \\ \hline
+\emph{$\mathbb{F}!y$} &   45B6 &  52F4 &  D68A &  4C4   \\ \hline
+\emph{Basis} &   $[1, V^2], [1, W^4], [1, X^{16}], [Y^{256}, Y]$ &  $[1, V^2], [1, W], [1, X], [Y^{256}, Y]$ &  $[1, V^2], [1, W], [1, X^{16}], [Y^{256}, Y]$ &  $[1, V^2], [1, W^4], [1, X^{16}], [Y, Y^{256}]$   \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} &   264A7CC &  3006C8A &  841A0F2 &  4312547   \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} &   716C2EE &  9676184 &  20A8B87 &  E714805   \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} &   6528DC5 &  703806D &  1C1A660 &  E4B8203  \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} &   A02CD0B &  67ECA25 &  4108287 &  6E68457   \\ \hline
+\emph{$\mathbf{T}$[0:7]} &   90884D9 &  30D0E13 &  25A7375 &  CAD8E2B  \\ \hline
+\emph{$\mathbf{T}$[8:15]} &   1008101 &  5C28034 &  7C54C1D &  00EC064  \\ \hline
+\emph{$\mathbf{T}$[16:23]} &   BC6031B &  DCA8304 &  6C7AB91 &  4A583FA   \\ \hline
+\emph{$\mathbf{T}$[24:31]} &   9CACC58 &  850788F &  A527106 &  4436367   \\ \hline
+\emph{$\mathbf{A}$[0:7]} &   F2FDFF0 &  A647429 &  D388DD8 &  2178FDE  \\ \hline
+\emph{$\mathbf{A}$[8:15]} &   D505102 &  16A5AED &  C1BB386 &  0F118C3  \\ \hline
+\emph{$\mathbf{A}$[16:23]} &   6FD1569 &  3680009 &  8E1983D &  4F6CFA9  \\ \hline
+\emph{$\mathbf{A}$[24:31]} &   8D1247C &  F7E875E &  FECA05A &  BB84222  \\ \hline
+\emph{$c$} &   CD59 &  FEF4 &  D01 &  3B41  \\ \hline
+\emph{Inv.} &   364 &  363 &  363 &  363  \\ \hline
+\emph{S-Box} &   1006 &  990 &  960 &  982  \\ \hline
+\emph{S-Box$^{-1}$} &   985 &  998 &  973 &  983  \\ \hline
+\emph{Total} &   1991 &  1988 &  1933 &  1965  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#5 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}
+\label{tab:rt5}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 1008D  & 100BD &  1013B &  101A1 \\ \hline
+\emph{$\Sigma$} & $v + 1$  &  $v + 1$ &  $v + 1$ & $ v$ \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $(v + 1)w$ &  $(v + 1)w + v + 1$ &  $vw + v$ \\ \hline  
+\emph{$\Lambda$} &  $((v + 1)w + (v + 1))x $ & $ ((v + 1)w + (v + 1))x$ &  $((v + 1)w + (v + 1))x$ &  $vwx$ \\ \hline
+\emph{$\mathbb{F}!v$} &  5524 &  C1A8 &  F33A &  41AF \\ \hline
+\emph{$\mathbb{F}!w$} & 1E9 &  7C3D &  427F &  AB75\\ \hline
+\emph{$\mathbb{F}!x$} &   36B5 &  DB00 &  E1E7 &  B5D9 \\ \hline
+\emph{$\mathbb{F}!y$} &   D576 &  5A96 &  C95C &  347B \\ \hline
+\emph{Basis} & $[1, V^2], [1, W^4], [1, X], [Y^{256}, Y]$ &  $[V, V^2], [1, W], [1, X^{16}], [Y, Y^{256}]$ &  $[V, V^2], [1, W^4], [1, X], [Y, Y^{256}]$ &  $[V, V^2], [1, W], [1, X], [Y^{256}, Y]$  \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} &   F048B16 &  B44A2A7 &  FAA4454 &  7614C59 \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} &  0A1209D &  CF1E063 &  36FCDA2 &  8180CF2 \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} &   78D0459 &  ABA26F5 &  702421E &  9914085 \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} &   C06621D &  14A1A97 &  ACC5612 &  0E8D28F \\ \hline
+\emph{$\mathbf{T}$[0:7]} &   67EFAD2 &  CC23325 &  49EA416 &  48DC981 \\ \hline
+\emph{$\mathbf{T}$[8:15]} &   0A5A453 &  9420E93 &  984754D &  8D25A2F \\ \hline
+\emph{$\mathbf{T}$[16:23]} &  4E6EBBA &  5DB5131  &  116D109 &  B7C3D94 \\ \hline
+\emph{$\mathbf{T}$[24:31]} &   8ADAE90 &  0955382 &  CB4C9DC &  7703CC6 \\ \hline
+\emph{$\mathbf{A}$[0:7]} &   BD26D4F &  400C376 &  6A3DE5C &  E2A7F30 \\ \hline
+\emph{$\mathbf{A}$[8:15]} &   E9AFACA &  0F79EE9 &  6C13C4E &  F46843F \\ \hline
+\emph{$\mathbf{A}$[16:23]} &  64F441F &  41A13B7 &  26E3DD6 &  56FF099 \\ \hline
+\emph{$\mathbf{A}$[24:31]} &  A9B588E &  C794EA6 &  68CEAA7 &  1436D17 \\ \hline
+\emph{$c$} &   EFD5 &  8D09 &  A6EC &  369B \\ \hline
+\emph{Inv.} &  364 &  363 &  363 &  363 \\ \hline
+\emph{S-Box} &   1003 &  977 &  985 &  985 \\ \hline 
+\emph{S-Box$^{-1}$} &   1002 &  978 &  997 &  1003\\ \hline
+\emph{Total} &   2005 &  1955 &  1982 &  1988 \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+
+
+%MERGED
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#1 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}
+\label{tab:rt6}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 10039 &  10053 &  100F5 &  10047  \\ \hline
+\emph{$\Sigma$} & $v + 1$ &  $v$ &  $v$ &  $v $  \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $(v + 1)w + v + 1$ & $ vw + v$ &  $(v + 1)w + v$  \\ \hline
+\emph{$\Lambda$} & $((v + 1)w + (v + 1))x$ &  $(vw + v)x$ &  $(vw + (v + 1))x + vw + v + 1$ & $ ((v + 1)w + v)x $  \\ \hline
+\emph{$\mathbb{F}!v$} & C661 &  7B86 &  4076 &  7A82  \\ \hline
+\emph{$\mathbb{F}!w$} & 2821 &  4F73 &  41E0 &  27AA  \\ \hline
+\emph{$\mathbb{F}!x$} & B96F &  58D &  256B &  76DB  \\ \hline
+\emph{$\mathbb{F}!y$} & A90A &  6688 &  5198 &  6CC8  \\ \hline
+\emph{Basis} & $[1, V^2], [1, W^4], [1, X^{16}], [1, Y]$ &  $[1, V^2], [1, W^4], [1, X], [Y^{256}, Y]$ &  $[1, V], [1, W], [1, X^{16}], [Y, Y^{256}]$ &  $[V, V^2], [1, W^4], [1, X], [Y, Y^{256}]$ \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} & 28001F7 &  E966E0B &  9A0E101 &  4B5E806  \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} & 874468C &  4CCC882 &  409E972 &  C46E84A  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} & ED4EB8C &  75F48CA &  0200794 &  587E844 \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} & 03D61AA &  D02CABB &  7CEEDBA &  559B0CD  \\ \hline
+\emph{$\mathbf{T}$[0:7]} & 2D12306 &  8080D5B &  442C470 &  C0C0061  \\ \hline
+\emph{$\mathbf{T}$[8:15]} & 975462B &  0B29A62 &  0810A9C &  963157F  \\ \hline
+\emph{$\mathbf{T}$[16:23]} & 1754B0A &  DA9CCD5 &  888030E &  CA85395 \\ \hline
+\emph{$\mathbf{T}$[24:31]} & 4E0A81D &  C365B6C &  0800C35 &  C75084F \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 8CF28AE &  A3CFE0B &  B2E7ED6 &  DB136DE  \\ \hline
+\emph{$\mathbf{A}$[8:15]} & 49774D7 &  D8CACCE &  E89E01A &  D33CE9F  \\ \hline
+\emph{$\mathbf{A}$[16:23]} & 73562AB &  A896BED &  0CF416F &  EC735F6  \\ \hline
+\emph{$\mathbf{A}$[24:31]} & 3FA32D2 &  484C0D5 &  BD61BCC &  5077A85  \\ \hline
+\emph{$c$} & 57F &  AF82 &  410E &  4454  \\ \hline
+\emph{Inv.} & 374 &  363 &  384 &  369  \\ \hline
+\emph{Total} & 1236 &   1225 &   1221 &   1216  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#2 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}
+\label{tab:rt7}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} &   1002D &  10129 &  100D7 &  1003F  \\ \hline
+\emph{$\Sigma$} &   $v$ &  $v + 1$ &  $v + 1$ &  $v $  \\ \hline
+\emph{$\Pi$} &   $(v + 1)w $&  $(v + 1)w$ &  $(v + 1)w$ &  $(v + 1)w$  \\ \hline
+\emph{$\Lambda$} &   $(vw + v)x + vw + 1$ &  $(v + 1)wx$ &  $(vw + 1)x + vw + v$ & $((v + 1)w + v)x + (v + 1)w + v$  \\ \hline
+\emph{$\mathbb{F}!v$} &   ACCA &  74C &  AB68 &  727  \\ \hline
+\emph{$\mathbb{F}!w$} &   3C0F &  6F72 &  7D55 &  F711  \\ \hline
+\emph{$\mathbb{F}!x$} & D3BC &  6A4D &  CBE2 &  DD6E  \\ \hline
+\emph{$\mathbb{F}!y$} & C346 &  F840 &  D2CF &  CEDE  \\ \hline
+\emph{Basis} & $[1, V], [1, W], [X, X^{16}], [Y, Y^{256}]$ &  $[V, V^2], [1, W^4], [1, X^{16}], [Y^{256}, Y]$ &  $[1, V^2], [1, W^4], [X, X^{16}], [Y, Y^{256}]$ &  $[1, V], [1, W^4], [X^{256}, X], [Y, Y^{256}]$  \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} & 459E80D &  BA98EB8 &  26AA4ED &  0A1256D  \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} & BB145A7 &  ACDE275 &  20B802F &  B0F6FD8  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} & C6825F5 &  A8564DB &  E30431C &  228A18C  \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} & 1102108 &  C8A16A2 &  2598C22 &  889A298  \\ \hline
+\emph{$\mathbf{T}$[0:7]} & 76470B7 &  3606E54 &  72A5108 &  A9DA1A2  \\ \hline
+\emph{$\mathbf{T}$[8:15]} & 2A0E3D6 &  9541AE2 &  6A0247A &  A622421  \\ \hline
+\emph{$\mathbf{T}$[16:23]} & A286CCA &  5581830 &  BB24557 &  87706B7   \\ \hline
+\emph{$\mathbf{T}$[24:31]} & 10819C2 &  78E3A42 &  FA2D423 &  61C520B  \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 3381712 &  1E2951C &  3CB3B47 &  CEDC8E4  \\ \hline
+\emph{$\mathbf{A}$[8:15]} & B3EC337 &  E507F13 &  7588C61 &  9240E4B  \\ \hline
+\emph{$\mathbf{A}$[16:23]} & 463E857 &  0FEF2D7 &  2A3D303 &  5FD76FD  \\ \hline
+\emph{$\mathbf{A}$[24:31]} & 10DF505 &  CD2F334 &  D12F14A &  D316AA1  \\ \hline
+\emph{$c$} & BC2B &  9C69 &  F8F9 &  B0E0  \\ \hline
+\emph{Inv.} & 376 &  363 &  380 &  376  \\ \hline
+\emph{Total} &   1230 &   1216 &   1244 &   1222  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#3 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}
+\label{tab:rt8}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 1018F &  1012F &  1015D &  10175  \\ \hline
+\emph{$\Sigma$} & $v + 1$ &  $v + 1$ &  $v$ &  $v $ \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $vw + 1$ &  $(v + 1)w + 1$ &  $vw$  \\ \hline
+\emph{$\Lambda$} & $(vw + 1)x + vw + v + 1$ & $ (vw + 1)x $&  $((v + 1)w + 1)x$ &  $((v + 1)w + v)x$  \\ \hline
+\emph{$\mathbb{F}!v$} & A477 &  8AA4 &  10C &  F723  \\ \hline
+\emph{$\mathbb{F}!w$} & 6610 &  5628 &  1B79 &  953F  \\ \hline
+\emph{$\mathbb{F}!x$} & 45D1 &  E432 &  8E3D &  C130  \\ \hline
+\emph{$\mathbb{F}!y$} & A8D2 &  7FC0 &  849F &  12A9  \\ \hline
+\emph{Basis} & $[1, V^2], [1, W], [X, X^{16}], [Y^{256}, Y]$ &  $[V, V^2], [1, W^4], [1, X^{16}], [Y^{256}, Y]$ &  $[V, V^2], [1, W^4], [1, X^{16}], [Y, Y^{256}]$ &  $[1, V^2], [1, W], [X, X^{16}], [1, Y^{256}]$  \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} & 481CC78 &  5604FC5 &  1040FB4 &  2EB8C0C  \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} & 8160890 &  A41E67B &  1564B58 &  54644A2  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} & C95C382 &  644A40A &  37AA5A8 &  26B89D3  \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} & 6FA6AAC &  8BEF62D &  B8CF735 &  EAFE542  \\ \hline
+\emph{$\mathbf{T}$[0:7]} & A923247 &  A03F998 &  0ED2C47 &  0617A0B  \\ \hline
+\emph{$\mathbf{T}$[8:15]} & E3ED95F &  C29ECEC &  C0C0704 &  82ECAFE  \\ \hline
+\emph{$\mathbf{T}$[16:23]} & 525A598 &  A261AA8 &  0CE435D &  8800518  \\ \hline
+\emph{$\mathbf{T}$[24:31]} & C2463DC &  C68D89B &  4064289 &  03463FD  \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 66FEAC4 &  9F5A116 &  1BB5CC9 &  A6EAF2D  \\ \hline
+\emph{$\mathbf{A}$[8:15]} & F696AC9 &  333100C &  E4C55E7 &  22BC542  \\ \hline
+\emph{$\mathbf{A}$[16:23]} & C4275E7 &  B33A460 &  F139D7E &  875BE44  \\ \hline
+\emph{$\mathbf{A}$[24:31]} & DDCBA77 &  4FD272A &  3584A5D &  4ECAF5A  \\ \hline
+\emph{$c$} & 8EA3 &  1A2E &  F9D8 &  39F8  \\ \hline
+\emph{Inv.} & 376 &  367 &  367 &  390  \\ \hline
+\emph{Total} &  1230 &   1209 &   1238 &   1231  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#4 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}
+\label{tab:rt9}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 1014F &  1013D &  10197 &  10173  \\ \hline
+\emph{$\Sigma$} & $v + 1$ &  $v$ &  $v$ &  $v$   \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $(v + 1)w$ &  $(v + 1)w + v + 1$ &  $(v + 1)w + v + 1$   \\ \hline
+\emph{$\Lambda$} &  $((v + 1)w + (v + 1))x$ &  $(vw + v)x$ &  $vwx$ &  $(vw + v)x$  \\ \hline
+\emph{$\mathbb{F}!v$} &  10A &  758 &  CF8B &  8FBF  \\ \hline
+\emph{$\mathbb{F}!w$} &  1C65 &  6942 &  5905 &  657F \\ \hline
+\emph{$\mathbb{F}!x$} &  EABB &  6D6C &  19DD &  CEF6  \\ \hline
+\emph{$\mathbb{F}!y$} &  45B6 &  52F4 &  D68A &  4C4   \\ \hline
+\emph{Basis} &  $[1, V^2], [1, W^4], [1, X^{16}], [1, Y^{256}]$ &  $[1, V^2], [1, W], [1, X], [Y^{256}, Y]$ &  $[1, V^2], [1, W], [1, X^{16}], [1, Y^{256}]$ &  $[1, V^2], [1, W^4], [1, X^{16}], [Y, Y^{256}]$  \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} &  A00064A &  3006C8A &  8200262 &  4312547  \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} &  A1B6F54 &  9676184 &  00203E6 &  E714805  \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} &  6BC237F &  703806D &  6DD604F &  E4B8203  \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} &  77023D1 &  67ECA25 &  E2CE210 &  6E68457  \\ \hline
+\emph{$\mathbf{T}$[0:7]} &  88189DD &  30D0E13 &  A782596 &  CAD8E2B  \\ \hline
+\emph{$\mathbf{T}$[8:15]} &  08181C0 &  5C28034 &  5428DD1 &  00EC064  \\ \hline
+\emph{$\mathbf{T}$[16:23]} &  60DCB58 &  DCA8304 &  7A1613A &  4A583FA  \\ \hline
+\emph{$\mathbf{T}$[24:31]} &  AC30874 &  850788F &  27826E7 &  4436367  \\ \hline
+\emph{$\mathbf{A}$[0:7]} &  F2FDFF0 &  A647429 &  D388DD8 &  2178FDE  \\ \hline
+\emph{$\mathbf{A}$[8:15]} &  D505102 &  16A5AED &  C1BB386 &  0F118C3  \\ \hline
+\emph{$\mathbf{A}$[16:23]} &  6FD1569 &  3680009 &  8E1983D &  4F6CFA9  \\ \hline
+\emph{$\mathbf{A}$[24:31]} &  8D1247C &  F7E875E &  FECA05A &  BB84222  \\ \hline
+\emph{$c$} &  CD59 &  FEF4 &  D01 &  3B41  \\ \hline
+\emph{Inv.} &  374 &  363 &  373 &  363  \\ \hline
+\emph{Total} &   1236 &   1238 &   1191 &   1225  \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+%MERGED
+\begin{sidewaystable}
+\begin{center}
+\scriptsize
+\caption{Table \#5 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}
+\label{tab:rt10}
+    \begin{tabular}{|c||c|c|c|c|} \hline
+\emph{$t(v)$} & 10039 &  100BD &  1013B &  101A1 \\ \hline
+\emph{$\Sigma$} & $v + 1$ &  $v + 1$ &  $v$ &  $v + 1$ \\ \hline
+\emph{$\Pi$} & $vw + v$ &  $(v + 1)w$ & $ vw$ &  $vw$ \\ \hline
+\emph{$\Lambda$} & $((v + 1)w + (v + 1))x$ &  $((v + 1)w + (v + 1))x$ &  $((v + 1)w + 1)x + w + 1$ &  $(v + 1)wx + vw + v + 1$ \\ \hline
+\emph{$\mathbb{F}!v$} & C661 &  C1A8 &  F33A &  41AF \\ \hline
+\emph{$\mathbb{F}!w$} & 2821  &  7C3D &  B145 &  EADB  \\ \hline
+\emph{$\mathbb{F}!x$} & B96F &  DB00 &  9CBC &  5F02 \\ \hline
+\emph{$\mathbb{F}!y$} & A90A &  5A96 &  6C6 &  6A43 \\ \hline
+\emph{Basis} & $[1, V^2], [1, W^4], [1, X^{16}], [1, Y]$ &  $[V, V^2], [1, W], [1, X^{16}], [Y, Y^{256}]$ &  $[1, V], [1, W], [X, X^{16}], [Y^{256}, Y]$ &  $[1, V], [1, W^4], [X, X^{16}], [Y, Y^{256}]$ \\ \hline
+\emph{$\mathbf{T}^{-1}$[0:7]} & 28001F7 &  B44A2A7 &  29E6EF3 &  1190009 \\ \hline
+\emph{$\mathbf{T}^{-1}$[8:15]} & 874468C  &  CF1E063 &  C1CE018 &  DF485E4 \\ \hline
+\emph{$\mathbf{T}^{-1}$[16:23]} & ED4EB8C &  ABA26F5 &  8A6817D &  E13414A \\ \hline
+\emph{$\mathbf{T}^{-1}$[24:31]} & 03D61AA &  14A1A97 &  0B78A04 &  DFC03F0 \\ \hline
+\emph{$\mathbf{T}$[0:7]} & 2D12306 &  CC23325 &  B1E2533 &  E62654A \\ \hline
+\emph{$\mathbf{T}$[8:15]} & 975462B  &  9420E93 &  2048312 &  6FE30EB \\ \hline
+\emph{$\mathbf{T}$[16:23]} & 1754B0A &  5DB5131 &  1922528 &  8D5C881 \\ \hline
+\emph{$\mathbf{T}$[24:31]} & 4E0A81D &  0955382 &  096580A &  05D4083 \\ \hline
+\emph{$\mathbf{A}$[0:7]} & 8CF28AE &  400C376 &  6A3DE5C &  E2A7F30 \\ \hline
+\emph{$\mathbf{A}$[8:15]} & 49774D7 &  0F79EE9 &  6C13C4E &  F46843F \\ \hline
+\emph{$\mathbf{A}$[16:23]} & 73562AB &  41A13B7 &  26E3DD6 &  56FF099 \\ \hline
+\emph{$\mathbf{A}$[24:31]} & 3FA32D2 &  C794EA6 &  68CEAA7 &  1436D17 \\ \hline
+\emph{$c$} & 57F &  8D09 &  A6EC &  369B \\ \hline
+\emph{Inv.} & 374 &  363 &  380 &  376 \\ \hline
+\emph{Total} & 1236 &   1217 &  1230 &   1238 \\ \hline
+    \end{tabular}
+\end{center}
+\end{sidewaystable}
+
+% \begin{table}
+% \begin{center}
+% \caption{TODO}
+%     \begin{tabular}{|c|c|c|c|c|c|} \hline
+% \emph{$t(v)$} & 
+% \emph{$\Sigma$} & 
+% \emph{$\Pi$} & 
+% \emph{$\Lambda$} & 
+% \emph{$\mathbb{F}!v$} & 
+% \emph{$\mathbb{F}!w$} & 
+% \emph{$\mathbb{F}!x$} & 
+% \emph{$\mathbb{F}!y$} & 
+% \emph{Basis} & 
+% \emph{$\mathbf{T}^{-1}$[0:7]} & 
+% \emph{$\mathbf{T}^{-1}$[8:15]} & 
+% \emph{$\mathbf{T}^{-1}$[16:23]} & 
+% \emph{$\mathbf{T}^{-1}$[24:31]} & 
+% \emph{$\mathbf{T}$[0:7]} & 
+% \emph{$\mathbf{T}$[8:15]} & 
+% \emph{$\mathbf{T}$[16:23]} & 
+% \emph{$\mathbf{T}$[24:31]} & 
+% \emph{$\mathbf{A}$[0:7]} & 
+% \emph{$\mathbf{A}$[8:15]} & 
+% \emph{$\mathbf{A}$[16:23]} & 
+% \emph{$\mathbf{A}$[24:31]} & 
+% \emph{$c$} & 
+% \emph{Inv.} & 
+% \emph{S-Box} & 
+% \emph{S-Box$^{-1}$} & 
+% \emph{Total} & 
+%     \end{tabular}
+% \end{center}
+% \end{table}

@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+
+\bibitem{CryptoEngineering}
+{\em Cryptographic engineering}.
+\newblock Springer, New York, 2009.
+
+\bibitem{ChaosCrypto}
+{\em Chaos-based cryptography theory, algorithms and applications}.
+\newblock Springer, Berlin, 2011.
+
+\bibitem{henriquez2006cryptographic}
+Francisco Henriquez.
+\newblock {\em Cryptographic algorithms on reconfigurable hardware}.
+\newblock Springer, New York, 2006.
+
+\bibitem{Nyberg:1991:PNS:1754868.1754910}
+Kaisa Nyberg.
+\newblock Perfect nonlinear s-boxes.
+\newblock In {\em Proceedings of the 10th annual international conference on
+  Theory and application of cryptographic techniques}, EUROCRYPT'91, pages
+  378--386, Berlin, Heidelberg, 1991. Springer-Verlag.
+
+\bibitem{cryptoeprint:2010:362}
+Deng Tang, Weiguo Zhang, and Xiaohu Tang.
+\newblock Construction of balanced boolean functions with high nonlinearity and
+  good autocorrelation properties.
+\newblock Cryptology ePrint Archive, Report 2010/362, 2010.
+\newblock \url{http://eprint.iacr.org/}.
+
+\bibitem{cryptoeprint:2010:579}
+WeiGuo Zhang and GuoZhen Xiao.
+\newblock Construction of highly nonlinear resilient boolean functions
+  satisfying strict avalanche criterion.
+\newblock Cryptology ePrint Archive, Report 2010/579, 2010.
+\newblock \url{http://eprint.iacr.org/}.
+
+\end{thebibliography}

@@ -1,0 +1,66 @@
+\section{Conclusions}
+In this work we conducted an in-depth study of techniques to construct cryptographically strong S-boxes with efficient combinational implementations. Motivated by the potential need for large substitution boxes in the future, we hope that our preliminary results will be useful in the construction of cryptographic primitives with larger state sizes. 
+
+We started with a discussion of the attacks on cryptographic primitives that exploit the underlying S-box, and followed with methods for measuring the resilience of an S-box to said attacks. This included source code to perform each computation and time complexities for each algorithm to see how computationally difficult it becomes to do these computations for large S-boxes. We then presented methods for constructing cryptographically strong S-boxes based on power mappings using their nonlinearity and differential uniformity as primary selection criteria, and then presented a method for finding a suitable invertible affine transformation that may be composed of the power mapping and its inverse for encryption and decryption purposes, respectively. 
+
+Our next section of work focused on how to improve the efficiency of known combinational logic minimization techniques through parallel programming. Our experimental results showed substantial speedups for Boyar and Peralta's technique, which is known as the most effective algorithm for optimizing combinational logic, as well as moderate improvements for the exhaustive factorization technique. We also derived all 18 inversion circuits from all possible element representations of $GF((2^2)^2)$, and then used Synopsys to optimize the respective circuits for reduced area. One interesting result was that there were only $8$ that were unique circuits out of all $18$ possibilities, and the smallest inverter circuit did not match the one used by Canright in his S-box implementation.
+
+Next, we presented an extension of Canright's tower field algebraic optimizations for \\ $GF(((2^2)^2)^2)$ in both polynomial and normal bases, which are required when computing the inverse \\ in $GF((((2^2)^2)^2)^2)$. This was followed by a discussion of the exact optimization cost function we were minimizing by exhaustive search for both merged and un-merged S-box designs. The results of these experiments for S-boxes over $GF(2^8)$ and $GF(2^{16})$ are then presented in the previous chapter. We were able to find a pair of basis change matrices for the AES S-box that had lower weight than that of Canright's. If this new S-box implementation is pursued further we may be able to produce a gate count that drops below the best result in the literature. In addition to the results for the AES S-box, we also presented an S-box over $GF(2^8)$ that used a field polynomial different from the one identified in the AES specification \cite{daemen01-AES}. While it is highly unlikely that this will be adopted for use in the AES, it may become useful for future cryptographic primitives that use similar size S-boxes. Finally, we presented our gate counts for $16$-bit S-boxes with a variety of choices for reduced area implementations. 
+
+\section{Future Work}
+Through the course of this work there were many areas of research that fell outside our original scope. The most important items are captured in this section as tasks to be studied in the future.
+
+\vspace*{1em}
+\begin{minipage}{.9\textwidth}
+  \emph{Task 1: Explore all candidate embeddings of $GF(((2^2)^2)^2)$ into the isomorphic field $GF(2^8)$ and measure the effect on the weight of the corresponding basis change matrices.}
+\end{minipage}
+\vspace*{1em}
+
+With the discovery of an embedding of $GF(((2^2)^2)^2)$ into the isomorphic field $GF(2^8)$ found using Magma that was different than the embedding used by Canright and others for low-area S-boxes \cite{Canright05-1, Boyar12-1}, we believe a very fruitful research problem is to study the effect of \emph{all} possible embeddings. Bosma et al. \cite{Bosma97-1} discuss the criteria for which a finite field may be embedded in the lattice of another, and provide an algorithm for performing such embeddings (as implemented in Magma). We will study this particular procedure to determine if the number of unique embeddings can be enumerated, and if so, exhaustively explore all possible basis change matrices from $GF(2^8)$ to $GF(((2^2)^2)^2)$. Even with our preliminary results, we expect that by applying Boyar and Peralta's logic minimization techniques discussed in \cite{Boyar12-1} it may be possible to lower the best-known area requirement for the S-box, which today stands at 32 AND and 83 XOR/XNOR gates with a depth of 28. We will then also try to minimize the depth of the circuit for still more throughput-efficient implementations. 
+
+\vspace*{1em}
+\begin{minipage}{.9\textwidth}
+  \emph{Task 2: Programmatic multivariate polynomial evaluation for algebraic optimizations and searches for common subexpressions.}
+\end{minipage}
+\vspace*{1em}
+
+One of the impediments to applying fine-grained algebraic optimizations to our inversion circuits over $GF(2^{16})$ was the large number of cases to consider, prohibiting manual derivations to find simplified square-scale expressions. While we could have used Magma's robust multivariate polynomial simplification and evaluation features, we did not have enough time to learn the tool well enough to explore this possibility in sufficient detail. Therefore, future work will include attempting to replicate Canright's low-level optimizations by systematically evaluating all square-scale expressions as multivariate polynomials in terms of the coefficients $\Pi$ and $\Sigma$. See Section \ref{sec:ffcomplexity} of Chapter 5 for more details on these particular optimizations.
+
+\vspace*{1em}
+\begin{minipage}{9.\textwidth}
+	\emph{Task 3: Modified circuit optimization goals to search for the NAND/NOT gate complexity of \\small circuits. \\}
+\end{minipage}
+% \vspace*{0.5em}
+
+The combinational logic minimization techniques studied in this work enforce the constraint that all logic should be implemented in AND or XOR gates. A more useful constraint is to optimize such logic with NAND and NOT gates, as these are the cheapest to implement in CMOS technologies. For example, it is well understood that NAND, AND, and XOR gates can be implemented with 4, 6, and 8 transistors, respectively. If we change the $GF(2)$ operators that are available in the randomized nonlinear circuit optimization technique to NAND and NOT gates we may be able to tailor the resulting circuits specifically to low area and GE ASIC implementations. 
+
+\vspace*{1em}
+\begin{minipage}{.9\textwidth}
+  \emph{Task 4: Improved nonlinear circuit optimization heuristics with the Circuit Minimization Team (e.g. using SAT solvers for exact multiplicative complexity measures).}
+\end{minipage}
+\vspace*{1em}
+
+As briefly discussed at the end of Section \ref{sec:linearOptTechniques} in Chapter \ref{chp:optimizeLogic}, there has already been substantial work done on moving beyond linear and nonlinear circuit optimizations based on heuristic techniques. The SAT-based encoding of SLPs by Fuhs and Schneider-Kamp \cite{Fuhs10-1} stimulated the clever application of SAT solvers to solve for exact multiplicative complexities. For this task, the SAT-based circuit optimization techniques explored by Courtois et al. \cite{Courtois11-1} to find the exact multiplicative and gate complexity of nonlinear circuits will be studied and, hopefully, improved. The gate complexity is the minimum number of \emph{any} type of logic gate required to implement a particular nonlinear circuit. These researchers explored several techniques for encoding the algebraic expression of S-boxes into an equivalent SAT formula, such as the MQ-to-CNF technique pioneered by Courtois, Bard, and Jefferson in \cite{Courtois07-1}, to find the multiplicative and gate complexities of several S-boxes in block ciphers such as GOST, PRESENT, and C2C2. 
+
+Building upon this thread of active research, we hope to apply SAT-based optimizations to many of the nonlinear circuits studied in this work, including inversion over $GF(2^4)$, $GF((2^2)^2)$, $GF(2^8)$, and $GF(((2^2)^2)^2)$. We expect that some algebraic expressions for the inversion operation in higher-order fields may lead to the corresponding SAT formulas that are too difficult to solve. We hope to explore this problem in more detail to prove (or disprove) this hypothesis.
+
+\vspace*{1em}
+\begin{minipage}{.9\textwidth}
+  \emph{Task 5: Complete security analysis of all bijective 16-bit S-boxes and integration of Boolean function analysis code into the Cryptography package in SAGE \cite{SAGE}.}
+\end{minipage}
+\vspace*{1em}
+
+Normal computers are not suited to compute the S-box security metrics discussed in Chapter \ref{chp:motivation}. As such, we have started and will continue to utilize the Open Science Grid to compute metrics such as the nonlinearity, differential uniformity, correlation immunity, and resiliency, in addition to the linear approximation and difference distribution tables, for all bijective power mappings over $GF(2^{16})$. In the current state of this work, the nonlinearity calculations for all $2^{15} = 32768$ bijective power mappings are running on the OSG with very low priority. We are currently working with the Pegasus team to improve the performance and job scheduling policy of this work-flow to finish the computation as soon as possible, though this will not be finished for this work. 
+
+We will also attempt to integrate our analysis code into the SAGE library where needed so as to aid other researchers.
+
+% \vspace*{1em}
+\begin{minipage}{.9\textwidth}
+  \emph{Task 6: Implement normal basis arithmetic in our Galois field library.}
+\end{minipage}
+% \vspace*{1em}
+
+Having the ability to easily perform normal basis arithmetic in software would have proven very useful throughout the course of this work. Consequently, we plan on developing such functionality in our Galois field library to serve as both an educational reference and research aid for future work.
+
+% Computing the differential uniformity of all such power mappings is an even more computationally expensive task, as the exhaustive method for computing this metric has a time complexity of $\mathcal{O}(2^{3n})$. Thus, computing the differential uniformity of all $2^{15}$ power mappings will take $\mathcal{O}(2^{63})$ operations. 
+

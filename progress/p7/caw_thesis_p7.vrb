@@ -1,0 +1,42 @@
+\frametitle{Scaling in $GF(2^8)$}
+\begin{align*}
+\zeta \times \Lambda = (\epsilon_1 y + \epsilon_2)\times \Lambda = (\epsilon_3 y + \epsilon_4)
+\end{align*}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+\matrix (m1) [row sep=2.5mm, column sep=5mm]
+{
+%--------------------------------------------------------------------
+\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+\node[dspadder]                  (m01) {};          &
+\node[dspsquare]                  (m02) {$\times \Pi^{-1}$};          &
+\node[dspsquare]                  (m03) {$\epsilon_3$};          \\
+
+\node[dspsquare]                   (m10) {$\epsilon_2$}; &
+\node[coordinate]                  (m11) {};          &
+\node[coordinate]                    (m12) {};          &
+\node[dspsquare]                  (m13) {$\epsilon_4$};          \\
+};
+
+\begin{scope}[start chain]
+\chainin (m00);
+\chainin (m01) [join=by dspconn];
+\chainin (m02) [join=by dspconn];
+\chainin (m03) [join=by dspconn];
+\end{scope}
+
+\begin{scope}[start chain]
+\chainin (m00);
+\chainin (m11) [join=by dspline];
+\chainin (m13) [join=by dspconn];
+\end{scope}
+
+\begin{scope}[start chain]
+\chainin (m10);
+\chainin (m01) [join=by dspconn];
+\end{scope}
+\end{tikzpicture}
+\end{figure}

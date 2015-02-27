@@ -1,0 +1,59 @@
+\documentclass[10pt]{article}
+\usepackage{fullpage}
+\usepackage{palatino}
+\usepackage{bbm}
+\usepackage{url}
+\usepackage{verbatim}
+
+\usepackage{thumbpdf, amssymb, amsmath, amsthm, microtype,
+	    graphicx, verbatim, listings, color, fancybox}
+\usepackage[pdftex]{hyperref}
+%\usepackage[margin=1in]{geometry}
+\usepackage{fullpage}
+\usepackage{pseudocode}
+\usepackage{fancybox, fancyvrb}
+
+\newcommand{\field}[1]{\mathbb{#1}} %requires amsfonts
+
+\begin{document}
+\thispagestyle{empty} 
+\begin{center}
+{\em MS Thesis Progress Report}\\
+{\large \bf Large Substitution Boxes with Efficient Combinational Implementations}\\
+{\bf Christopher A. Wood}\\
+{\bf \it Committee Chair: Professor Stanis{\l}aw Radziszowski}\\
+Department of Computer Science, Rochester Institute of Technology\\
+\today{}\\
+\end{center}
+
+\section{Progress}
+\begin{itemize}
+	\item Implemented two of Nyberg's three \emph{differentially uniform} mappings in software (differential uniformity is an indication of the probability of finding a non-zero output difference $\beta \not= 0$ for all input pairs $(x + \alpha, x)$ - this is critical for differential cryptanalysis to work):
+	\begin{align*}
+	F(x) = x^{-1} \\
+	F(x) = x^{2^{k} + 1}
+	\end{align*}
+	\item Decided to limit measurement scope to nonlinearity, resiliency,  correlation immunity, and differential uniformity.
+	\item Started hardware design for 16-bit S-box using composite fields $GF((2^8)^2), GF(((2^4)^2)^2), GF((((2^2)^2)^2)^2)$.
+\end{itemize}
+
+\section{Upcoming Work}
+\begin{itemize}
+	\item The software and hardware testbeds need to be completed first as they will enable different functions to be analyzed - HARD deadline of week 5 in spring quarter.
+	\item Extend SAC construction techniques to vectorial Boolean functions (functions of the form $GF(2^n) \to GF(2^m)$ can be defined as $F(x) = (f_1(x), ... f_m(x))$, where $f_i(x) : GF(2^n) \to GF(2)$). 
+	\item Find other Boolean function constructions for experimentation (high nonlinearity, resiliency, satisfaction of propagation criteria, and correlation immunity) that
+	can extend to 16-bits.
+	\item Determine what properties Sage and \emph{boolfun} can measure and write the software for the rest.
+\end{itemize}
+
+\section{Questions and Concerns}
+\begin{itemize}
+	\item How do the cryptographic measurements change when looking at vector Boolean functions as opposed to one-dimensional Boolean functions? 
+	\item The isomorphic mapping $\delta$ to and from composite field elements is unclear. Is it enough to ``split'' the elements in half? For example, is $\delta(\{10010110\}_2) = \{1001\}_2x + \{0110\}_2$ a valid isomorphism? Some papers seem to suggest so \cite{mui2007practical}.
+	\item I need to find an effective way to check all irreducible polynomials for composite field construction. That is, for the field $GF(2^n)$ defined over $GF(2)$ by $P(x)$, I need to find all polynomials $Q(y)$ that can be used to build $GF((2^n)^m)$ over $GF(2^n)$. 
+\end{itemize}
+
+\bibliographystyle{abbrv}
+%References Cited
+\bibliography{ref}
+\end{document}

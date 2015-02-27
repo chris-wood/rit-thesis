@@ -1,0 +1,625 @@
+\documentclass[handout]{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{pgfpages}
+\usepackage{verbatim}
+\usepackage{amsmath, amssymb, graphics, setspace}
+\usepackage{wasysym}
+
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{dsp,chains}
+
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\newcommand{\z}{\mathpzc{z}}
+
+
+\newcommand{\field}[1]{\mathbb{#1}} %requires amsfonts
+
+\usetheme{Antibes}
+\usecolortheme{beaver}
+\title[Thesis Progress Report \#7]{Thesis Progress Report \#7}
+
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage[T1]{fontenc}
+
+%\pgfpagesuselayout{4 on 1}[letterpaper,border shrink=5mm]
+
+\institute[RIT]{}
+\date{\today}
+%\subtitle{}
+\author{Christopher A. Wood}
+%\institute[]{}
+\date{May 29, 2013}
+
+\begin{document}
+
+%%%%%
+%%
+%% Resource link: http://www.math-linux.com/spip.php?article77
+%%
+%%%%
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Agenda}
+	\tableofcontents
+\end{frame}
+
+\section{Updates}
+\begin{frame}
+	\frametitle{Updates}
+	\begin{itemize}
+		\item Magma?
+	\end{itemize}
+\end{frame}
+
+\section{Inverse in Polynomial and Normal Basis}
+\begin{frame}
+	\frametitle{Counting the number of gates}
+	Main idea:
+	\begin{itemize}
+		\item Decompose operations in $GF(2^{16})$ to $GF(2)$.
+		\item Implement $GF(2)$ operations using simple logic gates.
+	\end{itemize}
+
+	\medskip
+
+	Key
+	\begin{itemize}
+		\item $GF(2^{16})/GF(2^8)$ : $s(y) = y^2 + \Psi y + \Lambda$
+		\item $GF(2^8)/GF(2^4)$ : $r(x) = x^2 + \Theta x + \Pi$
+		\item $GF(2^4) / GF(2^2)$ : $q(w) = w^2 + \Omega w + \Sigma$
+		\item $GF(2^2) / GF(2)$ : $p(v) = v^2 + \Gamma v + \Delta$ ($\Gamma = 1$, $\Delta = 1$)
+		\item $\theta \in GF(2^{16})$, $\zeta \in GF(2^8)$, $\epsilon \in GF(2^4)$, $\delta \in GF(2^2)$, $\gamma \in GF(2)$
+	\end{itemize}
+%% INVERSE IN GF(2^16) using composite fields
+\begin{figure}
+%\centering
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Multiplicative inverse in $GF(2^{16})$}
+	\begin{align*}
+		\zeta^{-1} = (\epsilon_1 y + \epsilon_2)^{-1}
+	\end{align*}
+\begin{figure}
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m00) {};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[coordinate]                  (m04) {};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                   (m10) {$\epsilon_1$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                   (m12) {$\Lambda \otimes \epsilon_1^2$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspmixer]                   (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_3$};         \\
+
+		\node[coordinate]                   (m20) {}; &
+		\node[dspadder]                  (m21) {};          &
+		\node[dspnodefull]                  (m22) {};          &
+		\node[dspadder]                   (m23) {};          &
+		\node[dspsquare]                  (m24) {$\epsilon^{-1}$};          &
+		\node[coordinate]                   (m25) {};          &
+		\node[coordinate]                  (m26) {};         \\
+
+		\node[dspsquare]                   (m30) {$\epsilon_2$}; &
+		\node[coordinate]                  (m31) {};          &
+		\node[dspmixer]                    (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {$\epsilon^{-1}$};          &
+		\node[dspmixer]                    (m35) {};          &
+		\node[dspsquare]                   (m36) {$\epsilon_4$};         \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspline];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m33) [join=by dspline];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m21) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m32) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m24);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m22);
+		\chainin (m32) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Multiplication in $GF(2^8)$}
+	\begin{align*}
+		\zeta_1 \times \zeta_2 = (\epsilon_1 y + \epsilon_2) \times (\epsilon_3 y + \epsilon_4) = (\epsilon_5 y + \epsilon_6)
+	\end{align*}
+\begin{figure}
+	\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[coordinate]                  (m01) {};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[dspmixer]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\times \Pi$};          &
+		\node[coordinate]                  (m05) {};          &
+		\node[coordinate]                  (m06) {};          \\
+
+		\node[dspsquare]                  (m10) {$\epsilon_2$};          &
+		\node[dspadder]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          &
+		\node[dspadder]                  (m15) {};          &
+		\node[dspsquare]                  (m16) {$\epsilon_5$};          \\
+
+		\node[coordinate]                  (m20) {};          &
+		\node[coordinate]                  (m21) {};          &
+		\node[coordinate]                  (m22) {};          &
+		\node[dspmixer]                  (m23) {};          &
+		\node[coordinate]                  (m24) {};          &
+		\node[coordinate]                  (m25) {};          &
+		\node[coordinate]                  (m26) {};          \\
+
+		\node[dspsquare]                  (m30) {$\epsilon_3$};          &
+		\node[dspadder]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[coordinate]                  (m33) {};          &
+		\node[coordinate]                  (m34) {};          &
+		\node[dspadder]                  (m35) {};          &
+		\node[dspsquare]                  (m36) {$\epsilon_6$};          \\
+
+		\node[dspsquare]                  (m40) {$\epsilon_4$};          &
+		\node[coordinate]                  (m41) {};          &
+		\node[coordinate]                  (m42) {};          &
+		\node[dspmixer]                  (m43) {};          &
+		\node[coordinate]                  (m44) {};          &
+		\node[coordinate]                  (m45) {};          &
+		\node[coordinate]                  (m46) {};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m03) [join=by dspconn];
+		\chainin (m04) [join=by dspconn];
+		\chainin (m35) [join=by dspconn];
+		\chainin (m36) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m14) [join=by dspline];
+		\chainin (m15) [join=by dspconn];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m11) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m43) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m31) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m30);
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m31) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m40);
+		\chainin (m43) [join=by dspconn];
+		\chainin (m44) [join=by dspline];
+		\chainin (m35) [join=by dspline];
+		\chainin (m16) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m44);
+		\chainin (m35) [join=by dspconn];
+	\end{scope}
+
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Squaring in $GF(2^8)$}
+	\begin{align*}
+		\zeta^2 = (\epsilon_1 y + \epsilon_2)(\epsilon_1 y + \epsilon_2) = (\epsilon_3 y + \epsilon_4)
+	\end{align*}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[dspsquare]                  (m01) {$\epsilon_1^2$};          &
+		\node[coordinate]                  (m02) {};          &
+		\node[coordinate]                  (m03) {};          &
+		\node[dspsquare]                  (m04) {$\epsilon_3$};          \\
+
+		\node[coordinate]                   (m10) {}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[dspsquare]                    (m12) {$\times \Pi$};          &
+		\node[coordinate]                  (m13) {};          &
+		\node[coordinate]                  (m14) {};          \\
+
+		\node[dspsquare]                   (m20) {$\epsilon_2$}; &
+		\node[dspsquare]                  (m21) {$\epsilon_2^2$};          &
+		\node[coordinate]                    (m22) {};          &
+		\node[dspadder]                    (m23) {};          &
+		\node[dspsquare]                  (m24) {$\epsilon_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspline];
+		\chainin (m03) [join=by dspline];
+		\chainin (m04) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m01);
+		\chainin (m12) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m20);
+		\chainin (m21) [join=by dspconn];
+		\chainin (m22) [join=by dspline];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m24) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Scaling in $GF(2^8)$}
+	\begin{align*}
+		\zeta \times \Lambda = (\epsilon_1 y + \epsilon_2)\times \Lambda = (\epsilon_3 y + \epsilon_4)
+	\end{align*}
+	\begin{figure}
+\centering
+\begin{tikzpicture}
+
+% Place nodes using a matrix
+	\matrix (m1) [row sep=2.5mm, column sep=5mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspsquare]                  (m00) {$\epsilon_1$};          &
+		\node[dspadder]                  (m01) {};          &
+		\node[dspsquare]                  (m02) {$\times \Pi^{-1}$};          &
+		\node[dspsquare]                  (m03) {$\epsilon_3$};          \\
+
+		\node[dspsquare]                   (m10) {$\epsilon_2$}; &
+		\node[coordinate]                  (m11) {};          &
+		\node[coordinate]                    (m12) {};          &
+		\node[dspsquare]                  (m13) {$\epsilon_4$};          \\
+	};
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspconn];
+		\chainin (m02) [join=by dspconn];
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m11) [join=by dspline];
+		\chainin (m13) [join=by dspconn];
+	\end{scope}
+
+	\begin{scope}[start chain]
+		\chainin (m10);
+		\chainin (m01) [join=by dspconn];
+	\end{scope}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Subfield operations}
+	\begin{center}
+	Perform the algebra, minimize the arithmetic, create the circuit, count the gates  
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Basis changes to degree 2 extension tower field representations}
+	\begin{center}
+	Magma!
+	\end{center}
+\end{frame}
+
+%Optimizations
+
+\section{Linear Transformation Optimizations}
+\begin{frame}
+	\frametitle{Optimizing linear transformations}
+\begin{align*}
+\begin{pmatrix}
+y_0 \\
+y_1 \\
+y_2 \\
+y_3 \\
+y_4 \\
+y_5 \\
+y_6 \\
+y_7 \\
+\end{pmatrix} = 
+\begin{pmatrix}
+1 & 1 & 0 & 1 & 1 & 1 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+0 & 1 & 0 & 1 & 1 & 1 & 0 & 0 \\
+1 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+\end{pmatrix}
+\begin{pmatrix}
+x_0 \\
+x_1 \\ 
+x_2 \\
+x_3 \\
+x_4 \\
+x_5 \\
+x_6 \\
+x_7 \\
+\end{pmatrix}
+\end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Equivalently...}
+\begin{align*}
+\begin{pmatrix}
+y_0 \\
+y_1 \\
+y_2 \\
+y_3 \\
+y_4 \\
+y_5 \\
+y_6 \\
+y_7 \\
+\end{pmatrix} = 
+\begin{pmatrix}
+x_0 + x_1 + x_3 + x_4 + x_5 \\
+x_1 + x_2 + x_3 + x_4 + x_5 + x_6 \\
+x_1 + x_3 + x_4 + x_5 \\
+x_0 + x_1 + x_3 + x_6 \\
+x_0 + x_3 + x_4 + x_6 \\
+x_0 + x_1 + x_3 + x_4 + x_6 \\
+x_0 + x_1 + x_3 \\
+x_0 + x_1 + x_3 + x_4 + x_5 + x_6 + x_7 \\
+\end{pmatrix}
+\end{align*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{A better solution}
+\begin{align*}
+\begin{pmatrix}
+y_0 \\
+y_1 \\
+y_2 \\
+y_3 \\
+y_4 \\
+y_5 \\
+y_6 \\
+y_7 \\
+\end{pmatrix} = 
+\begin{pmatrix}
+x_9 + x_{10} \\
+x_6 + x_8 + x_{12} \\
+x_8 + x_{10} \\
+x_{11} \\
+x_0 + x_3 + x_4 + x_6 \\
+x_4 + x_{11} \\
+x_9 \\
+x_7 + x_{11} + x_{12} \\
+\end{pmatrix}
+\end{align*}
+
+with $x_8 = x_1 + x_3$, $x_9 = x_0 + x_8$, $x_{10} = x_4 + x_5$, $x_{11} = x_6 + x_9$, and $x_{12} = x_2 + x_{10}$
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Optimization}
+	Main idea:
+	\begin{itemize}
+		\item Factor out bits that can share a gate
+		\item Cast the new shared gate as a new variable in the linear system
+		\item Repeat factorization until no more shares can be found
+	\end{itemize}
+
+	\medskip 
+
+	Fun fact:
+	\begin{itemize}
+		\item This is formalized as the \emph{Shortest Linear Program} problem - NP-hard
+		\item Complexity proved by considering the decision variant - does there exist a linear program with at most $k$ lines which computes the function? - and reducing from VERTEX-COVER
+		\item Approximation algorithms have ratios of at least $3/2$ (i.e. they cannot yield near-optimal solutions)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Optimization}
+	Morale: heuristics are needed!
+	\begin{itemize}
+		\item Paar: Greedy factoring
+		\item Peralta: Greedy factoring with (Euclidean) norm-based tie breaker (details discussed in the thesis)
+	\end{itemize}
+
+	\medskip 
+
+	Question: which one works best for $16 \times 16$ matrices (linear transformations)?
+\end{frame}
+
+\begin{frame}
+	\frametitle{Exhaustive search for the optimal linear program}
+	... or, perform an exhaustive search similar to Canright
+
+	\medskip
+
+	\textbf{Our contribution}: reimplement Canright's exhaustive search and then \emph{parallelize} it
+
+	\medskip
+
+	\textbf{Problem}: Exhaustive search is recursive, so how can we partition the work among multiple cores/threads? \frownie
+
+	\medskip
+
+	\textbf{Solution}: \emph{fork/join recursive actions} \smiley
+\end{frame}
+
+\begin{frame}
+	\frametitle{Demonstration}
+	\begin{center}
+		Demo (in Java)
+	\end{center}
+\end{frame}
+
+\section{Other Maximally Nonlinear Power Mappings}
+\begin{frame}
+	\frametitle{Cryptographically significant power mappings}
+	All S-boxes are based off of some \emph{nonlinear power mapping}: $f(x) = x^d$
+
+	\begin{tabular}{c || c }
+    \hline
+    \textbf{Name} & \textbf{Exponent} (d)  \\ \hline
+    Inverse & $-1 \equiv 2^n - 2$  \\ \hline
+    Gold & $2^{k} + 1$, $\gcd\{k,n\} = 1$ for some $1 \leq k \leq 2^{n} - 1$  \\ \hline
+    Kasami & $2^{2k} - 2^k + 1$, $\gcd\{k,n\} = 1$ for some $1 \leq k \leq 2^{n-1} - 1$ \\ \hline
+    Dobertin & $2^{4k + 3k + 2k + k} - 1$ over $GF(2^s)$ with $s = 5k$  \\ \hline
+    Niho & $2^{m} + 2^{m/2} - 1$ over $GF(2^s)$ with $s = 2m + 1$ and $m$ even  \\ \hline
+    Welch & $2^m + 3$ over $GF(2^s)$ with $s = 2m + 1$  \\ \hline
+    \end{tabular}
+\end{frame}
+
+\begin{frame}
+	\frametitle{What are our options for $GF(2^{16})$?}
+	\begin{align*}
+	d \in \{3, 1023, 63, 255, 15, 16383, \mathbf{65534}, 4095\}
+	\end{align*}
+	\begin{itemize}
+		\item No Kasami, Gold, Welch, and Niho exponents exist for $n = 16$
+		\item We need only study the \emph{inverse} and \emph{Dobbertin} exponents
+	\end{itemize}
+
+	\medskip
+
+	\textbf{Action}: Complete security analysis by Monday, 6/3
+\end{frame}
+
+\begin{frame}
+	\frametitle{Affine transformation update}
+	\begin{itemize}
+		\item Boolean function-related properties are unaffected by affine transformations 
+		\item Need to select one with optimal algebraic complexity
+		\begin{itemize}
+			\item $S = A \circ P$ (maximum algebraic complexity is $n + 1$ for $GF(2^n)$) - efficient
+			\item $S = A \circ P \circ A$ (maximum algebraic complexity is $2^n - 1$ for $GF(2^n)$) - inefficient
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+% list others, and show dobbertins and list those that might be good/easy to implement
+
+\begin{frame}
+	\frametitle{Action Items}
+	\begin{itemize}
+		\item Quantified security results for all Dobbertin mappings and the inverse mapping
+		\item Magma code to count the number of gates needed for multiplicative inverse calculation
+		\item Continued writing for thesis (draft of all relevant chapters by Monday)
+	\end{itemize}
+	\begin{center}
+		Next meeting: \textbf{6/3/13}
+	\end{center}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+
+\usepackage{thumbpdf, amssymb, amsmath, amsthm, microtype,
+	    graphicx, verbatim, listings, color, fancybox}
+\usepackage[pdftex]{hyperref}
+\usepackage[table]{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol,multirow}
+\usepackage{pseudocode}
+\usepackage{subfig}
+\usepackage{mysty}
+\usepackage{multicol,multirow}
+\usepackage{subfig}
+\usepackage{dcolumn}
+\usepackage{fullpage}
+\usepackage{palatino}
+\usepackage{bbm}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{fancybox, fancyvrb}
+\usepackage{listings}
+\usepackage{color}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+
+\begin{document}
+\input{./title.tex}
+\tableofcontents
+
+\newpage
+\input{./intro.tex}
+\input{./related.tex}
+\input{./work}
+\input{./metrics}
+\input{./evaluation}
+\input{./schedule}
+
+\vspace*{2em}
+
+\begin{thebibliography}{9}
+
+\bibitem{Shannon} Claude E. Shannon. Communication Theory of Secrecy Systems. Bell System Technical Journal 28.4 (1949), 656-715.
+
+\bibitem{Stinson} Douglas Robert Stinson. Cryptography: Theory and Practice. CRC press (2006).
+
+\bibitem{Bonneau06-1} Joseph Bonneau and Ilya Mironov. Cache-Collision Timing Attacks Against AES. Cryptographic Hardware and Embedded Systems-CHES 2006. Springer Berlin Heidelberg (2006), 201-215.
+
+\bibitem{Satoh01-1} Akashi Satoh, Sumio Morioka, Kohji Takano, and Seiji Munetoh. A Compact Rijndael Hardware Architecture with S-box Optimization. Advances in Cryptology—ASIACRYPT 2001. Springer Berlin Heidelberg (2001), 239-254.
+
+\bibitem{Mentens05-1} Nele Mentens, Lejla Batina, Bart Preneel, and Ingrid Verbauwhede. A Systematic Evaluation of Compact Hardware Implementations for the Rijndael S-box. Topics in Cryptology–CT-RSA 2005. Springer Berlin Heidelberg (2005), 323-333.
+
+\bibitem{Canright05-1} David Canright. A Very Compact S-box for AES. Cryptographic Hardware and Embedded Systems - CHES 2005. Springer Berlin Heidelberg (2005), 441-455.
+
+\bibitem{Boyar12-1} Joan Boyar and Ren\'{e} Peralta. A Small Depth-16 Circuit for the AES S-box. Information Security and Privacy Research. Springer Berlin Heidelberg (2012), 287-298.
+
+\bibitem{Brunner93-1} Hannes Brunner, Andreas Curiger, and Max Hofstetter. On Computing Multiplicative Inverses in $GF(2^m)$. IEEE Transactions on Computers, Vol. 42, No. 8, August (1993), 1010-1015.
+
+\bibitem{Paar94} Chirstof Paar. Efficient VLSI Architectures for Bit-Parallel Computations in Galois Fields. PhD Thesis, Institute for Experimental Mathematics, University of Essen, Germany (1994).
+
+\bibitem{Nyberg94-1} Kaisa Nyberg. Differentially Uniform Mappings for Cryptography. Advances in Cryptology - Eurocrypt’93. Springer Berlin Heidelberg (1994).
+
+\bibitem{Cusik09-1} Thomas W. Cusick and Pantelimon St\v{a}nic\v{a}. Cryptographic Boolean Functions and Applications. 
+Academic Press (2009).
+
+\bibitem{Canteaut05-1} Anne Canteaut. Fast Correlation Attacks Against Stream Ciphers and Related Open Problems. 
+Theory and Practice in Information-Theoretic Security (2005).
+
+\bibitem{Daemen02-1} Joan Daemen and Vincent Rijmen. The design of Rijndael: AES-the advanced encryption standard. Springer (2002).
+
+\bibitem{Gupta05-1} Kishan Chand Gupta and Palash Sarkar. Efficient representation and software implementation of resilient Maiorana-McFarland S-boxes. Information Security Applications. Springer Berlin Heidelberg (2005), 317-331.
+
+\bibitem{Gupta02-1} Kishan Chand Gupta and Palash Sarkar. Improved Construction of Nonlinear Resilient S-boxes. Advances in Cryptology—ASIACRYPT 2002. Springer Berlin Heidelberg (2002), 466-483.
+
+\bibitem{Rudra01-1} Atri Rudra, Pradeep K. Dubey, Charanjit S. Jutla, Vijay Kumar, Josyula R. Rao, and Pankaj Rohatgi. Efficient Rijndael Encryption Implementation with Composite Field Arithmetic. Cryptographic Hardware and Embedded Systems - CHES 2001. Springer Berlin Heidelberg (2001).
+
+\bibitem{Morioka99-1} Sumio Morioka and Yasunao Katayama. Design Methodology for a One-Shot Reed-Solomon Encoder and Decoder. IEEE International Conference on Computer Design - ICCD'99, (1999).
+
+\bibitem{Nikova08-1} Svetla Nikova, Vincent Rijmen, and Martin Schl\H{a}ffer. Using Normal Bases for Compact Hardware Implementations of the AES S-box. Security and Cryptography for Networks. Springer Berlin Heidelberg (2008), 236-245.
+
+\bibitem{Frederik04-1} Frederik Armknecht. On the Existence of Low-Degree Equations for Algebraic Attacks. \emph{State of the Art of Stream Ciphers} (2004), 175-189.
+
+\end{thebibliography}
+\end{document}

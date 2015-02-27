@@ -1,0 +1,544 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{Dedication}{iii}}
+\@writefile{toc}{\contentsline {chapter}{Acknowledgments}{iv}}
+\@writefile{toc}{\contentsline {chapter}{Abstract}{vi}}
+\citation{Canright05-1}
+\citation{Canright05-1}
+\citation{shannon1949-secrecy}
+\citation{stinson-crypto}
+\citation{daemen01-AES}
+\citation{Daemen02-1}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{1}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Motivation}{1}}
+\citation{Rudra01-1}
+\citation{Satoh01-1}
+\citation{Mentens05-1}
+\citation{Canright05-1}
+\citation{Boyar12-1}
+\citation{Canright05-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces SPN($x, S_S, S_P, (K^1, \dots  , K^{N_r + 1})$)}}{2}}
+\newlabel{spnAlg}{{1}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Contribution of the Thesis}{2}}
+\citation{Fuhs10-1}
+\citation{SAGE}
+\citation{Canright05-1}
+\citation{Lidl94-1}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Mathematical Foundations}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Galois Fields}{5}}
+\citation{MacWilliams86-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Bases of Galois Fields}{7}}
+\newlabel{sec:ffBasis}{{1.3.2}{7}}
+\citation{Berk03-1}
+\citation{Rudra01-1}
+\citation{Satoh01-1}
+\citation{Mentens05-1}
+\citation{Canright05-1}
+\citation{Boyar11-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.3}Composite Fields}{8}}
+\citation{cusik09-BooleanFunctions}
+\citation{cusik09-BooleanFunctions}
+\citation{Golomb05-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.4}Boolean Functions}{9}}
+\citation{Carlet10-1}
+\newlabel{eqn:trace}{{1.1}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.5}S-Boxes as $(n,m)$ Boolean Functions}{10}}
+\citation{Kaminsky10-2}
+\citation{stinson-crypto}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Cryptographic Aspects of the Substitution Layer}{12}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chp:motivation}{{2}{12}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Cryptanalysis Attacks}{12}}
+\newlabel{sec:attacks}{{2.1}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Linear Cryptanalysis}{12}}
+\citation{Matsui91-1}
+\citation{stinson-crypto}
+\citation{Matsui91-1}
+\citation{Biham91-1}
+\citation{stinson-crypto}
+\citation{Daemen02-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces General Linear Cryptanalysis Attack}}{15}}
+\newlabel{alg:linearAttack}{{2}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Differential Cryptanalysis}{16}}
+\citation{Courtois00-1}
+\citation{Fraenkel79-1}
+\citation{Courtois00-1}
+\citation{Kipnis99-1}
+\citation{Kleiman05-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}XL and XLS Algebraic Attacks}{17}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces General Differential Cryptanalysis Attack}}{18}}
+\newlabel{alg:dcattack}{{3}{18}}
+\citation{Courtois02-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Extended Linearization}}{19}}
+\newlabel{alg:xl}{{4}{19}}
+\citation{Jakobsen97-1}
+\citation{Jakobsen97-1}
+\citation{Jakobsen97-1}
+\citation{Daemen02-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.4}Interpolation Attacks}{20}}
+\newlabel{sec:sublayer_interpolation}{{2.1.4}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Efficient Computations of Cryptographic Properties of S-Boxes}{21}}
+\newlabel{sec:strength}{{2.2}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Linear Approximation and Difference Distribution}{21}}
+\citation{cusik09-BooleanFunctions}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces $N_L(S, n$)}}{22}}
+\newlabel{alg:claAlg}{{5}{22}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces $N_D(S, n)$}}{22}}
+\newlabel{alg:ddtable}{{6}{22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Nonlinearity}{22}}
+\citation{cusik09-BooleanFunctions}
+\citation{Nawaz09-1}
+\citation{Dobbertin99-1}
+\citation{Rothaus76-1}
+\citation{Nyberg91-1}
+\citation{Shanks69-1}
+\citation{Carlet10-1}
+\newlabel{eqn:nlFromWalsh}{{2.1}{23}}
+\newlabel{fig:fwt}{{2.2.2}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Visual depiction of the Fast Walsh Transform that is used to calculate the Walsh spectrum for the Boolean function $f = (10101100)$.}}{24}}
+\@writefile{lol}{\contentsline {listing}{\numberline {2.1}{\ignorespaces Python source code to compute the FWT for a Boolean function $f$.}}{24}}
+\newlabel{lst:fwt}{{2.1}{24}}
+\citation{Nyberg94-1}
+\@writefile{lol}{\contentsline {listing}{\numberline {2.2}{\ignorespaces Python source code to compute the nonlinearity of an $(n, n)$ S-box.}}{25}}
+\newlabel{lst:nonlinearityCode}{{2.2}{25}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Differential Uniformity}{25}}
+\citation{Nyberg94-1}
+\citation{Nyberg91-1}
+\citation{Daemen02-1}
+\citation{Nyberg94-1}
+\citation{Carlet04-1}
+\citation{Canteaut05-1}
+\citation{Gao11-1}
+\@writefile{lol}{\contentsline {listing}{\numberline {2.3}{\ignorespaces Python code to compute the differential uniformity $\delta $ of an $(n, n)$ S-box.}}{27}}
+\newlabel{lst:duCode}{{2.3}{27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}Resiliency}{27}}
+\@writefile{lol}{\contentsline {listing}{\numberline {2.4}{\ignorespaces Python code to compute the correlation immunity of an $(n, n)$ S-box.}}{28}}
+\newlabel{lst:CIcode}{{2.4}{28}}
+\@writefile{lol}{\contentsline {listing}{\numberline {2.5}{\ignorespaces Python code to compute the resiliency of an $(n, n)$ S-box.}}{28}}
+\newlabel{lst:resiliencyCode}{{2.5}{28}}
+\citation{Courtois02-1}
+\citation{Courtois05-1}
+\citation{Courtois05-1}
+\citation{Nawaz09-1}
+\citation{Nawaz09-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.5}Algebraic Immunity}{29}}
+\citation{Nawaz09-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {7}{\ignorespaces Number of Linearly Independent Bi-Affine Equations (modified from \cite  {Nawaz09-1})}}{30}}
+\newlabel{alg:biaffineNumber}{{7}{30}}
+\citation{Webster86-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.6}Algebraic Complexity}{31}}
+\newlabel{sec:strength_alg_complexity}{{2.2.6}{31}}
+\citation{daemen01-AES}
+\citation{Ullrich11-1}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Strict Avalanche Criteria (SAC) visualization for the AES S-box.}}{32}}
+\newlabel{tab:aesSAC}{{2.1}{32}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.7}Avalanche Effect}{32}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.8}Branch Number}{32}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {8}{\ignorespaces Number of Linearly Independent Quadratic Equations (modified from \cite  {Nawaz09-1})}}{34}}
+\newlabel{alg:quadraticNumber}{{8}{34}}
+\@writefile{lol}{\contentsline {listing}{\numberline {2.6}{\ignorespaces Python code to compute the SAC matrix of an $(n, n)$ S-box.}}{35}}
+\newlabel{lst:SAC}{{2.6}{35}}
+\citation{DES-FIPS}
+\citation{daemen01-AES}
+\citation{Nyberg94-1}
+\citation{Daemen02-1}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}S-box Constructions}{36}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chp:sboxConstruction}{{3}{36}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Galois Field Power Mapping Constructions}{36}}
+\citation{Nyberg94-1}
+\citation{Courtois05-1}
+\citation{Courtois05-1}
+\citation{Courtois05-1}
+\citation{Courtois05-1}
+\citation{Courtois05-1}
+\newlabel{tab:powerMaps}{{3.1}{37}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Table of highly nonlinear power mappings with good differential uniformity properties.}}{37}}
+\citation{Lidl94-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Affine Transformations for Algebraic Complexity}{39}}
+\citation{Daemen02-1}
+\citation{Cui07-1}
+\citation{Cui07-1}
+\citation{Daemen02-1}
+\@writefile{lol}{\contentsline {listing}{\numberline {3.7}{\ignorespaces Magma code to perform Lagrangian interpolation for the AES S-box.}}{45}}
+\newlabel{lst:algComplexityMagmaCode}{{3.7}{45}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {9}{\ignorespaces AffineSearch($\mathbb  {F}, n, d$)}}{46}}
+\newlabel{alg:affineSearch}{{9}{46}}
+\citation{Boyar08-1}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Combinational Logic Minimization Techniques}{47}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chp:optimizeLogic}{{4}{47}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Optimizing Linear Transformations}{47}}
+\newlabel{eqn:interpPoly}{{4.1}{47}}
+\citation{Boyar08-1}
+\citation{Karp72-1}
+\citation{Boyar08-1}
+\citation{Paar97-1}
+\citation{Paar97-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Heuristic-Based Optimizations}{49}}
+\newlabel{sec:linearOptTechniques}{{4.1.1}{49}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {10}{\ignorespaces Greedy linear form optimization \cite  {Paar97-1}}}{50}}
+\newlabel{alg:greedyMatrixOptimizePaar}{{10}{50}}
+\citation{Bernstein09-1}
+\citation{Rooji95-1}
+\citation{Bernstein09-1}
+\citation{Boyar12-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {11}{\ignorespaces Bernstein recursive optimization (transcribed from \cite  {Bernstein09-1})}}{52}}
+\newlabel{alg:bernsteinLinearOpt}{{11}{52}}
+\citation{Fuhs10-1}
+\citation{Boyar12-1}
+\citation{Canright05-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Improving Linear Circuit Minimization Efficiency}{53}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Comparison of different optimization algorithms for the target $16 \times 16$ and $32 \times 16$ matrices in this work. The average XOR counts were gathered by populating the entries of matrices with nonzero entries with probability $p = 0.5$ over a series of $500$ trials.}}{54}}
+\newlabel{tab:algComparison}{{4.1}{54}}
+\citation{Canright05-1}
+\citation{Kaminsky10-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {12}{\ignorespaces SequentialExhaustiveFactor($M$, $m$, $g$)}}{55}}
+\newlabel{alg:exhaustiveCanright}{{12}{55}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {13}{\ignorespaces ParallelExhaustiveFactor($M$, $m$, $g$)}}{56}}
+\newlabel{alg:parallelOptimize}{{13}{56}}
+\newlabel{tab:factorTimes}{{4.1.2}{57}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison of the factorization time using the sequential and parallel factorization programs. }}{57}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with $16 \times 16$ matrices. In these graphs we use $N = 1$ to denote $7 \times 7$ matrices, $N = 2$ to denote $8 \times 8$ matrices, etc.}}{58}}
+\newlabel{fig:speedup1}{{4.1}{58}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Speedup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with merged $32 \times 16$ matrices. In these graphs we use $N = 11$ to denote $22 \times 11$ matrices, $N = 2$ to denote $24 \times 12$ matrices, etc.}}{58}}
+\newlabel{fig:speedup2}{{4.2}{58}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Sizeup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with merged $16 \times 16$ and unmerged matrices. This data was collected by running tests for matrices of size $7 \times 7$ to $16 \times 16$ matrices.}}{59}}
+\newlabel{fig:sizeup1}{{4.3}{59}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Sizeup metrics for the parallel implementation of Boyar and Peralta's technique using tie breaker \#1 with merged $32 \times 16$ and unmerged matrices. This data was collected by running tests for matrices of size $22 \times 11$ to $32 \times 16$ matrices.}}{59}}
+\newlabel{fig:sizeup2}{{4.4}{59}}
+\citation{Boyar12-1}
+\citation{Shannon49-1}
+\citation{Lupanov58-1}
+\citation{Boyar00-1}
+\citation{Boyar00-1}
+\citation{Boyar12-1}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Optimizing Nonlinear Circuits}{60}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Ad-Hoc Heuristics}{60}}
+\citation{Boyar12-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}An Application to Small Galois Field Inversion Circuits}{61}}
+\citation{Canright05-1}
+\citation{Boyar12-1}
+\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Hardware area requirements for a variety of inversion circuits for fields isomorphic to $GF(2^4)$. The Sum of Products (SOP) entries are unoptimized circuits derived directly from the corresponding truth table, and the optimized entries are those minimized using our modified version of the Boyar-Peralta technique.}}{66}}
+\newlabel{tab:inverseCircuitMinimized}{{4.3}{66}}
+\newlabel{fig:gf4BestInversea}{{4.5(a)}{67}}
+\newlabel{sub@fig:gf4BestInversea}{{(a)}{67}}
+\newlabel{fig:gf4BestInverseb}{{4.5(b)}{67}}
+\newlabel{sub@fig:gf4BestInverseb}{{(b)}{67}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces RTL schematics for the smallest $GF((2^2)^2)$ and $GF(2^4)$ inversion circuits generated with the Synopsys tool.}}{67}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Inversion circuit corresponding to cases 8 and 16 in Table 4.3\hbox {}}}}{67}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Inversion circuit corresponding to case 20 in Table 4.3\hbox {}}}}{67}}
+\citation{Itoh88-1}
+\citation{Paar95-1}
+\citation{Rijmen00-1}
+\citation{Canright05-1}
+\citation{Satoh01-1}
+\citation{Mentens05-1}
+\citation{Boyar11-1}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Area-Optimized Implementations of the Galois Field Multiplicative Inverse}{68}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chp:inverseImpl}{{5}{68}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Reduction to Subfield Inversion}{68}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces All possible tower field representations for $GF(2^{16})$. Our constructions use the isomorphic field $GF((((2^2)^2)^2)^2)$.}}{69}}
+\newlabel{fig:gfDecompose}{{5.1}{69}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Direct Inversion using Polynomial and Normal Bases}{69}}
+\newlabel{eqn:gf24-inv-derive1}{{5.1}{70}}
+\newlabel{eqn:gf24-inv-derive2}{{5.2}{70}}
+\newlabel{eqn:gf24-inv-derive3}{{5.3}{70}}
+\newlabel{eqn:gf24-inv-derive4}{{5.4}{70}}
+\newlabel{eqn:gf24-inv-derive5}{{5.5}{70}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Polynomial basis inverter in $GF((2^2)^2)$.}}{71}}
+\newlabel{fig:gf24-poly-inverse}{{5.2}{71}}
+\newlabel{eqn:inverse_normal1}{{5.6}{72}}
+\newlabel{eqn:inverse_normal2}{{5.7}{72}}
+\newlabel{eqn:inverse_normal3}{{5.8}{72}}
+\newlabel{eqn:inverse_normal4}{{5.9}{73}}
+\citation{Satoh01-1}
+\citation{Canright05-1}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Normal basis inverter for $GF((2^2)^2)$.}}{74}}
+\newlabel{fig:gf24-norm-inverse}{{5.3}{74}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Combinational Complexity of Galois Field Arithmetic}{74}}
+\newlabel{sec:ffcomplexity}{{5.2}{74}}
+\citation{Satoh01-1}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}$GF(2^2)$ Combinational Arithmetic}{75}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Polynomial combinational circuit for computing the multiplicative inverse of an element $\delta = \gamma _1 v + \gamma _2$ in $GF(2^2)$ (i.e. $\delta ^{-1}$).}}{75}}
+\newlabel{fig:gf22-pol-inverse}{{5.4}{75}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Polynomial combinational circuit for computing the product of $\delta _1 = \gamma _1 v + \gamma _2$ and $\delta _2 = \gamma _3 v + \gamma _4$ in $GF(2^2)$.}}{76}}
+\newlabel{fig:gf22-pol-mult}{{5.5}{76}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Polynomial combinational circuit for scaling an element $\delta _1 = \gamma _1 v + \gamma _2$ by a constant $\delta _2 = \gamma _3 v$ in $GF(2^2)$.}}{77}}
+\newlabel{fig:gf22-pol-scale1}{{5.6}{77}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Polynomial combinational circuit for scaling an element $\delta _1 = \gamma _1 v + \gamma _2$ by a constant $\delta _2 = \gamma _3 v + \gamma _4$ in $GF(2^2)$.}}{77}}
+\newlabel{fig:gf22-pol-scale2}{{5.7}{77}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Square-scale circuit in $GF(2^2)$ when $\Sigma = v$}}{78}}
+\newlabel{fig:gf22-poly-squarescale1}{{5.8}{78}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Square-scale circuit in $GF(2^2)$ when $\Sigma = v + 1$}}{78}}
+\newlabel{fig:gf22-poly-squarescale2}{{5.9}{78}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.10}{\ignorespaces Normal combinational circuit for computing the product of two elements $\delta _1 = \gamma _1 v^2 + \gamma _2 v$ and $\delta _2 = \gamma _3 v^2 + \gamma _4 v$ in $GF(2^2)$.}}{79}}
+\newlabel{fig:gf22-norm-mult}{{5.10}{79}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Required XOR gates for $GF(2^2)$ arithmetic operations using polynomial and normal bases. Note that each multiplication operation requires three AND gates.}}{80}}
+\newlabel{tab:gf22-ops-complexity}{{5.1}{80}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}$GF((2^2)^2)$ Combinational Arithmetic}{80}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.11}{\ignorespaces Polynomial basis multiplier for $GF((2^2)^2)$.}}{81}}
+\newlabel{fig:gf24-poly-mult}{{5.11}{81}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Optimized costs of polynomial scaling in $GF((2^2)^2)$.}}{82}}
+\newlabel{tab:polynomialScaleOptimize}{{5.2}{82}}
+\citation{Canright05-1}
+\citation{Canright05-1}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Optimized costs of polynomial square-scaling in $GF((2^2)^2)$ \cite  {Canright05-1}.}}{84}}
+\newlabel{tab:polynomialSquareScaleOptimize}{{5.3}{84}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.12}{\ignorespaces Normal basis multiplier for $GF((2^2)^2)$.}}{85}}
+\newlabel{gf24-norm-mult}{{5.12}{85}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces Optimized costs of normal scaling in $GF((2^2)^2)$.}}{86}}
+\newlabel{tab:normalScaleOptimize}{{5.4}{86}}
+\citation{Canright05-1}
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces Optimized costs of normal square-scaling in $GF((2^2)^2)$ \cite  {Canright05-1}.}}{88}}
+\newlabel{tab:normalSquareScaleOptimize}{{5.5}{88}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces Subfield arithmetic costs ((A)dditions, (M)ultiplications, (Sq)uares, (I)nversions, (SS)quare-scales, (Sc)ales) for finite field arithmetic operations in $GF((2^2)^2)$ using polynomial and normal bases.}}{89}}
+\newlabel{tab:gf24-ops-complexity}{{5.6}{89}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}$GF(((2^2)^2)^2)$ Combinational Arithmetic}{89}}
+\newlabel{sec:gf28arith}{{5.2.3}{89}}
+\citation{Itoh88-1}
+\citation{Itoh88-1}
+\citation{Itoh88-1}
+\citation{Lidl94-1}
+\@writefile{toc}{\contentsline {subsubsection}{Itoh-Tsujii Algorithm}{92}}
+\citation{Jorge02-1}
+\citation{Chung00-1}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {14}{\ignorespaces Itoh-Tsujii Inversion Algorithm}}{93}}
+\newlabel{alg:itoh}{{14}{93}}
+\citation{Itoh88-1}
+\citation{CMT}
+\newlabel{tab:itaOperations}{{5.2.3}{94}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.7}{\ignorespaces Total arithmetic operations using the Itoh-Tsujii inversion algorithm for varied parameters $n$ and $m$ that define the composite field $GF((2^n)^m)$ isomorphic to $GF(2^{16})$.}}{94}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Change of Basis Representations}{95}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}A Small Example - Basis Change Matrices for $GF(2^4)$ and $GF((2^2)^2)$}{97}}
+\citation{Satoh01-1}
+\citation{Canright05-1}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Generalized Optimizations}{99}}
+\citation{Satoh01-1}
+\citation{Canright05-1}
+\@writefile{lol}{\contentsline {listing}{\numberline {5.8}{\ignorespaces Gate counting results for the $GF(((2^2)^2)^2)$ representation example.}}{101}}
+\newlabel{lst:gf28gateCountCode}{{5.8}{101}}
+\@writefile{lol}{\contentsline {listing}{\numberline {5.9}{\ignorespaces Gate counting results for the $GF((((2^2)^2)^2)^2)$ representation example.}}{101}}
+\newlabel{lst:gf216gateCountCode}{{5.9}{101}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.13}{\ignorespaces High-level diagram for a merged S-box circuit.}}{102}}
+\newlabel{fig:merged}{{5.13}{102}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Hardware Complexity}{102}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {15}{\ignorespaces Exhaustive Basis Generation.}}{105}}
+\newlabel{alg:exhaustiveRootGeneration}{{15}{105}}
+\citation{Rudra01-1}
+\citation{Satoh01-1}
+\citation{Rudra01-1}
+\citation{Mentens05-1}
+\citation{Satoh01-1}
+\citation{Satoh01-1}
+\citation{Paar94-1}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Results and Proposed S-Box Constructions}{106}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chp:results}{{6}{106}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}AES S-Box Alternatives}{106}}
+\citation{Canright05-1}
+\citation{Satoh01-1}
+\citation{Mentens05-1}
+\citation{Nikova08-1}
+\citation{Nogami11-1}
+\citation{Boyar11-1}
+\citation{Boyar12-1}
+\citation{Boyar10-1}
+\citation{Peralta13-PC}
+\citation{Fuhs10-1}
+\citation{CMT}
+\citation{CMT}
+\citation{Canright05-1}
+\newlabel{RF1}{110}
+\newlabel{tab:aesAlternatives1}{{6.1}{110}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces AES S-box alternatives with optimized basis change matrices and an un-merged circuit design. For space, we denote each irreducible polynomial $s(v)$, constant $c$, and binary matrix ($\mathbf  {A}$, $\mathbf  {T}$, and $\mathbf  {T}^{-1}$ in row order) as a hexadecimal string. Also note that $\Sigma $, $\Pi $, and $\Lambda $ are given in their standard polynomial basis representation. With the basis elements given for all subfields, one may easily convert to the proper basis representation using the software that produced these results.}}{110}}
+\newlabel{RF2}{111}
+\newlabel{tab:aesAlternatives2}{{6.1}{111}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces AES S-box alternatives with optimized basis change matrices and a merged circuit design. For space, we denote each irreducible polynomial $s(v)$, constant $c$, and binary matrix ($\mathbf  {A}$, $\mathbf  {T}$, and $\mathbf  {T}^{-1}$ in row order) as a hexadecimal string. Also note that $\Sigma $, $\Pi $, and $\Lambda $ are given in their standard polynomial basis representation. With the basis elements given for all subfields, one may easily convert to the proper basis representation using the software that produced these results.}}{111}}
+\citation{Courtois05-1}
+\citation{Courtois05-1}
+\@writefile{lot}{\contentsline {table}{\numberline {6.3}{\ignorespaces Precomputed values for the forward of the alternative AES S-box.}}{116}}
+\newlabel{tab:aesAltFullForward}{{6.3}{116}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.4}{\ignorespaces Precomputed values for the inverse of the alternative AES S-box.}}{117}}
+\newlabel{tab:aesAltFullInverse}{{6.4}{117}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.5}{\ignorespaces Strict Avalanche Criteria (SAC) visualization for the alternative AES S-box.}}{117}}
+\newlabel{tab:aesAltSAC}{{6.5}{117}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Schematic diagrams of the top-level schematic of the S-box and internal inversion circuit.}}{119}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Top-level circuit for the alternative AES S-box using the different field polynomial.}}}{119}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Top-level schematic for the inversion circuit within our overall S-box circuit.}}}{119}}
+\newlabel{fig:aesAltCircuit}{{6.1}{119}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}$16$-Bit S-Box Constructions}{120}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.6}{\ignorespaces Differential uniformity and nonlinearity of all bijective power mappings over $GF(2^8)$ defined by the AES irreducible polynomial $p(v) = v^8 + v^4 + v^3 + v + 1$.}}{121}}
+\newlabel{tab:gf28maps}{{6.6}{121}}
+\citation{Sfiligoi09-1}
+\citation{Pordes2008}
+\newlabel{RF3}{127}
+\@writefile{lot}{\contentsline {table}{\numberline {6.7}{\ignorespaces Differential uniformity and nonlinearity of all bijective power mappings over $GF(2^8)$ defined by the AES irreducible polynomial $p(v) = v^8 + v^4 + v^3 + v + 1$. The branch numbers are largely influenced }}{127}}
+\newlabel{tab:gf28selectMapStrength}{{6.7}{127}}
+\citation{daemen01-AES}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions and Future Work}{128}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chp:future}{{7}{128}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Conclusions}{128}}
+\citation{Canright05-1}
+\citation{Boyar12-1}
+\citation{Bosma97-1}
+\citation{Boyar12-1}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future Work}{129}}
+\citation{Fuhs10-1}
+\citation{Courtois11-1}
+\citation{Courtois07-1}
+\citation{SAGE}
+\bibcite{Berk03-1}{1}
+\bibcite{Beth93-1}{2}
+\bibcite{Bernstein09-1}{3}
+\bibcite{Biham91-1}{4}
+\bibcite{Bosma97-1}{5}
+\bibcite{Boyar00-1}{6}
+\bibcite{Boyar08-1}{7}
+\bibcite{Boyar10-1}{8}
+\bibcite{Boyar11-1}{9}
+\bibcite{Boyar12-1}{10}
+\bibcite{Peralta13-PC}{11}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{132}}
+\bibcite{Brunner93-1}{12}
+\bibcite{Canright05-1}{13}
+\bibcite{Canright13-PC}{14}
+\bibcite{Canteaut05-1}{15}
+\bibcite{Carlet04-1}{16}
+\bibcite{Carlet10-1}{17}
+\bibcite{Chung00-1}{18}
+\bibcite{Cid06-1}{19}
+\bibcite{CMT}{20}
+\bibcite{Courtois00-1}{21}
+\bibcite{Courtois02-1}{22}
+\bibcite{Courtois05-1}{23}
+\bibcite{Courtois07-1}{24}
+\bibcite{Courtois11-1}{25}
+\bibcite{Cui07-1}{26}
+\bibcite{cusik09-BooleanFunctions}{27}
+\bibcite{daemen01-AES}{28}
+\bibcite{Daemen02-1}{29}
+\bibcite{DES-FIPS}{30}
+\bibcite{Dobbertin99-1}{31}
+\bibcite{Elsheh08-1}{32}
+\bibcite{Fraenkel79-1}{33}
+\bibcite{Fuhs10-1}{34}
+\bibcite{Gao11-1}{35}
+\bibcite{Golomb05-1}{36}
+\bibcite{Jorge02-1}{37}
+\bibcite{Guajardo06-1}{38}
+\bibcite{Hsiao06-1}{39}
+\bibcite{Itoh88-1}{40}
+\bibcite{Johansson03-1}{41}
+\bibcite{Jakobsen97-1}{42}
+\bibcite{Kaminsky10-1}{43}
+\bibcite{Kaminsky10-2}{44}
+\bibcite{Karp72-1}{45}
+\bibcite{Kipnis99-1}{46}
+\bibcite{Kleiman05-1}{47}
+\bibcite{Lidl94-1}{48}
+\bibcite{Lupanov58-1}{49}
+\bibcite{MacWilliams86-1}{50}
+\bibcite{Matsui91-1}{51}
+\bibcite{HAC}{52}
+\bibcite{Mentens05-1}{53}
+\bibcite{Nawaz09-1}{54}
+\bibcite{Nikova08-1}{55}
+\bibcite{Nogami11-1}{56}
+\bibcite{Nyberg91-1}{57}
+\bibcite{Nyberg94-1}{58}
+\bibcite{Paar94-1}{59}
+\bibcite{Paar95-1}{60}
+\bibcite{Paar97-1}{61}
+\bibcite{Pordes2008}{62}
+\bibcite{Rijmen00-1}{63}
+\bibcite{Rooji95-1}{64}
+\bibcite{Rothaus76-1}{65}
+\bibcite{Rudra01-1}{66}
+\bibcite{Saarinen12-1}{67}
+\bibcite{Satoh01-1}{68}
+\bibcite{Shanks69-1}{69}
+\bibcite{shannon1949-secrecy}{70}
+\bibcite{Shannon49-1}{71}
+\bibcite{SAGE}{72}
+\bibcite{Sfiligoi09-1}{73}
+\bibcite{stinson-crypto}{74}
+\bibcite{Tigin07-1}{75}
+\bibcite{Ullrich11-1}{76}
+\bibcite{Wang85-1}{77}
+\bibcite{Webster86-1}{78}
+\gdef \LT@i {\LT@entry 
+    {1}{60.3928pt}}
+\gdef \LT@ii {\LT@entry 
+    {1}{84.34337pt}}
+\gdef \LT@iii {\LT@entry 
+    {1}{135.18471pt}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Irreducible Polynomials}{140}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {A.1}Tower Field Irreducible Polynomials}{140}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.1}{Irreducible Polynomials for $GF(2^2)$}}{140}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.2}{Irreducible Polynomials for $GF(2^4)/GF(2^2)$}}{140}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.3}{Irreducible Polynomials for $GF(2^8)/GF(2^4)/GF(2^2)$}}{140}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.4}{Irreducible Polynomials for $GF(2^{16})/GF(2^8)/GF(2^4)/GF(2^2)$}}{141}}
+\gdef \LT@iv {\LT@entry 
+    {2}{250.01767pt}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}16-Bit S-Box Constructions and Gate Counts}{146}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {B.1}16-Bit S-Box Gate Counts (Without Logic Minimization)}{146}}
+\newlabel{RF4}{147}
+\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Table \#1 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{147}}
+\newlabel{tab:rt1}{{B.1}{147}}
+\newlabel{RF5}{148}
+\@writefile{lot}{\contentsline {table}{\numberline {B.2}{\ignorespaces Table \#2 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{148}}
+\newlabel{tab:rt2}{{B.2}{148}}
+\newlabel{RF6}{149}
+\@writefile{lot}{\contentsline {table}{\numberline {B.3}{\ignorespaces Table \#3 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{149}}
+\newlabel{tab:rt3}{{B.3}{149}}
+\newlabel{RF7}{150}
+\@writefile{lot}{\contentsline {table}{\numberline {B.4}{\ignorespaces Table \#4 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{150}}
+\newlabel{tab:rt4}{{B.4}{150}}
+\newlabel{RF8}{151}
+\@writefile{lot}{\contentsline {table}{\numberline {B.5}{\ignorespaces Table \#5 of the optimal basis selections and relevant S-box construction information for a separate S-box implementation.}}{151}}
+\newlabel{tab:rt5}{{B.5}{151}}
+\newlabel{RF9}{152}
+\@writefile{lot}{\contentsline {table}{\numberline {B.6}{\ignorespaces Table \#1 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{152}}
+\newlabel{tab:rt6}{{B.6}{152}}
+\newlabel{RF10}{153}
+\@writefile{lot}{\contentsline {table}{\numberline {B.7}{\ignorespaces Table \#2 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{153}}
+\newlabel{tab:rt7}{{B.7}{153}}
+\newlabel{RF11}{154}
+\@writefile{lot}{\contentsline {table}{\numberline {B.8}{\ignorespaces Table \#3 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{154}}
+\newlabel{tab:rt8}{{B.8}{154}}
+\newlabel{RF12}{155}
+\@writefile{lot}{\contentsline {table}{\numberline {B.9}{\ignorespaces Table \#4 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{155}}
+\newlabel{tab:rt9}{{B.9}{155}}
+\newlabel{RF13}{156}
+\@writefile{lot}{\contentsline {table}{\numberline {B.10}{\ignorespaces Table \#5 of the optimal basis selections and relevant S-box construction information for a merged S-box implementation.}}{156}}
+\newlabel{tab:rt10}{{B.10}{156}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {C}Source Code}{157}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{app:sourceCode}{{C}{157}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.1}Galois Field Composite Arithmetic Library}{157}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.2}Circuit Minimization Programs}{158}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2.1}Parallel Factorization Program (snippet)}{158}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2.2}Parallel Boyar-Peralta Program (snippet)}{159}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.3}S-Box Gate Counting Program}{161}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.3.1}gateCount.m (snippet)}{161}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.4}Multiplicative Inverse Calculation using Composite Field Arithmetic}{181}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.4.1}galois.c}{181}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.4.2}galois.h}{188}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.5}Alternative AES S-Box Hardware Design}{189}}
+\@writefile{toc}{\contentsline {section}{\numberline {C.6}16-Bit S-box in C}{194}}

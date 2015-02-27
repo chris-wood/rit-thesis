@@ -1,0 +1,156 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{verbatim}
+
+% <http://psl.cs.columbia.edu/phdczar/proposal.html>:
+%
+% The standard departmental thesis proposal format is the following:
+%        30 pages
+%        12 point type
+%        1 inch margins all around = 6.5   inch column
+%        (Total:  30 * 6.5   = 195 page-inches)
+%
+% For letter-size paper: 8.5 in x 11 in
+% Latex Origin is 1''/1'', so measurements are relative to this.
+
+\topmargin      0.0in
+\headheight     0.0in
+\headsep        0.0in
+\oddsidemargin  0.0in
+\evensidemargin 0.0in
+\textheight     9.0in
+\textwidth      6.5in
+
+\title{{\bf MSc Thesis Pre-Proposal} \\
+\it Optimizing Confusion and Diffusion in Symmetric-Key Cryptographic Algorithms}
+\author{ {\bf Christopher A. Wood}  \\
+Department of Computer Science \\
+Rochester Institute of Technology\\
+{\small caw4567@rit.edu}
+}
+\date{\today}
+
+\begin{document}
+\pagestyle{plain}
+\pagenumbering{roman}
+\maketitle
+
+\pagebreak
+\begin{abstract}
+
+The thesis proposal is a type of contract between the faculty and the student. 
+An accepted thesis proposal indicates that the work proposed by the student, 
+once completed, will be accepted by the faculty as sufficiently innovative and 
+substantial as to be recognized with the award of the degree. It is part of 
+the training of the student's research apprenticeship that the form of this 
+proposal must be as concise as those proposals required by major funding 
+agencies.
+
+\end{abstract}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\section{Introduction}
+\label{ch:intro}
+
+This part provides an overall introduction of your work, including related work of your proposal.
+
+\subsection{Related work}
+\label{ch:related}
+
+This part talks about related work of your proposal.
+
+\section{Cryptanalysis Attack Review}
+\label{ch:cryptanalysis}
+
+TODO: linear, differential, rotational, rebound, boomerang, cube, algebraic attacks, 
+
+\section{Mathematical Analysis of Existing Cryptographic Operations}
+\label{ch:proposal}
+
+The content of your proposal. Each topic occupies one section, each with their own conclusion and future work.
+
+\subsection{Confusion through Nonlinear Operations}
+\label{ch:nonlinear}
+
+TODO: S-boxes, ARX, Chaos, etc
+
+\section{Diffusion and Confusion MINLP Problems}
+\label{ch:opt}
+
+TODO: formulate algorithm security as MINLP problems, explore usage of evolutionary algorithms to perform intelligent search over design space
+
+\section{Implementation Considerations of Cryptographic Operations}
+\label{ch:proposal}
+
+The content of your proposal. Each topic occupies one section, each with their own conclusion and future work.
+
+\subsection{Software Implementations}
+\label{ch:swimpl}
+
+TODO
+
+\subsection{Hardware Designs}
+\label{ch:hwimpl}
+
+TODO
+
+\section{Research Methodology}
+\label{ch:methodology}
+
+TODO
+
+\section{Potential Outcomes}
+\label{ch:outcomes}
+
+TODO
+
+\begin{comment}
+\section{Research plan}
+\label{ch:plan}
+
+Provide an overview of what you have done and what need to be done.
+
+\subsection{Plan for completion of the research}
+
+Table \ref{tab:plan} shows my plan for completion of the research.
+
+\begin{table}[hc]
+\begin{small}
+\begin{center}
+\begin{tabular}{lll}
+Timeline & Work & Progress\\
+\hline
+          & XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX & completed\\
+Nov. xxxx & XXXXXXXXXXXXXXXXXXXXXXXXXXX & ongoing\\
+Jan. xxxx & Thesis writting & \\
+Feb. xxxx & Thesis defense & \\
+\end{tabular}
+\end{center}
+\end{small}
+\caption{Plan for completion of my research}
+\label{tab:plan}
+\end{table}
+
+Thus, I plan to defend my thesis in XXX XXXX.
+\end{comment}
+
+\pagebreak
+
+\begin{footnotesize}
+\bibliographystyle{plain}
+\bibliography{string,itu,rfc,i-d}
+\end{footnotesize}
+
+\end{document}
+
+

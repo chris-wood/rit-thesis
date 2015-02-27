@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99d (TeX Live 2011)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: caw-proposal.aux
+The style file: plain.bst
+Database file #1: caw-proposal.bib
+Warning--to sort, need author, editor, or key in ChaosCrypto
+Warning--to sort, need author, editor, or key in CryptoEngineering
+Warning--empty author and editor in CryptoEngineering
+Warning--empty author and editor in ChaosCrypto
+You've used 6 entries,
+            2118 wiz_defined-function locations,
+            531 strings with 4964 characters,
+and the built_in function-call counts, 1568 in all, are:
+= -- 155
+> -- 47
+< -- 1
++ -- 20
+- -- 14
+* -- 83
+:= -- 246
+add.period$ -- 19
+call.type$ -- 6
+change.case$ -- 22
+chr.to.int$ -- 0
+cite$ -- 10
+duplicate$ -- 75
+empty$ -- 154
+format.name$ -- 14
+if$ -- 351
+int.to.chr$ -- 0
+int.to.str$ -- 6
+missing$ -- 5
+newline$ -- 33
+num.names$ -- 8
+pop$ -- 42
+preamble$ -- 1
+purify$ -- 19
+quote$ -- 0
+skip$ -- 50
+stack$ -- 0
+substring$ -- 62
+swap$ -- 15
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 18
+warning$ -- 4
+while$ -- 11
+width$ -- 7
+write$ -- 69
+(There were 4 warnings)

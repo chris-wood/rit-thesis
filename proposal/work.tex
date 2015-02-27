@@ -1,0 +1,36 @@
+\section{Proposed Work}
+The first part of our research will focus on the cryptographic strength of 
+various S-box definitions using analysis methods for Boolean functions. Clearly, exhaustively searching
+all $GF(2^{2^{16}})$ S-box definitions is infeasible, so our analysis will be constrained
+to S-boxes defined by differentially uniform mappings over Galois fields, such as the
+inverse mapping $F(x) = x^{-1}, x \in GF(2^{16})$, and built 
+using the Maiorana-McFarland Boolean function construction technique. Time
+permitting, we may also explore Boolean function construction techniques targeted towards specific
+cryptographic properties, such as resiliency and algebraic immunity. 
+The metrics collected for this part of the research include the nonlinearity,
+algebraic immunity, resiliency, and differential uniformity of each S-box candidate. 
+Some of these metrics can be gathered using third-party software tools like 
+SAGE and Mathematica, while others will require custom software to measure. Such
+software would be part of the deliverables for this thesis, and it will be used
+to weigh the strength and weaknesses of various S-box definitions. 
+ 
+The second thread of our research will be to implement candidate S-boxes in FPGA hardware and generate 
+similar equivalent ASIC models. To facilitate the selection of candidate S-boxes, 
+we will study the gate-level complexity of ideal S-boxes using various
+representations defined by different irreducible polynomials. These implementation techniques will explore the composite field
+decomposition techniques using polynomial bases. Time permitting, we will also explore the optimizations
+that are possible with normal basis representations of the S-boxes. While mixing these two representations
+will likely lead to an improved solution, such work is outside the scope of this thesis. A major outcome
+of this thread of research is to determine the implementation differences between FPGA and ASIC platforms
+in terms of hardware resource and power consumption. Composite field decompositions do not currently benefit
+on FPGA platforms due to the small size of logic required for the functions and the larger LUT blocks. 
+It is unclear as to whether or not this problem will be subverted with 16-bit S-boxes, and so we hope 
+to address this issue. 
+
+Software versions of these functions will also be implemented to measure the throughput performance
+on low-end platforms (e.g. 32-bit PowerPC hardcore processors).
+The metrics collected for this part of the research include hardware area (i.e.
+FPGA slices and total synthesized logic gates) and throughput (cycles per byte), as well
+as the software memory footprint for S-box functions and their throughput (cycles per byte).
+These software implementations will be compared against LUT-based implementations in terms of 
+memory usage and throughput. 

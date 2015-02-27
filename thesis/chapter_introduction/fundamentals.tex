@@ -1,0 +1,196 @@
+\section{Mathematical Foundations}
+
+Galois Fields, commonly referred to as finite fields, and Boolean functions play a critical role in the design, development, and analysis of a variety of cryptographic primitives. Galois fields are commonly used to define efficiently computable cryptographic functions, such as the S-box in SPN designs, whereas Boolean functions typically serve as tools for measuring the strength and resilience of cryptographic operations to common cryptanalysis attacks. In this section we provide an introduction to these mathematical constructs as a foundation for the rest of the thesis. 
+
+% \subsection{Vector Spaces}
+% Let $\langle F, +, \cdot \rangle$ be a field with unit element $1$ (where the elements of $F$ are called scalars), and let $\langle V, + \rangle$ be an abelian group (where the elements of $V$ are called vectors). Let $\odot$ be an operation from $F$ to $V$ - $\odot : F \to V$. We note define the concept of a vector space.
+
+% \begin{definition}
+% The structure $\langle F, V, +, + ,\cdot, \odot \rangle$ is a \emph{vector space} over $F$ if distributivity and associativity apply, and there also exists a neutral element in the space. 
+% \end{definition}
+
+% Basically, $V$ structure is a vector space over $F$ if it is closed under vector addition and scalar multiplication. Traditional concepts from linear algebra are discussed in this section, including the definition of a linear combination, basis set (the set of vectors such that all elements of the vector space can be written in exactly one way as a linear combination of the vectors of the set - typically denoted by $\mathbf{e} = \Big[\mathbf{e}^{(1)}, \mathbf{e}^{(2)}, .., \mathbf{e}^{(n)}\Big]^T$. 
+
+% The concept of a linear function is also revisited. Formally, a function $f$ is a \emph{linear function} of a vector space $V$ over a field $F$ if:
+% \begin{itemize}
+% 	\item $\forall \mathbf{x}, \mathbf{y} \in V : f(\mathbf{x} + \mathbf{y}) = f(\mathbf{x}) + f(\mathbf{y})$
+% 	\item $\forall a \in F, \forall \mathbf{x} \in V : f(a\mathbf{x}) = af(\mathbf{x})$
+% \end{itemize}
+
+% The concept of linear functions over a vector space will play a large role in this work, so it is important that this definition is understood. In fact, by the definition of a linear function, we can say that a function is nonlinear if $\exists \mathbf{x}, \mathbf{y} \in V : f(\mathbf{x} + \mathbf{y}) \not= f(\mathbf{x}) + f(\mathbf{y})$. This simple notion seems to imply that the cardinality of the set $\{ \mathbf{x}, \mathbf{y} | f(\mathbf{x} + \mathbf{y}) \not= f(\mathbf{x}) + f(\mathbf{y})\}$ is a way to measure the nonlinearity of a function. As we will see later, this is exactly how this metric is determined.
+
+\subsection{Galois Fields}
+
+Much of number-theoretical cryptography is founded upon the mathematical structures of groups, rings, and fields. For completeness, we define these structures and their relevant properties below. The reader may find a more rigorous treatment in \cite{Lidl94-1}.
+
+\begin{definition}
+An \emph{abelian group} $\langle G, + \rangle$ consists of a set $G$ and an operation $+$ defined on its elements that satisfies the following properties:
+\begin{itemize}
+	\item $G$ is closed under $+$ (for all $a,b \in G$ it is true that $a + b \in G$)
+	\item Associativity holds with respect to the $+$ operator (for all $a, b, c \in G$ it is true that $(a + b) + c = a + (b + c)$)
+	\item Commutativity holds with respect to the $+$ operator (for all $a, b \in G$ it is true that $a + b = b + a$)
+	\item There exists an identity element $0 \in G$ such that for all $a \in G$ it is true that $a + 0 = a$
+	\item For all elements $a \in G$ there exists a corresponding inverse element $b \in G$ such that $a + b = 0$
+\end{itemize}
+\end{definition}
+
+A very common example of a group is $\langle \mathbb{Z}, + \rangle$, that is, the set of integers with respect to the addition operator.
+
+\begin{definition}
+A \emph{ring} $\langle R, +, \cdot \rangle$ consists of a set $R$ with two binary operations $+, \cdot$ defined on its elements that satisfy the following properties:
+\begin{itemize}
+	\item The structure $\langle R, + \rangle$ is an abelian group.
+	\item The operation $\cdot$ is closed and associative over $R$. 
+	\item There is a neutral element for $\cdot$ in $R$. 
+	\item The two operations $+$ and $\cdot$ are related by the \emph{law of distributivity}. That is, for all $a, b, c \in R$ it is true that $(a + b) \cdot c = (a \cdot c) + (b \cdot c)$.
+\end{itemize}
+\end{definition}
+
+Again, a common example of a ring is $\langle \mathbb{Z}, +, \cdot \rangle$, that is, the set of integers with the binary addition and multiplication operators.
+
+\begin{definition}
+A structure $\langle \mathbb{F}, +, \cdot \rangle$ is a \emph{field} if the following two conditions are satisfied:
+\begin{itemize}
+	\item $\langle \mathbb{F}, +, \cdot \rangle$ is a commutative ring.
+	\item For all elements of $\mathbb{F}$, there is an inverse element in $\mathbb{F}$ with respect to $\cdot$, except for the element $0$, the neutral (identity) element of $\langle \mathbb{F}, + \rangle$. 
+\end{itemize}
+\end{definition}
+
+More specifically, a structure $\langle \mathbb{F}, +, \cdot \rangle$ is a field if and only if both $\langle \mathbb{F}, + \rangle$ and $\langle \mathbb{F} \setminus \{0\}, \cdot \rangle$ are abelian groups and the law of distributivity applies. If the set of elements in $\mathbb{F}$ is finite, then $\mathbb{F}$ is a Galois field. Such fields are commonly denoted as $GF(p)$, where $p$ is prime.
+
+The set of polynomials over a field $\mathbb{F}$ is defined as $\mathbb{F}[x]/p(x)$, where $p(x)$ is some irreducible polynomial over $\mathbb{F}$. If $\mathbb{F}$ is finite with $p$ elements, making $\mathbb{F}$ a cyclic field, then $GF(p^n)$ defines the set of polynomials over $GF(p)$ modulo an irreducible polynomial $p(x)$ of degree $n$. For completeness, polynomial irreducibility is defined as follows.
+
+\begin{definition}
+A polynomial $p(x)$ is \emph{irreducible} over the field $\mathbb{F}$ if and only if there does not exist two polynomials $q(x)$ and $r(x)$ with coefficients in $\mathbb{F}$ such that $p(x) = q(x) \times r(x)$, where $q(x)$ and $r(x)$ are of degree $> 0$. 
+\end{definition}
+
+% With a suitable choice for the reduction polynomial (i.e. the irreducible polynomial), the 
+% structure $\langle \mathbb{F}[x]|_n, +, \cdot \rangle$ is a cyclic field with $p^n$ elements, usually 
+% denoted by $GF(p^n)$ (if $\mathbb{F}$ is the field $GF(p)$). In other words, $\langle \mathbb{F}[x]|_n, +, \cdot 
+% \rangle$ is a Galois field. 
+
+It is well known that for every cyclic Galois field $GF(p^n)$ there exists at least one element $\alpha$ such that every element in the field, with the exception of the neutral element, can be computed as $\alpha^i$ for some $0 \leq i \leq 2^p - 1$. In this case, $\alpha$ is said to be a \emph{primitive element}, or a \emph{generator}, of $GF(p^n)$. With the notion of a primitive element, we now introduce the concept of a primitive polynomial.
+
+\begin{definition}
+A polynomial $p(x)$ of degree $n$ is \emph{primitive} over the field $GF(p)$ if and only if it is irreducible over $GF(p)$ and the element $x$ is a primitive element of $GF(p^n)$. 
+% Alternatively, $p(x)$ is primitive if and only if the order of the $p(x)$ (i.e. the smallest integer $k$ such that $p(x) | x^k + 1$) is equal to $p^n - 1$. It is well known that a primitive polynomial is a monic irreducible polynomial.
+\end{definition}
+
+Another important property to note is the characteristic of a Galois field $GF(p)$, which is the smallest positive integer $k$ such that $\underbrace{a + a + \dotsb + a}_{k \text{ times}} = 0$ and $a \in GF(p)$. In this work we focus primarily on fields with characteristic $2$, often referred to as binary Galois fields.
+
+It is also useful to note the concept of a trace, given in the following definition.
+\begin{definition}
+The \emph{trace} of an element $\alpha \in GF(p^n)$ relative to the subfield $GF(p)$ is defined as
+\begin{align*}
+Tr_{GF(p^n) / GF(p)}(\alpha) = \alpha + \alpha^p + \alpha^{p^{2}} + \dotsb + \alpha^{p^{n-1}}.
+\end{align*}
+In this case, the set $\{\alpha, \alpha^{p}, \alpha^{p^{2}},\dots,\alpha^{p^{n-1}}\}$ is the set of conjugates of $\alpha$. 
+\end{definition}
+
+Finally, the cyclotomic coset $C_s$ modulo $2^n - 1$ \cite{MacWilliams86-1} is defined as
+\begin{align*}
+C_s = \{s, s \cdot 2, \dotsb, 2 \cdot 2^{n_s - 1}\},
+\end{align*}
+where $n_s$ is the smallest positive integer such that $s \equiv s2^{n_s - 1}\mod 2^n - 1$. Also, $s$ is denoted as the coset leader of the cyclotomic coset $C_s$. Computations of these sets deal with elements in the residue integer ring modulo $2^n - 1$ (i.e. $\mathbb{Z}_{2^n - 1}$). 
+
+\subsection{Bases of Galois Fields} \label{sec:ffBasis}
+% Finite fields used for cryptographic purposes are often of the form $GF(p)$ or $GF(2^n)$, where $GF(p)$ is just $\mathbb{Z}_p$ and the field $GF(p^n)$ is $\mathbb{F}_2[x]/p(x)$, the set of polynomials confined by the irreducible polynomial $p(x)$, and whose elements have coefficients in $GF(2)$. 
+It is natural to represent an element in the field $GF(p^n)$ as a standard polynomial of the form
+\begin{align*}
+p(x) = a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + ... + a_2x^2 + a_1x + a_0,
+\end{align*}
+where $a_i \in GF(p)$ are the coefficients of the polynomial. 
+
+However, when a more rigorous treatment of Galois field bases is needed, $GF(p^n)$ may be viewed as an $n$-dimensional vector space over $GF(p)$. As a vector space, we see that a basis must exist for the field. For cryptographic applications, the standard (polynomial), normal, and dual basis representations are important elements of study, though in this work we restrict ourselves to only polynomial and normal bases. With a \emph{standard} or \emph{polynomial basis} for elements in $GF(p^n)$, the basis elements are represented as successive powers of a primitive element of the field, denoted $\theta^i$ for $0 \leq i < n$. That is, the basis $\beta$ may be viewed as $[\theta^0,\theta^i,\dots,\theta^{n-1}]$. As a proper basis, every element $\alpha$ in the field may be represented as a linear combination of the elements in the basis as follows:
+\begin{align*}
+\alpha = a_{n-1}\theta^{n-1} + a_{n-2}\theta^{n-2} + \dotsb + a_{1}\theta + a_0,
+\end{align*}
+where $a_i \in GF(p)$ for all $0 \leq i < n$.
+
+With a \emph{normal basis} representation for elements in $GF(p^n)$, the basis elements are defined as $\theta^{q^{i}}$ for $0 \leq i < n$, where $\theta$ is a primitive element of the field and all basis elements are linearly independent. In this case, the basis $\beta$ may be viewed as $[\theta^{p^{0}},\theta^{p^{1}},\dots,\theta^{p^{n-1}}]$. With this basis, each element $\alpha$ in the field may be represented as a linear combination of its elements, as shown below,
+\begin{align*}
+\alpha = a_{n-1}\theta^{p^{n-1}} + a_{n-2}\theta^{p^{n-2}} + \dotsb + a_{p^{1}}\theta^{p} + a_0\theta,
+\end{align*}
+where $a_i \in GF(p)$ for all $0 \leq i < n$.
+
+\subsection{Composite Fields}
+Let $GF(2^k)$ be defined by the degree $k$ irreducible polynomial $r(z)$. We may define a polynomial basis for this field as a set of $k$ linearly independent elements as follows:
+\begin{align*}
+B_1 = [1, \alpha, \alpha^2, ..., \alpha^{k-1}],
+\end{align*}
+where $\alpha$ is a primitive element in $GF(2^k)$. With this basis we may write any element $A_i^1 \in GF(2^k)$ as $A_i = \sum_{j=0}^{k-1}a_j \alpha^j$, where $a_j$ is the coefficient for the $\alpha^j$ term and $a_j \in GF(2)$. With this representation, the field arithmetic operations of addition, subtraction, multiplication, and inversion are defined with respect to $B_1$ and the subfield $GF(2)$ \cite{Berk03-1}. In this sense, we say that $GF(2^k)$ is a degree $k$ extension of $GF(2)$, which means that polynomial coefficient arithmetic of $GF(2^k)$ is performed over the subfield $GF(2)$. However, we may refine these arithmetic operations by choosing a different basis or by using a different construction method for the field. Recent research has focused on the latter using composite fields \cite{Rudra01-1, Satoh01-1, Mentens05-1, Canright05-1, Boyar11-1}.
+
+Let $k = nm$, where $n, m \in \mathbb{Z}$. With this constraint, it is possible to define $GF(2^k)$, which is uniquely represented by the irreducible polynomial $r(z)$, as a degree $m$ extension of $GF(2^n)$. Any extension field not defined over $GF(2)$ is commonly referred to as a \emph{composite field} (i.e. it is the functional composition of more than one extension field, where one of the fields in this composition is an extension of $GF(2)$). We denote this composite field as $GF((2^n)^m)$, where $GF(2^n)$ is the \emph{ground field} over which the composite field is defined.
+
+More specifically, a \emph{composite field} is a pair $\{GF(2^n), p(x) = x^n + \sum_{i=0}^{n-1}p_ix^i, p^i \in GF(2)\}$ and $\{GF((2^n)^m), q(y) = y^m + \sum_{i=0}^{m-1}q_iy^i, q_i \in GF(2^n)\}$ where $GF(2^n)$ is constructed from $GF(2)$ by $p(x)$, and $GF((2^n)^m)$ is constructed from $GF(2^n)$ by $q(y)$. We state that $GF((2^n)^m)$ is a degree $m$ extension of $GF(2^n)$. This form of extension means that the coefficients of the polynomials in $GF((2^n)^m)$ are themselves elements of $GF(2^n)$, and thus all coefficient arithmetic is performed in $GF(2^n)$.
+
+Now, we represent elements in $GF((2^n)^m)$ using a new polynomial basis $B_2$ as follows:
+\begin{align*}
+B_2 = [1, \beta, \beta^2,...,\beta^{m - 1}]
+\end{align*}
+Note that now we have $m$ linearly independent elements as opposed to $k$. Also, $\beta$ is the root of a \emph{primitive irreducible polynomial} of degree $m$ whose coefficients are in the base field $GF(2^n)$. With this basis we may now represent an element $A_i' \in GF((2^n)^m)$ as $A_i' = \sum_{j = 0}^{m - 1} a'_j \beta^j$, where $a'_j \in GF(2^n)$ for $0 \leq j < m$.
+
+\subsection{Boolean Functions}
+A Boolean functions is a function $f : \mathbb{F}_2^n \to \mathbb{F}_2$.
+For convenience, let $\Omega_n$ be the set of all Boolean functions on $n$ variables, where $|\Omega_n| = 2^{2^{n}}$. For all Boolean functions $f \in \Omega_n$ there exists a
+unique truth table (TT) or Algebraic Normal Form (ANF) representation \cite{cusik09-BooleanFunctions}. The TT for a Boolean function
+$f$ is simply the vector $(f(\bar{0}), \dots, f(\bar{1})))$, where each element corresponds to an element
+in $\mathbb{F}_2 \cong GF(2)$. The distance between two Boolean functions $f, g \in \Omega_n$ is simply the number of elements in the TT representation of $f$ that need to change to make $f = g$. This can easily computed by the Hamming distance between the respective truth tables for $f$ and $g$.
+
+Alternatively, we may represent Boolean functions in their ANF format as polynomials with coefficients in $\mathbb{F}_2$. The process of translating a Boolean function $f$ to its ANF representation is called the the algebraic normal transform, and is defined as follows:
+\begin{align*}
+f(x_0,\dots,x_{n-1}) = \bigoplus_{(a_0,\dots,a_{n-1}) \in \mathbb{F}_2^n} h(a_0,\dots,a_{n-1})x_0^{a_0}x_1^{a_1}\dots x_{n-1}^{a_{n-1}},
+\end{align*}
+where $h$ is a Boolean function. 
+% Another common means of generating the ANF representation is to construct the polynomial which consists of the sum of the polynomial
+% $(a_0 \oplus a_0 \oplus 1)\dots(x_{n-1} \oplus a_{n-1} \oplus 1)$ for all $\bar{a} \in GF(2^n)$ such that $f(\bar{a}) = 1$. 
+% This definition can be described as the following.
+% \begin{align*}
+% ANF(\bar{x}) = &  a_0 \oplus \\
+% &  a_1x_1 \oplus ... \oplus a_{n}x_{n} \oplus \\
+% &  a_{1,2}x_1x_2\oplus ... \oplus a_{n-1, n}x_{n-1}x_n \oplus \\
+% &  ... \\
+% &  a_{1,2,...,n}x_{1}...x_{n}
+% \end{align*}
+
+
+We denote the Hamming weight of a vector $(x_0,\dots x_{n-1}) = \bar{x} \in \mathbb{F}_2^n$ as HW$(\bar{x})$. We denote the dot product of two vectors $\bar{x}, \bar{y} \in \mathbb{F}_2^n$ as $\bar{x} \oplus \bar{y}$, and is defined as the scalar value $x_1y_1 \oplus x_2y_2 \oplus \dotsb \oplus x_ny_n$. The inner product of two vectors $\bar{x}, \bar{y} \in \mathbb{F}_2^n$, defined as the vector $\bar{z} = (x_1y_1, x_2y_2, \dots, x_ny_n)$, is denoted as $\bar{x} \cdot \bar{y}$ \cite{cusik09-BooleanFunctions}.
+
+If we consider the ANF representation of a Boolean function as a nonzero polynomial function $f : \mathbb{F}_{2^n} \to \mathbb{F}_2$, then we may represent $f$ as a sum of the trace functions over $\mathbb{F}_2$ as follows \cite{Golomb05-1}:
+\begin{align} \label{eqn:trace}
+f(x) = \sum_{k \in \gamma(n)}Tr_1^{n_k}(A_kx^k) + A_{2^n - 1}x^{2^{n}-1},
+\end{align}
+where $A_k \in \mathbb{F}_{2^{n_k}}$, $A_{2^{n}-1} \in \mathbb{F}_2$, $\gamma(n)$ is set of all coset leaders modulo $2^n - 1$, and $n_k$ is the size of the coset $C_k$. If $f(x)$ is a balanced Boolean function, meaning that $|\{x : f(x) = 1\}| = |\{x : f(x) = 0\}| = 2^{n-1}$, then \ref{eqn:trace} reduces to
+\begin{align}
+f(x) = \sum_{k \in \gamma(n)}Tr_1^{n_k}(A_kx^k).
+\end{align}
+
+The Walsh and Discrete Fourier transforms are also immensely useful in the mathematical study of Boolean functions.
+In fact, Boolean functions $f$ on $\mathbb{F}_2^n$ can be uniquely identified by their \emph{Walsh transform}, where  
+the Walsh transform $W_f$ of $f$ is an integer-valued function defined for all $\bar{w} \in \mathbb{F}_2^n$ as
+\begin{align*}
+W_f(\bar{w}) & = \sum_{\bar{x} \in \mathbb{F}_2^n}(-1)^{f(\bar{x}) \oplus \bar{x}\cdot\bar{w}} \\
+& = 2^n - 2 \times \text{HW}(f(\bar{x}) \oplus \bar{x} \cdot \bar{w}).
+\end{align*}
+Informally, the Walsh transform of a given vector $\bar{w}$ is the difference between the
+number of input vectors $\bar{x}$ for which $f(\bar{x}) = \bar{w} \cdot \bar{x}$ and
+the number of input vectors $\bar{x}$ for which $f(\bar{x}) \not= \bar{w} \cdot \bar{x}$.
+Thus, in a sense, we may interpret the Walsh transform of a particular Boolean
+function as the collective similarity between $f(\bar{x})$ and the linear
+function $\bar{w} \cdot \bar{x}$. 
+
+It is well known that $\mathbb{F}_{2^n}$ is isomorphic to $\mathbb{F}_2^n$, so we may represent an element $\alpha \in \mathbb{F}_{2^n}$ as an $n$-dimensional vector $\bar{w}$ over $\mathbb{F}_2$. With this observation, we may then seek to measure the similarity of $f(\bar{x})$ to all linear functions $\bar{w} \cdot \bar{x}$ by applying the Walsh transform to each possible input vector $\bar{w}_i$, $0 \leq i < 2^n$. The result of this procedure is the \emph{Walsh spectrum}, which simply corresponds to the vector $[W_f(\alpha_0 \cong \bar{w}_0), W_f(\alpha_1 \cong \bar{w}_1),\dots,W_f(\alpha_{2^n - 1} \cong \bar{w}_{2^n - 1})]$.
+
+\subsection{S-Boxes as $(n,m)$ Boolean Functions}
+S-boxes are traditionally defined as functions $S : GF(2^n) \to GF(2^m)$, where $n = m$. In the case of Rijndael, $n = m = 8$. In order to study such S-boxes using one-dimensional Boolean functions, it is necessary to extend the definitions and representations of Boolean functions to multiple dimensions. To do this, we define a vectorial Boolean function $F : GF(2^n) \to GF(2^m)$ (e.g. an $(n,m)$ S-box) using a vector of $m$ component Boolean functions \cite{Carlet10-1}. More specifically, we let $F(x) = (f_1(x),\dots,f_m(x))$, where $f_i : GF(2^n) \to GF(2)$ for all $1 \leq i \leq m$. S-boxes can therefore be defined as $(n,m)$ Boolean functions. In Section \ref{sec:strength} we describe common measurements for $(n,m)$ Boolean functions as they are used in the context of cryptography.
+
+% \section{Coding Theory Basics}
+% The application of error-correcting codes in the design of nonlinear mappings of cryptographic functions 
+% has become commonplace in recent years. Nonlinear functions should contribute some measure of diffusion
+% to the procedure to improve the overall security of the S-box (we will revisit the topic of S-box
+% security and diffusion in Section \ref{sec:strength}). For now, we introduce some basic coding theory
+% concepts that are important in the understanding of S-box constructions.
+% \todo[inline]{Is this little section even warranted?}
+% TODO; find a book on coding theory from the library
+% A linear $[n,k,d]$-code over $GF(2^p)$ is a $k$-dimensional subspace of the vector space $
+

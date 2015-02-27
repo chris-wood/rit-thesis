@@ -1,0 +1,22 @@
+\begin{thebibliography}{1}
+
+\bibitem{FIPS197}
+{Specification for the Advanced Encryption Standard (AES)}.
+\newblock Federal Information Processing Standards Publication 197, 2001.
+
+\bibitem{AESBook}
+J.~Daemen and V.~Rijmen.
+\newblock {\em The Design of Rijndael}.
+\newblock Springer-Verlag New York, Inc., Secaucus, NJ, USA, 2002.
+
+\bibitem{Kim90astudy}
+K.~Kim.
+\newblock {A Study on the Construction and Analysis of Substitution Boxes for
+  Symmetric Cryptosystems}, 1990.
+
+\bibitem{arxProb}
+V.~Velichkov, N.~Mouha, C.~D. Canni{\`e}re, and B.~Preneel.
+\newblock The additive differential probability of arx.
+\newblock In {\em FSE}, pages 342--358, 2011.
+
+\end{thebibliography}

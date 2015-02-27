@@ -1,0 +1,60 @@
+\contentsline {chapter}{Dedication}{iii}
+\contentsline {chapter}{Acknowledgments}{iv}
+\contentsline {chapter}{Abstract}{v}
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}Motivation}{1}
+\contentsline {section}{\numberline {1.2}Contribution of the Thesis}{1}
+\contentsline {section}{\numberline {1.3}Mathematical Foundations}{3}
+\contentsline {subsection}{\numberline {1.3.1}Galois Fields}{3}
+\contentsline {subsection}{\numberline {1.3.2}Bases of Galois Fields}{5}
+\contentsline {subsection}{\numberline {1.3.3}Composite Fields}{5}
+\contentsline {subsection}{\numberline {1.3.4}Boolean Functions}{6}
+\contentsline {subsection}{\numberline {1.3.5}S-Boxes as $(n,m)$ Boolean Functions}{7}
+\contentsline {chapter}{\numberline {2}Cryptographic Aspects of the Substitution Layer}{8}
+\contentsline {section}{\numberline {2.1}Cryptanalysis Attacks}{8}
+\contentsline {subsection}{\numberline {2.1.1}Linear Cryptanalysis}{8}
+\contentsline {subsection}{\numberline {2.1.2}Differential Cryptanalysis}{11}
+\contentsline {subsection}{\numberline {2.1.3}XL and XLS Algebraic Attacks}{12}
+\contentsline {subsection}{\numberline {2.1.4}Interpolation Attacks}{14}
+\contentsline {section}{\numberline {2.2}Efficient Computations of Cryptographic Properties of S-Boxes}{15}
+\contentsline {subsection}{\numberline {2.2.1}Linear Approximation and Difference Distribution}{15}
+\contentsline {subsection}{\numberline {2.2.2}Nonlinearity}{15}
+\contentsline {subsection}{\numberline {2.2.3}Differential Uniformity}{19}
+\contentsline {subsection}{\numberline {2.2.4}Resiliency}{19}
+\contentsline {subsection}{\numberline {2.2.5}Algebraic Immunity}{21}
+\contentsline {subsection}{\numberline {2.2.6}Algebraic Complexity}{22}
+\contentsline {subsection}{\numberline {2.2.7}Avalanche Effect}{23}
+\contentsline {subsection}{\numberline {2.2.8}Branch Number}{24}
+\contentsline {chapter}{\numberline {3}S-box Constructions}{27}
+\contentsline {section}{\numberline {3.1}Galois Field Power Mapping Constructions}{27}
+\contentsline {subsection}{\numberline {3.1.1}Affine Transformations for Algebraic Complexity}{29}
+\contentsline {chapter}{\numberline {4}Combinational Logic Minimization Techniques}{36}
+\contentsline {section}{\numberline {4.1}Optimizing Linear Transformations}{36}
+\contentsline {subsection}{\numberline {4.1.1}Heuristic-Based Optimizations}{37}
+\contentsline {subsection}{\numberline {4.1.2}Improving Linear Circuit Minimization Efficiency}{41}
+\contentsline {section}{\numberline {4.2}Optimizing Nonlinear Circuits}{47}
+\contentsline {subsection}{\numberline {4.2.1}Ad-Hoc Heuristics}{47}
+\contentsline {subsection}{\numberline {4.2.2}An Application to Small Galois Field Inversion Circuits}{48}
+\contentsline {chapter}{\numberline {5}Area-Optimized Implementations of the Galois Field Multiplicative Inverse}{54}
+\contentsline {section}{\numberline {5.1}Reduction to Subfield Inversion}{54}
+\contentsline {subsection}{\numberline {5.1.1}Direct Inversion using Polynomial and Normal Bases}{54}
+\contentsline {section}{\numberline {5.2}Combinational Complexity of Galois Field Arithmetic}{58}
+\contentsline {subsection}{\numberline {5.2.1}$GF(2^2)$ Combinational Arithmetic}{59}
+\contentsline {subsection}{\numberline {5.2.2}$GF((2^2)^2)$ Combinational Arithmetic}{63}
+\contentsline {subsection}{\numberline {5.2.3}$GF(((2^2)^2)^2)$ Combinational Arithmetic}{70}
+\contentsline {subsubsection}{Itoh-Tsujii Algorithm}{73}
+\contentsline {section}{\numberline {5.3}Change of Basis Representations}{75}
+\contentsline {subsection}{\numberline {5.3.1}A Small Example - Basis Change Matrices for $GF(2^4)$ and $GF((2^2)^2)$}{76}
+\contentsline {section}{\numberline {5.4}Generalized Optimizations}{78}
+\contentsline {section}{\numberline {5.5}Hardware Complexity}{81}
+\contentsline {chapter}{\numberline {6}Results and Proposed S-Box Constructions}{84}
+\contentsline {section}{\numberline {6.1}AES S-Box Alternatives}{84}
+\contentsline {section}{\numberline {6.2}$16$-Bit S-Box Constructions}{95}
+\contentsline {chapter}{\numberline {7}Conclusions and Future Work}{100}
+\contentsline {section}{\numberline {7.1}Conclusions}{100}
+\contentsline {section}{\numberline {7.2}Future Work}{101}
+\contentsline {chapter}{Bibliography}{103}
+\contentsline {chapter}{\numberline {A}Irreducible Polynomials}{108}
+\contentsline {section}{\numberline {A.1}Tower Field Irreducible Polynomials}{108}
+\contentsline {chapter}{\numberline {B}16-Bit S-Box Constructions and Gate Counts}{112}
+\contentsline {section}{\numberline {B.1}16-Bit S-Box Gate Counts (Without Logic Minimization)}{112}

@@ -1,0 +1,3 @@
+\beamer@endinputifotherversion {3.20pt}
+\beamer@sectionintoc {1}{Composite Field Mappings}{4}{0}{1}
+\beamer@sectionintoc {2}{Tower Field Decompositions}{9}{0}{2}

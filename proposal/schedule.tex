@@ -1,0 +1,35 @@
+\section{Deliverables}
+When the proposed work is complete, a written thesis report will be submitted. The report will include all background information needed, including that which has been included in this proposal. All results will be documented. The following utility software will be submitted as part of the deliverables.
+\begin{itemize}
+	\item Generic Galois field mathematical library that supports field extensions, composite field arithmetic, and finding primitive irreducible polynomials.
+	\item Boolean function construction and analysis software.
+	\item Field representation optimization library for minimizing the gate-level complexity of mathematical operations.
+\end{itemize}
+At a minimum, the following S-box implementations will also be submitted with the deliverables.
+\begin{itemize}
+	\item LUT-based and optimized software implementations of candidate S-boxes for low-end processors.
+	\item Traditional (unoptimized) and optimized composite field HDL models for FPGA and ASIC implementations of candidate S-boxes. 
+\end{itemize}
+Relevant data obtained from experiments, including all Boolean function properties and hardware implementation metrics, will be displayed in 
+the most appropriate format. Finally, an appendix will be attached that contains all of the source code implemented for this project.
+
+\subsection{Timeline}
+The thesis will be written in parallel with the research. Both stages of the research (cryptographic strength analysis and
+implementation optimizations) will overlap, and will not be completed in full until the thesis is finished. The following schedule
+depicts the workflow and major milestones for the thesis. 
+
+\begin{center}
+\begin{tabular}{ l | p{8cm} }
+  Date & Task \\ \hline
+  April 8, 2013 & Complete thesis proposal submission \\
+  April 12, 2013 & Finish the 8-bit S-box experiment methodology and test framework \\
+  April 19, 2013 & Implement software for Boolean function analysis, constructions, and HDL translations \\
+  April 26, 2013 & Finish the first candidate $16$-bit S-box model in HDL \\
+  May 10, 2013 & Finish and measure the implementation of all candidate $16$-bit S-boxes using only polynomial basis representations \\
+  May 31, 2013 & Design an HDL model normal basis representation of an $8$-bit S-box. \\
+  Jun 7, 2013 & Finish and measure the hardware implementation of $16$-bit S-boxes built on designs in the literature (tentative). \\
+  June 14, 2013 & Finish and measure the software implementations of all candidate S-boxes for low-end platforms. \\
+  July 5, 2013 & Finish thesis report \\
+  August 5, 2013 & Defend thesis
+\end{tabular}
+\end{center}
